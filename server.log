@@ -1,0 +1,18 @@
+✅ Database tables created.
+ * Serving Flask app 'app'
+ * Debug mode: on
+2025-10-23 21:30:33,075 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://100.88.250.144:5000 [in /Users/christian/Documents/Projects/patriot-app/backend/.venv/lib/python3.9/site-packages/werkzeug/_internal.py:97]
+2025-10-23 21:30:33,075 INFO: [33mPress CTRL+C to quit[0m [in /Users/christian/Documents/Projects/patriot-app/backend/.venv/lib/python3.9/site-packages/werkzeug/_internal.py:97]
+2025-10-23 21:30:33,078 INFO:  * Restarting with stat [in /Users/christian/Documents/Projects/patriot-app/backend/.venv/lib/python3.9/site-packages/werkzeug/_internal.py:97]
+2025-10-23 21:30:33,806 WARNING:  * Debugger is active! [in /Users/christian/Documents/Projects/patriot-app/backend/.venv/lib/python3.9/site-packages/werkzeug/_internal.py:97]
+2025-10-23 21:30:33,820 INFO:  * Debugger PIN: 751-631-760 [in /Users/christian/Documents/Projects/patriot-app/backend/.venv/lib/python3.9/site-packages/werkzeug/_internal.py:97]
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/multiprocessing/resource_tracker.py:216: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+✅ Database tables created.
+ * Serving Flask app 'app'
+ * Debug mode: on
+Address already in use
+Port 5001 is in use by another program. Either identify and stop that program, or start the server with a different port.

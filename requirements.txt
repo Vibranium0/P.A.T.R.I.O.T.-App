@@ -1,0 +1,32 @@
+# ==========================
+# P.A.T.R.I.O.T. Backend Requirements
+# Flask + SQLAlchemy + JWT + Mail + PostgreSQL
+# ==========================
+
+# Flask Core
+Flask==3.0.3
+Flask-Cors==4.0.0
+Flask-Mail==0.10.0
+Flask-Bcrypt==1.0.1
+Flask-JWT-Extended==4.6.0
+Flask-SQLAlchemy==3.1.1
+Flask-Migrate==4.0.7
+Flask-RESTful==0.3.10
+itsdangerous==2.2.0
+
+# Database
+SQLAlchemy==2.0.31
+psycopg2-binary==2.9.9
+
+# Env Management
+python-dotenv==1.0.1
+
+# Utilities
+email-validator==2.1.1
+requests==2.32.3
+python-dateutil==2.8.2
+gunicorn==22.0.0
+
+# Developer Tools
+pytest==8.3.2
+black==24.3.0
