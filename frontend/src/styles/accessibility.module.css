@@ -1,0 +1,45 @@
+/* ===========================
+   P.A.T.R.I.O.T. ACCESSIBILITY + PERFORMANCE
+   =========================== */
+
+/* Motion reduction: disable most animations and transitions if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode: ensure text is legible even when effects are disabled */
+@media (forced-colors: active) {
+  :root {
+    --background: Canvas;
+    --text-primary: CanvasText;
+    --text-secondary: GrayText;
+    --border: GrayText;
+    --primary-blue: Highlight;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--text-primary);
+  }
+
+  button,
+  input,
+  .card {
+    border: 1px solid var(--border);
+    background: var(--background);
+    color: var(--text-primary);
+  }
+}
+
+/* Fallback for browsers without backdrop-filter or blend-mode support */
+.no-blur body::after {
+  backdrop-filter: none !important;
+  background: rgba(17, 24, 39, 0.7) !important;
+}

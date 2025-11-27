@@ -1,0 +1,96 @@
+@import "../../ui/theme/colors.css";
+@import "../../ui/theme/effects.css";
+
+/* Overlay that replaces the app during boot */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(10, 15, 26, 0.94),
+    rgba(7, 11, 18, 1)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  backdrop-filter: blur(12px);
+}
+
+/* CRT-style scanlines */
+.scanlines {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.02) 2px,
+    transparent 4px
+  );
+  opacity: 0.04;
+  z-index: 2;
+}
+
+.center {
+  text-align: center;
+  position: relative;
+  z-index: 3;
+}
+
+.logo {
+  width: 160px;
+  height: auto;
+  filter: drop-shadow(0 0 10px rgba(47, 143, 255, 0.6));
+  animation: rotatePulse 2.6s ease-in-out infinite;
+}
+
+.text {
+  margin-top: 20px;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px var(--primary-blue),
+               0 0 15px rgba(47, 143, 255, 0.8);
+  animation: flicker 1.7s infinite;
+}
+
+.accentGreen {
+  color: var(--success);
+  text-shadow: 0 0 8px rgba(34,197,94,0.9);
+  animation: none;
+}
+
+/* Progress loading bar */
+.loadBar {
+  margin: 18px auto 0 auto;
+  height: 4px;
+  background: var(--highlight-gradient);
+  border-radius: 4px;
+  box-shadow: 0 0 12px rgba(47, 143, 255, 0.5);
+}
+
+/* ============================
+   ANIMATIONS
+   ============================ */
+
+@keyframes rotatePulse {
+  0% {
+    transform: rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 5px rgba(47,143,255,0.5));
+  }
+  50% {
+    transform: rotate(180deg) scale(1.05);
+    filter: drop-shadow(0 0 25px rgba(47,143,255,0.95));
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    filter: drop-shadow(0 0 5px rgba(47,143,255,0.5));
+  }
+}
+
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.4; }
+}

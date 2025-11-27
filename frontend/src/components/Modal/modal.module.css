@@ -1,0 +1,43 @@
+@import "../../ui/theme/colors.css";
+@import "../../ui/theme/effects.css";
+
+/* Modal background overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(7, 11, 18, 0.55);
+    /* semi-transparent dark */
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    /* Restore modal to vertical center */
+    justify-content: center;
+    /* Prevent children from being clipped when raised on hover */
+    overflow: visible;
+}
+
+/* Modal card */
+.card {
+    /* Add extra padding to bottom so raised buttons have space */
+    padding-bottom: 2.5rem;
+}
+
+/* Modal actions (Save and Cancel buttons) */
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0;
+}
+
+.buttonGroup {
+    display: flex;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Remove border and margin overrides to allow button glow/shadow effects to show */

@@ -1,0 +1,78 @@
+@import "../../ui/theme/colors.css";
+@import "../../ui/theme/effects.css";
+
+/* ===========================
+   HUD CONTAINER
+   =========================== */
+
+.hudContainer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* HUD must never block UI interaction */
+  z-index: 2; /* Above background layers, below content */
+  overflow: hidden;
+}
+
+/* ===========================
+   SCANNING LINES
+   =========================== */
+
+.scanLine {
+  position: absolute;
+  height: 2px;
+  width: 20%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary-blue),
+    transparent
+  );
+  opacity: 0.4;
+  filter: drop-shadow(0 0 4px var(--glow-primary));
+}
+
+/* ===========================
+   CIRCUIT NODES (glowing dots)
+   =========================== */
+
+.node {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary-blue);
+  filter: drop-shadow(0 0 6px var(--glow-primary));
+  opacity: 0.2;
+}
+
+/* ===========================
+   CORNER PULSE ACCENTS
+   =========================== */
+
+.cornerPulseTL,
+.cornerPulseTR,
+.cornerPulseBL,
+.cornerPulseBR {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 1px solid var(--accent-silver);
+  opacity: 0.08;
+  animation: cornerPulse 3.8s ease-in-out infinite;
+}
+
+.cornerPulseTL { top: 20px; left: 20px; }
+.cornerPulseTR { top: 20px; right: 20px; }
+.cornerPulseBL { bottom: 20px; left: 20px; }
+.cornerPulseBR { bottom: 20px; right: 20px; }
+
+@keyframes cornerPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.08;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.18;
+  }
+}

@@ -1,0 +1,95 @@
+@import "../../ui/theme/colors.css";
+@import "../../ui/theme/effects.css";
+
+/* Container for vertical spacing between cards on schedule tab */
+.scheduleTabContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input,
+input[type="date"],
+input[type="number"],
+input[type="text"],
+select {
+  font-size: 1.15rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.formRow label {
+  display: block;
+  font-size: 0.8rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-secondary);
+}
+
+.results {
+  margin-top: 1rem;
+}
+
+.resultsSummary {
+  display: flex;
+  gap: 1.25rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  background: transparent;
+}
+
+.table thead th {
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.table tbody td {
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+}
+
+.rowBelowBuffer {
+  background: linear-gradient(90deg, rgba(220, 38, 38, 0.06), transparent);
+  border-left: 4px solid rgba(220, 38, 38, 0.25);
+}
+
+.error {
+  color: var(--danger);
+  margin-top: 0.5rem;
+}

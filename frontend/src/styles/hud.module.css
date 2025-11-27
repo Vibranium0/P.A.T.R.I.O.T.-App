@@ -1,0 +1,178 @@
+@import "../ui/theme/colors.css";
+@import "../ui/theme/effects.css";
+
+/* ========================================================
+   P.A.T.R.I.O.T. HUD MASTER MODULE
+   ======================================================== */
+
+.hudContainer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ========================================================
+   1. BLUE ENERGY FLOW LINES
+   ======================================================== */
+
+.hudLineFlow {
+  position: absolute;
+  height: 1px;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, var(--primary-blue), transparent);
+  opacity: 0.4;
+  animation: lineFlow 4s linear infinite;
+}
+
+@keyframes lineFlow {
+  0% { left: -30%; }
+  100% { left: 120%; }
+}
+
+/* ========================================================
+   2. SCAN LINE OVERLAY (Vertical OR Horizontal)
+   ======================================================== */
+
+.scanLinesVertical {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.015) 0px,
+    rgba(255, 255, 255, 0) 2px,
+    rgba(255, 255, 255, 0.02) 4px
+  );
+  mix-blend-mode: overlay;
+  animation: scanShiftV 6s linear infinite;
+}
+
+@keyframes scanShiftV {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+.scanLinesHorizontal {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.015) 0px,
+    rgba(255, 255, 255, 0) 2px,
+    rgba(255, 255, 255, 0.02) 4px
+  );
+  mix-blend-mode: overlay;
+  animation: scanShiftH 10s linear infinite;
+}
+
+@keyframes scanShiftH {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ========================================================
+   3. HOLOGRAPHIC GRID (Stark Table Map Style)
+   ======================================================== */
+
+.holoGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--hud-line) 1px, transparent 1px),
+    linear-gradient(to right, var(--hud-line) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.18;
+}
+
+.holoGridAnimated {
+  animation: gridShift 16s linear infinite;
+}
+
+@keyframes gridShift {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+/* ========================================================
+   4. HEX-TECH MESH (Subtle Stark UI)
+   ======================================================== */
+
+.holoHex {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--primary-blue) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle, rgba(0,0,0,1), rgba(0,0,0,0.3));
+}
+
+.holoHexPulse {
+  animation: hexPulse 5s ease-in-out infinite;
+}
+
+@keyframes hexPulse {
+  0%   { opacity: 0.08; }
+  50%  { opacity: 0.16; }
+  100% { opacity: 0.08; }
+}
+
+/* ========================================================
+   5. CURVED HUD ARCS (Hero Rings)
+   ======================================================== */
+
+.hudArc {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border: 2px solid var(--primary-blue);
+  border-radius: 50%;
+  opacity: 0.18;
+  filter: drop-shadow(0 0 6px var(--glow-blue));
+}
+
+.hudArc.rotateSlow {
+  animation: rotateSlow 22s linear infinite;
+}
+
+.hudArc.rotateReverse {
+  animation: rotateReverse 28s linear infinite;
+}
+
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes rotateReverse {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+/* ========================================================
+   6. TEXT GLOW + PULSE UTILITIES
+   ======================================================== */
+
+.hudPulse {
+  animation: hudPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hudPulse {
+  0%   { text-shadow: 0 0 4px var(--glow-blue); }
+  50%  { text-shadow: 0 0 14px var(--primary-blue); }
+  100% { text-shadow: 0 0 4px var(--glow-blue); }
+}
+
+.hudGlow {
+  animation: hudGlow 3s ease-in-out infinite;
+}
+
+@keyframes hudGlow {
+  0%,100% {
+    box-shadow: 0 0 5px var(--glow-blue), inset 0 0 3px var(--glow-blue);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--primary-blue), inset 0 0 6px var(--primary-blue);
+  }
+}

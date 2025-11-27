@@ -1,0 +1,75 @@
+/* ===========================================================
+   P.A.T.R.I.O.T. Color System — "Captain Stark" Edition
+   ===========================================================
+   This defines the *complete* palette and tone mapping used
+   across the interface. All component effects reference these.
+   -----------------------------------------------------------
+   ⚙️ Hints:
+   - background / card / border = structural base
+   - primary / accent colors = interactive glow & highlights
+   - text / status = data and feedback
+   =========================================================== */
+
+:root {
+  /* ====== STRUCTURAL COLORS ====== */
+  --background: #070b12;
+  /* Deep steel blue-black */
+  --background-overlay: rgba(7, 11, 18, 0.85);
+  --card: #101725;
+  /* Panel base – slightly lighter for depth */
+  --border: #1f2a3c;
+  /* Subtle steel outline */
+
+  /* ====== PRIMARY BRAND COLORS ====== */
+  --primary-blue: #1f8fff;
+  /* StarkTech blue – core glow + accent */
+  --secondary-blue: #62b0ff;
+  /* Lighter blue for hover glows, gradients */
+  --trim-red: #c0272d;
+  /* Captain red trim – outlines, hero icons */
+  --accent-silver: #b9c0c9;
+  /* Metallic brushed silver for text/icons */
+  --accent-dark-silver: #8b9098;
+  /* Deeper silver for gradients/shadows */
+
+  /* ====== TEXT COLORS ====== */
+  --text-primary: #e6eaf0;
+  /* Main content, high contrast */
+  --text-secondary: #9da6b1;
+  /* Muted subtitles, timestamps */
+  --text-accent: var(--accent-silver);
+  /* Subtle silver highlights */
+
+  /* ====== STATUS COLORS ====== */
+  --success: #21c55d;
+  /* Success or “verified” states */
+  --warning: #fbbf24;
+  /* Pending or “in progress” states */
+  --danger: #ef4444;
+  /* Errors, overdue, or critical alerts */
+
+  /* ====== HIGHLIGHT & GLOW COLORS ====== */
+  --glow-blue: rgba(47, 143, 255, 0.4);
+  /* Subtle blue field glow */
+  --glow-silver: rgba(185, 192, 201, 0.35);
+  --glow-red: rgba(192, 39, 45, 0.4);
+  --glow-green: rgba(33, 197, 93, 0.35);
+  /* Subtle green field glow for success */
+
+  /* ====== UI ELEMENT BASES ====== */
+  --button-primary-bg: var(--accent-silver);
+  --button-primary-text: var(--background);
+  --button-primary-hover: var(--primary-blue);
+
+  --button-secondary-bg: transparent;
+  --button-secondary-border: var(--accent-silver);
+  --button-secondary-hover: var(--primary-blue);
+
+  /* ====== SPECIAL EFFECTS ====== */
+  --hud-line: rgba(47, 143, 255, 0.1);
+  /* For grid or circuit overlays */
+  --hud-node: rgba(47, 143, 255, 0.5);
+  /* Circuit glow points */
+  --highlight-gradient: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+  --alert-gradient: linear-gradient(90deg, var(--trim-red), var(--danger));
+}

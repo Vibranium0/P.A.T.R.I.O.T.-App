@@ -1,0 +1,82 @@
+@import "../../ui/theme/colors.css";
+@import "../../ui/theme/effects.css";
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ---------------------------
+   Summary row
+   --------------------------- */
+.summaryRow {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* responsive */
+@media (max-width: 1000px) {
+  .summaryRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------------------------
+   Main grid
+   --------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* chart + legend row inside card */
+.chartRow {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.legend {
+  width: 100%;
+  max-width: 300px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.legendIntro {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+/* ---------------------------
+   Recent activity list
+   --------------------------- */
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.activityRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.65rem 0;
+  border-bottom: 1px dashed rgba(156, 163, 175, 0.04);
+  color: var(--text-secondary);
+}
+
+.activityAmount {
+  color: var(--text-primary);
+  font-weight: 600;
+}

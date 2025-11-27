@@ -1,0 +1,35 @@
+@import "../../ui/theme/colors.css";
+@import "../../ui/theme/effects.css";
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 0.9rem;
+  border-radius: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  box-shadow: var(--shadow-base);
+  min-height: 64px;
+}
+
+.label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.prefix {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}

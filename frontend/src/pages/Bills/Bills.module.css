@@ -1,0 +1,328 @@
+@import "../../ui/theme/colors.css";
+@import "../../ui/theme/effects.css";
+
+.modalInput[type="number"]::-webkit-outer-spin-button,
+.modalInput[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.modalInput[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.modalAutopayRow input[type="checkbox"] {
+  width: 1.25em;
+  height: 1.25em;
+  border-radius: 6px;
+  border: 2px solid var(--primary-blue);
+  background: rgba(31, 143, 255, 0.08);
+  accent-color: var(--primary-blue);
+  box-shadow: 0 0 6px var(--glow-blue);
+  transition: border-color 0.2s;
+}
+
+.modalAutopayRow input[type="checkbox"]:checked {
+  border-color: var(--success);
+  background: rgba(33, 197, 93, 0.12);
+}
+
+/* Modal create dialog buttons: cancel bottom left, create bottom right */
+.modalCreateButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 1.2rem;
+  gap: 1rem;
+}
+
+/* Modal dialog styles for bill creation/editing */
+.modalTitle {
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  color: var(--text-primary);
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.modalInput {
+  font-size: 1.15rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+}
+
+.modalAutopayRow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.08rem;
+}
+
+.modalFormButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.2rem;
+}
+
+/* Overview tab main container for vertical spacing between sections */
+.overviewContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.tabRow {
+  margin-top: 2rem;
+}
+
+/* page title */
+.pageTitle {
+  margin: 0 0 0.25rem 0;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+}
+
+/* tabs */
+.tabRow {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tabButton {
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--accent-silver);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(6px);
+}
+
+.tabButton:hover {
+  color: var(--text-primary);
+  border-color: var(--primary-blue);
+  box-shadow: var(--glow-soft);
+}
+
+.tabActive {
+  color: var(--text-primary);
+  border-color: var(--primary-blue);
+  background: rgba(25, 35, 50, 0.6);
+  box-shadow: var(--glow-primary);
+}
+
+.settingsButton {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  transition: box-shadow var(--transition-fast);
+}
+
+.settingsButton:hover .settingsIcon {
+  filter: drop-shadow(0 0 6px var(--primary-blue));
+}
+
+.settingsIcon {
+  width: 24px;
+  height: 24px;
+  color: var(--primary-blue);
+  transition: filter var(--transition-fast);
+}
+
+/* summary grid (cards) */
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* bills list styles */
+.billList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.billRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  background: rgba(10, 15, 26, 0.5);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.billInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.billName {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.billDue {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.billAmount {
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 90px;
+  text-align: right;
+}
+
+/* overdue highlight */
+.overdue {
+  border-color: rgba(220, 38, 38, 0.25);
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.08);
+}
+
+/* add form */
+.addForm {
+  display: grid;
+  grid-template-columns: 1fr 120px 150px 140px;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.input {
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+}
+
+/* settings row */
+.settingsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.smallInput {
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+}
+
+/* misc */
+.muted {
+  color: var(--text-secondary);
+}
+
+.summaryAmount {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dangerButton {
+  background: var(--danger-red);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.dangerButton:hover {
+  background: #c0392b;
+}
+
+/* Custom date picker styles for app theme */
+input[type="date"].modalInput::-webkit-calendar-picker-indicator {
+  filter: brightness(1.2) drop-shadow(0 0 2px var(--primary-blue));
+  background-color: var(--background-overlay);
+  border-radius: 6px;
+}
+
+input[type="date"].modalInput {
+  font-size: 1.15rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  box-sizing: border-box;
+}
+
+/* Firefox */
+input[type="date"].modalInput::-moz-focus-inner {
+  background: var(--background-overlay);
+}
+
+input[type="date"].modalInput::-moz-calendar-picker-indicator {
+  filter: brightness(1.2) drop-shadow(0 0 2px var(--primary-blue));
+  background-color: var(--background-overlay);
+  border-radius: 6px;
+}
+
+/* Edge/IE (limited support) */
+input[type="date"].modalInput::-ms-expand {
+  background: var(--background-overlay);
+}
+
+.inputWithSymbol {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputSymbol {
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.15rem;
+  color: var(--accent-silver);
+  pointer-events: none;
+  z-index: 2;
+  width: 1.2rem;
+  text-align: center;
+}
+
+.inputWithSymbol input {
+  padding-left: 1.2rem;
+  text-indent: 0.8rem;
+}

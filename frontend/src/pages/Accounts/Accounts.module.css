@@ -1,0 +1,92 @@
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.modalInput {
+    font-size: 1.15rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.modalCreateButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 1.2rem;
+    gap: 1rem;
+}
+
+.modalTitle {
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    color: var(--text-primary);
+}
+
+@import "../../ui/theme/colors.css";
+@import "../../ui/theme/effects.css";
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.headerRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.pageTitle {
+    font-size: 1.5rem;
+    font-family: 'Orbitron', 'Share Tech Mono', monospace;
+    color: var(--text-secondary);
+    text-shadow: 0 0 8px var(--text-accent), 0 0 2px #000;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+.accountList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.accountRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.accountName {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.accountType {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.accountBalance {
+    font-weight: 600;
+    color: var(--text-accent);
+    font-size: 1.1rem;
+}
+
+.addAccountButton {
+    margin-left: auto;
+}

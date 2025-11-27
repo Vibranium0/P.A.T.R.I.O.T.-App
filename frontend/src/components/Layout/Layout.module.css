@@ -1,0 +1,115 @@
+/* Global theme imports removed for Vite compatibility. */
+
+/* ===========================================================
+   LAYOUT WRAPPER — MASTER PAGE CONTAINER
+   =========================================================== */
+.layoutWrapper {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    /* Sits ABOVE global background & grid layers */
+    z-index: 1;
+
+    /* Ensures content is never flush to edges */
+    padding-bottom: 5rem;
+    /* space so radial menu never overlaps content */
+}
+
+/* ===========================================================
+   MAIN CONTENT AREA
+   =========================================================== */
+.main {
+    position: relative;
+    z-index: 3;
+    /* HUDLayer is z = 2, so this stays above it */
+
+    width: 100%;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .main {
+        padding: 1.25rem;
+        gap: 1.25rem;
+    }
+}
+
+/* ===========================================================
+   RADIAL MENU POSITIONING
+   =========================================================== */
+.radialMenuWrapper {
+    position: fixed;
+    bottom: 2.5rem;
+    right: 2.5rem;
+
+    z-index: 5;
+    /* Always ABOVE page content & HUD */
+    pointer-events: none;
+    /* Prevent blocking clicks on page */
+}
+
+/* Restore clickability ONLY for radial menu content */
+.radialMenuWrapper>* {
+    pointer-events: auto;
+}
+
+/* ===========================================================
+   OPTIONAL: PAGE TRANSITION ANIMATION LAYER
+   (used if you want layout-based page transition effects)
+   =========================================================== */
+
+.pageTransitionEnter {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.pageTransitionEnterActive {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.pageTransitionExit {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+.pageTransitionExitActive {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+/* ===========================================================
+   OPTIONAL: CONTENT SHADOW EDGE (subtle HUD look)
+   =========================================================== */
+
+.main::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+
+    background: radial-gradient(circle at 50% 10%,
+            rgba(47, 143, 255, 0.12),
+            transparent 70%);
+    opacity: 0.4;
+}
+
+/* ===========================================================
+   SAFETY: PREVENT TEXT SELECTION ON UI BUTTONS
+   =========================================================== */
+.radialMenuWrapper button {
+    user-select: none;
+}

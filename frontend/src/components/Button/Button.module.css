@@ -1,0 +1,207 @@
+/* ============================================
+   BASE BUTTON STYLES
+   ============================================ */
+.button {
+  font-family: "Exo 2", sans-serif;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  background: var(--card);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+
+  box-shadow: var(--glow-soft);
+  transition: all var(--transition-base);
+}
+
+/* ============================================
+   BUTTON SIZES
+   ============================================ */
+.sm {
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+}
+
+.md {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+.lg {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+/* ============================================
+   METALLIC SHINE (Swipe Effect)
+   ============================================ */
+.button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+
+  background: linear-gradient(120deg,
+      transparent,
+      rgba(31, 143, 255, 0.35),
+      transparent);
+  transform: skewX(-20deg);
+  transition: 0.55s;
+}
+
+.button:hover::after {
+  left: 130%;
+}
+
+/* ============================================
+   VARIANTS — STARKTECH + CAPTAIN STYLE
+   ============================================ */
+/* ——— SUCCESS (completed/verified action) */
+.success {
+  background: linear-gradient(180deg,
+      var(--success) 0%,
+      #15803d 100%);
+  color: var(--background);
+  border: none;
+  box-shadow: 0 0 15px var(--glow-green);
+}
+
+.success:hover {
+  box-shadow: 0 0 28px var(--glow-green);
+}
+
+/* ——— SECONDARY SUCCESS (toggle/activated) */
+.secondarySuccess {
+  background: rgba(33, 197, 93, 0.08);
+  color: var(--success);
+  border: 1px solid var(--success);
+  box-shadow: 0 0 10px var(--glow-green);
+  backdrop-filter: blur(6px);
+}
+
+.secondarySuccess:hover {
+  border-color: #15803d;
+  color: #15803d;
+  box-shadow: 0 0 18px var(--glow-green);
+}
+
+/* ——— PRIMARY: silver → blue metallic */
+.primary {
+  background: linear-gradient(180deg,
+      var(--accent-silver) 0%,
+      var(--primary-blue) 100%);
+  color: var(--background);
+  border: none;
+  box-shadow: var(--glow-primary);
+}
+
+.primary:hover {
+  box-shadow: var(--glow-strong);
+}
+
+/* ——— SECONDARY: glass button */
+.secondary {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  border: 1px solid var(--accent-silver);
+  backdrop-filter: blur(6px);
+}
+
+.secondary:hover {
+  border-color: var(--primary-blue);
+  color: var(--text-primary);
+  box-shadow: var(--glow-soft);
+}
+
+/* ——— DANGER (critical action) */
+.danger {
+  background: linear-gradient(180deg,
+      var(--danger) 0%,
+      #7f1d1d 100%);
+  border: none;
+  color: var(--text-primary);
+  box-shadow: 0 0 15px var(--glow-red);
+}
+
+.danger:hover {
+  box-shadow: 0 0 28px var(--glow-red);
+}
+
+/* ——— GHOST (transparent icon menu option) */
+.ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--accent-silver);
+}
+
+.ghost:hover {
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+  box-shadow: var(--glow-soft);
+}
+
+/* ============================================
+   ICON BUTTON (Circular buttons for radial menu)
+   ============================================ */
+.iconButton {
+  width: 3.4rem;
+  height: 3.4rem;
+
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+}
+
+/* ============================================
+   GLOW / PULSE / ACTIVE STATES
+   ============================================ */
+
+.glowHover {
+  transition: box-shadow var(--transition-base), transform var(--transition-fast);
+}
+
+.glowHover:hover {
+  box-shadow: var(--glow-strong);
+  transform: translateY(-2px);
+}
+
+.glowPulse {
+  animation: pulseGlow 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: var(--glow-primary);
+  }
+
+  50% {
+    box-shadow: var(--glow-strong);
+  }
+
+  100% {
+    box-shadow: var(--glow-primary);
+  }
+}
+
+/* ——— Focus Ring (for accessibility + StarkTech feel) */
+.button:focus {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 3px;
+  box-shadow: 0 0 18px rgba(31, 143, 255, 0.6);
+}

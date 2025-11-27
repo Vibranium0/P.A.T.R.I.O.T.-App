@@ -1,0 +1,93 @@
+/* ===========================================================
+   P.A.T.R.I.O.T. Effects System — Unified Motion & Glow Layer
+   =========================================================== */
+
+@import "./colors.css";
+
+/* ===========================
+   GLOW & SHADOW SYSTEM
+   =========================== */
+
+/* Uses color-system variables, never raw RGBA */
+:root {
+  --glow-primary: 0 0 15px var(--glow-blue);
+  --glow-soft: 0 0 12px var(--glow-blue);
+  --glow-strong: 0 0 25px var(--glow-blue);
+
+  --glow-silver-soft: 0 0 10px var(--glow-silver);
+  --glow-red-strong: 0 0 25px var(--glow-red);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 2px 4px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.5);
+
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+
+  --glass-blur: blur(12px);
+  --glass-opacity: rgba(10, 16, 26, 0.45);
+  --glass-border: rgba(185, 192, 201, 0.15);
+}
+
+/* ===========================
+   INTERACTIVE UTILITIES
+   =========================== */
+
+/* Base glow-on-hover behavior */
+.glow-hover {
+  transition: box-shadow var(--transition-base), transform var(--transition-fast);
+}
+
+.glow-hover:hover {
+  box-shadow: var(--glow-strong);
+  transform: translateY(-2px);
+}
+
+/* Active press state */
+.glow-active:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: var(--glow-soft);
+}
+
+/* Silver highlight hover */
+.glow-silver:hover {
+  box-shadow: var(--glow-silver-soft);
+}
+
+/* Red alert hover */
+.glow-danger:hover {
+  box-shadow: var(--glow-red-strong);
+}
+
+/* ===========================
+   ANIMATIONS
+   =========================== */
+
+/* Pulse animation — used for “live”, “loading”, etc. */
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: var(--glow-soft);
+  }
+
+  50% {
+    box-shadow: var(--glow-strong);
+  }
+}
+
+.glow-pulse {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* ===========================
+   REDUCED MOTION SUPPORT
+   =========================== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }
+}

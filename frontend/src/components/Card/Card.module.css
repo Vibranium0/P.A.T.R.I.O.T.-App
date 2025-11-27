@@ -1,0 +1,148 @@
+@import "../../ui/theme/colors.css";
+@import "../../ui/theme/effects.css";
+
+/* ============================================
+   BASE CARD (Glass + Holographic)
+   ============================================ */
+
+.card {
+  background: var(--glass-opacity);
+  backdrop-filter: var(--glass-blur);
+
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: var(--shadow-base), var(--glow-soft);
+  transition: transform var(--transition-base),
+    box-shadow var(--transition-base);
+
+  position: relative;
+  overflow: visible;
+}
+
+/* Holographic perimeter reflection */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg,
+      rgba(31, 143, 255, 0.15),
+      transparent 40%,
+      rgba(185, 192, 201, 0.08));
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Hover motion */
+.hoverable:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), var(--glow-strong);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.icon {
+  font-size: 1.4rem;
+  color: var(--primary-blue);
+  filter: drop-shadow(0 0 4px var(--glow-blue));
+}
+
+/* ============================================
+   CONTENT
+   ============================================ */
+.content {
+  flex: 1;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   VARIANT THEMES
+   ============================================ */
+
+/* ---- DEFAULT (Blue holographic) ---- */
+.default {
+  border-color: var(--accent-silver);
+}
+
+/* ---- SUCCESS (Green glow) ---- */
+.success {
+  border-color: var(--success);
+  box-shadow: 0 0 14px rgba(33, 197, 93, 0.35);
+}
+
+.success .title {
+  color: var(--success);
+}
+
+/* ---- WARNING (Amber glow) ---- */
+.warning {
+  border-color: var(--warning);
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.35);
+}
+
+.warning .title {
+  color: var(--warning);
+}
+
+/* ---- DANGER (Red glow) ---- */
+.danger {
+  border-color: var(--danger);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
+}
+
+.danger .title {
+  color: var(--danger);
+}
+
+/* ============================================
+   OPTIONAL GLOW PULSE
+   ============================================ */
+.glowPulse {
+  animation: pulseGlowCard 2.6s infinite;
+}
+
+@keyframes pulseGlowCard {
+  0% {
+    box-shadow: var(--glow-soft);
+  }
+
+  50% {
+    box-shadow: var(--glow-strong);
+  }
+
+  100% {
+    box-shadow: var(--glow-soft);
+  }
+}
