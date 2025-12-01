@@ -1,8 +1,8 @@
 import * as fundsApi from "../../api/funds.js";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Card from "../../components/Card/Card";
-import Button from "../../components/Button/Button";
+import Card from "../../../../../shared/ui/components/Card/Card.jsx";
+import Button from "../../../../../shared/ui/components/Button/Button.jsx";
 import styles from "./Funds.module.css";
 
 export default function Funds() {

@@ -1,5 +1,5 @@
 
-import Layout from "./components/Layout/Layout.jsx";
+import Layout from "../../../shared/ui/components/Layout/Layout.jsx";
 
 
 // Pages

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import Button from "../../components/Button/Button";
+import Button from "../../../../../shared/ui/components/Button/Button";
 import styles from "./Bills.module.css";
 
 /**

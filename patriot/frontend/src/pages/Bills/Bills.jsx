@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import styles from "./Bills.module.css";
 import OverviewTab from "./OverviewTab";
 import ScheduleTab from "./ScheduleTab";
-import Card from "../../components/Card/Card";
+import Card from "../../../../../shared/ui/components/Card/Card";
 import { FiSettings } from "react-icons/fi";
-import Button from "../../components/Button/Button";
+import Button from "../../../../../shared/ui/components/Button/Button";
 
 
 export default function Bills() {

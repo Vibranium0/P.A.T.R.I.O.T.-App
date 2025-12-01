@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Card from "../../components/Card/Card";
-import Button from "../../components/Button/Button";
+import Card from "../../../../../shared/ui/components/Card/Card";
+import Button from "../../../../../shared/ui/components/Button/Button";
 import styles from "./ScheduleTab.module.css";
 
 /*

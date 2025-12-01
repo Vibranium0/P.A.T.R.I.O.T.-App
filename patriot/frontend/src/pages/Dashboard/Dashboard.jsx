@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import Layout from "../../components/Layout/Layout";
-import Card from "../../components/Card/Card";
-import SummaryCard from "../../components/Dashboard/SummaryCard";
-import RadarChart from "../../components/Dashboard/RadarChart";
-import Modal from "../../components/Modal/Modal";
-import Button from "../../components/Button/Button";
+import Layout from "../../../../../shared/ui/components/Layout/Layout";
+import Card from "../../../../../shared/ui/components/Card/Card";
+import SummaryCard from "../../../../../shared/ui/components/Dashboard/SummaryCard";
+import RadarChart from "../../../../../shared/ui/components/Dashboard/RadarChart";
+import Modal from "../../../../../shared/ui/components/Modal/Modal";
+import Button from "../../../../../shared/ui/components/Button/Button";
 import styles from "./Dashboard.module.css";
 
 /**

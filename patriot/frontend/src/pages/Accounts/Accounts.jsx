@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./Accounts.module.css";
-import Card from "../../components/Card/Card";
-import Button from "../../components/Button/Button";
+import Card from "../../../../../shared/ui/components/Card/Card";
+import Button from "../../../../../shared/ui/components/Button/Button";
 
 export default function Accounts() {
     const [accounts, setAccounts] = useState([]);
