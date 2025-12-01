@@ -1,10 +1,10 @@
 # backend/utils/forecasting.py
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
-from backend.models.bill import Bill
-from backend.models.fund import Fund
-from backend.models.income import Income
-from backend.database import db
+from models.bill import Bill
+from models.fund import Fundmodels.fund import Fundmodels.fund import Fundmodels.fund import Fund
+from ome
+from database import db
 
 
 def generate_forecast(household_id, start_date=None, months_to_project=3, buffer=100):

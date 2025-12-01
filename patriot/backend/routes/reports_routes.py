@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from backend.models import Fund, Transaction, Bill, Income, Debt
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from backend.auth.token_required import require_token
 from backend.utils.forecasting import generate_forecast, get_bill_schedule_summary
 from datetime import datetime, date, timedelta
 from backend.utils.auth_helpers import get_current_household_id
@@ -9,7 +9,7 @@ reports_bp = Blueprint("reports", __name__)
 
 
 @reports_bp.route("/summary", methods=["GET"])
-@jwt_required()
+@require_token
 def summary_report():
     """Enhanced summary report with forecasting data"""
     household_id = get_current_household_id()
@@ -87,7 +87,7 @@ def summary_report():
 
 
 @reports_bp.route("/forecast", methods=["GET"])
-@jwt_required()
+@require_token
 def forecast_report():
     """Comprehensive forecast report with customizable parameters"""
     household_id = get_current_household_id()
@@ -123,7 +123,7 @@ def forecast_report():
 
 
 @reports_bp.route("/upcoming-bills", methods=["GET"])
-@jwt_required()
+@require_token
 def upcoming_bills_report():
     """Get upcoming bills with optional date range"""
     household_id = get_current_household_id()
@@ -159,7 +159,7 @@ def upcoming_bills_report():
 
 
 @reports_bp.route("/financial-health", methods=["GET"])
-@jwt_required()
+@require_token
 def financial_health_report():
     """Comprehensive financial health analysis"""
     household_id = get_current_household_id()
@@ -267,7 +267,7 @@ def _generate_recommendations(health_status, emergency_fund_ratio, forecast_summ
 
 
 @reports_bp.route("/income-breakdown", methods=["GET"])
-@jwt_required()
+@require_token
 def income_breakdown():
     """Get income breakdown by category for charts"""
     try:
@@ -297,7 +297,7 @@ def income_breakdown():
 
 
 @reports_bp.route("/debt-breakdown", methods=["GET"])
-@jwt_required()
+@require_token
 def debt_breakdown():
     """Get debt breakdown by category for charts"""
     try:

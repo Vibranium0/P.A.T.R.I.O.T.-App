@@ -1,6 +1,6 @@
 # backend/routes/debts_routes.py
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from backend.auth.token_required import require_token
 from backend.database import db
 from backend.models.debt import Debt
 from datetime import datetime, date
@@ -10,7 +10,7 @@ debts_bp = Blueprint("debts", __name__)
 
 
 @debts_bp.route("/", methods=["GET"])
-@jwt_required()
+@require_token
 def get_debts():
     """Get all debts for the current user"""
     try:
@@ -25,7 +25,7 @@ def get_debts():
 
 
 @debts_bp.route("/", methods=["POST"])
-@jwt_required()
+@require_token
 def create_debt():
     """Create a new debt"""
     try:
@@ -80,7 +80,7 @@ def create_debt():
 
 
 @debts_bp.route("/<int:debt_id>", methods=["GET"])
-@jwt_required()
+@require_token
 def get_debt(debt_id):
     """Get a specific debt"""
     try:
@@ -99,7 +99,7 @@ def get_debt(debt_id):
 
 
 @debts_bp.route("/<int:debt_id>", methods=["PUT"])
-@jwt_required()
+@require_token
 def update_debt(debt_id):
     """Update a specific debt"""
     try:
@@ -151,7 +151,7 @@ def update_debt(debt_id):
 
 
 @debts_bp.route("/<int:debt_id>", methods=["DELETE"])
-@jwt_required()
+@require_token
 def delete_debt(debt_id):
     """Delete a specific debt"""
     try:
@@ -175,7 +175,7 @@ def delete_debt(debt_id):
 
 
 @debts_bp.route("/<int:debt_id>/payment", methods=["POST"])
-@jwt_required()
+@require_token
 def make_payment(debt_id):
     """Make a payment towards a debt"""
     try:
@@ -222,7 +222,7 @@ def make_payment(debt_id):
 
 
 @debts_bp.route("/summary", methods=["GET"])
-@jwt_required()
+@require_token
 def get_debt_summary():
     """Get debt summary for the current user"""
     try:

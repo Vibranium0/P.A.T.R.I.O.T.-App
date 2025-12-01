@@ -1,31 +1,41 @@
 from flask import Blueprint, request, jsonify
-from backend.database import db
-from backend.models import User  # or Account if separate
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from database import db
+from models import User  # or Account if separate
+from auth.token_required import require_token
 
 accounts_bp = Blueprint("accounts", __name__)
 
+
 @accounts_bp.route("/", methods=["GET"])
-@jwt_required()
+@require_token
 def get_account():
-    user_id = get_jwt_identity()
-    user = User.query.get(user_id)
+    user_info = getattr(request, "user", None)
+    if not user_info or "id" not in user_info:
+        return jsonify({"error": "User not found"}), 404
+    user = User.query.get(user_info["id"])
     if not user:
         return jsonify({"error": "User not found"}), 404
-    return jsonify({
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "theme": user.theme
-    }), 200
+    return (
+        jsonify(
+            {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "theme": user.theme,
+            }
+        ),
+        200,
+    )
 
 
 @accounts_bp.route("/update", methods=["PUT"])
-@jwt_required()
+@require_token
 def update_account():
-    user_id = get_jwt_identity()
+    user_info = getattr(request, "user", None)
+    if not user_info or "id" not in user_info:
+        return jsonify({"error": "User not found"}), 404
     data = request.get_json()
-    user = User.query.get(user_id)
+    user = User.query.get(user_info["id"])
     if not user:
         return jsonify({"error": "User not found"}), 404
 
@@ -33,8 +43,12 @@ def update_account():
     user.theme = data.get("theme", user.theme)
     db.session.commit()
 
-    return jsonify({"message": "Account updated", "user": {
-        "id": user.id,
-        "username": user.username,
-        "theme": user.theme
-    }}), 200
+    return (
+        jsonify(
+            {
+                "message": "Account updated",
+                "user": {"id": user.id, "username": user.username, "theme": user.theme},
+            }
+        ),
+        200,
+    )

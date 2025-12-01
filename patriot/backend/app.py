@@ -9,27 +9,27 @@ from config import Config
 from database import db
 
 # Import blueprints
-from routes.auth_routes import auth_bp
+
+# Import blueprints using absolute imports
 from routes.accounts_routes import accounts_bp
 from routes.financial_accounts_routes import financial_accounts_bp
 from routes.bills_routes import bills_bp
 from routes.funds_routes import funds_bp
-from backend.routes.transactions_routes import tx_bp
-from backend.routes.income_routes import income_bp
-from backend.routes.reports_routes import reports_bp
-from backend.routes.dashboard_routes import dashboard_bp
-from backend.routes.debts_routes import debts_bp
-from backend.routes.households_routes import households_bp
+from routes.transactions_routes import tx_bp
+from routes.income_routes import income_bp
+from routes.reports_routes import reports_bp
+from routes.dashboard_routes import dashboard_bp
+from routes.debts_routes import debts_bp
+from routes.households_routes import households_bp
 
-# Import models to ensure they're registered with SQLAlchemy
-from backend.models.user import User
-from backend.models.household import Household, HouseholdInvite, user_household
-from backend.models.bill import Bill
-from backend.models.fund import Fund
-from backend.models.transaction import Transaction
-from backend.models.income import Income
-from backend.models.debt import Debt
-from backend.models.account import Account
+# Import models using absolute imports
+from models.household import Household, HouseholdInvite, user_household
+from models.bill import Bill
+from models.fund import Fund
+from models.transaction import Transaction
+from models.income import Income
+from models.debt import Debt
+from models.account import Account
 
 from flask_migrate import Migrate
 

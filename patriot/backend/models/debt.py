@@ -1,6 +1,6 @@
 # backend/models/debt.py
 from datetime import datetime, date
-from backend.database import db
+from database import db
 
 
 class Debt(db.Model):

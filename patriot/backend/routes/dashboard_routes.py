@@ -1,6 +1,6 @@
 # backend/routes/dashboard_routes.py
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from backend.auth.token_required import require_token
 from datetime import datetime, date, timedelta
 from backend.database import db
 from backend.models.fund import Fund
@@ -13,7 +13,7 @@ dashboard_bp = Blueprint("dashboard", __name__)
 
 
 @dashboard_bp.route("/summary", methods=["GET"])
-@jwt_required()
+@require_token
 def get_dashboard_summary():
     """Get dashboard summary including income, total, expenses, cash, and savings"""
     try:
@@ -60,7 +60,7 @@ def get_dashboard_summary():
 
 
 @dashboard_bp.route("/charts/bills", methods=["GET"])
-@jwt_required()
+@require_token
 def get_bills_chart_data():
     """Get bill spending breakdown for spider chart"""
     try:
@@ -111,7 +111,7 @@ def get_bills_chart_data():
 
 
 @dashboard_bp.route("/charts/debts", methods=["GET"])
-@jwt_required()
+@require_token
 def get_debts_chart_data():
     """Get debt spending breakdown for spider chart"""
     try:
@@ -161,7 +161,7 @@ def get_debts_chart_data():
 
 
 @dashboard_bp.route("/process-recurring", methods=["POST"])
-@jwt_required()
+@require_token
 def process_recurring_deposits():
     """Process all recurring deposits for the current user"""
     try:

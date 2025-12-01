@@ -1,6 +1,6 @@
 # backend/models/fund.py
 from datetime import datetime, date, timedelta
-from backend.database import db
+from database import db
 
 
 class Fund(db.Model):
@@ -26,7 +26,9 @@ class Fund(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relationships
-    household = db.relationship("Household", backref=db.backref("funds", lazy=True))
+    household = db.relationship(
+        "shared.models.household.Household", backref=db.backref("funds", lazy=True)
+    )
     account = db.relationship("Account", backref=db.backref("funds", lazy=True))
 
     def __repr__(self):

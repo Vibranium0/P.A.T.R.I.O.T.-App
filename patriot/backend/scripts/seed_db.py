@@ -16,14 +16,13 @@ project_root = os.path.dirname(
 )
 sys.path.insert(0, project_root)
 
-from backend.app import create_app
-from backend.database import db
-from backend.models.user import User
-from backend.models.fund import Fund
-from backend.models.bill import Bill
-from backend.models.transaction import Transaction
-from backend.models.income import Income
-from backend.models.debt import Debt
+from app import create_app
+from database import db
+from models.fund import Fund
+from models.bill import Bill
+from models.transaction import Transaction
+from models.income import Income
+from models.debt import Debt
 from flask_bcrypt import Bcrypt
 
 
@@ -63,7 +62,7 @@ def seed_database():
         print(f"✅ Created users: {user1.username}, {user2.username}")
 
         # Create a shared household and add both users
-        from backend.models.household import Household, user_household
+        from shared.models import Household, UserHousehold
 
         household = Household(name="Sample Household", created_by=user1.id)
         db.session.add(household)
@@ -234,7 +233,7 @@ def seed_database():
         # Create financial accounts for users
         print("Creating sample financial accounts...")
 
-        from backend.models.account import Account
+        from models.account import Account
 
         accounts = [
             # User 1 accounts
