@@ -14,8 +14,8 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 backend_dir = os.path.dirname(script_dir)
 sys.path.insert(0, backend_dir)
 
-from backend.app import create_app
-from backend.database import db
+from app import create_app
+from database import db
 
 
 def init_database():
