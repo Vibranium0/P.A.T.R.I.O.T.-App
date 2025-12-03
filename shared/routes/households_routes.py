@@ -6,7 +6,7 @@ Handles creating households, inviting members, and managing household membership
 from flask import Blueprint, request, jsonify
 from auth.token_required import require_token
 from database import db
-from shared.models.user import User
+from models.user import User
 from models.household import Household, user_household
 from models.household_invite import HouseholdInvite
 from datetime import datetime, timedelta

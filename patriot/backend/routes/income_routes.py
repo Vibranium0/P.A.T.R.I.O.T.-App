@@ -1,9 +1,9 @@
-from backend.auth.token_required import require_token
+from shared.auth.token_required import require_token
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 from backend.database import db
 from backend.models.income import Income
-from backend.utils.auth_helpers import get_current_household_id
+from shared.utils.household_helpers import get_current_household_id
 
 income_bp = Blueprint("income", __name__)
 

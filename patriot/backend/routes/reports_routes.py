@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify, request
 from backend.models import Fund, Transaction, Bill, Income, Debt
-from backend.auth.token_required import require_token
+from shared.auth.token_required import require_token
 from backend.utils.forecasting import generate_forecast, get_bill_schedule_summary
 from datetime import datetime, date, timedelta
-from backend.utils.auth_helpers import get_current_household_id
+from shared.utils.household_helpers import get_current_household_id
 
 reports_bp = Blueprint("reports", __name__)
 
@@ -24,7 +24,7 @@ def summary_report():
     # Get basic forecast data for next 30 days
     try:
         forecast_data = generate_forecast(
-            household_id=household_id, months_to_project=1
+            household_id=household_id, months_to_project=1, buffer=100.0
         )
 
         return (
@@ -176,7 +176,9 @@ def financial_health_report():
         expense_funds = sum(f.balance for f in funds if f.fund_type == "Expenses")
 
         # Get forecast for buffer analysis
-        forecast = generate_forecast(household_id=household_id, months_to_project=6)
+        forecast = generate_forecast(
+            household_id=household_id, months_to_project=6, buffer=100.0
+        )
 
         # Calculate financial health metrics
         total_balance = cash_funds + savings_funds + expense_funds

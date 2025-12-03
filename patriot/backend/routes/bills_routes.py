@@ -1,11 +1,11 @@
-from backend.auth.token_required import require_token
+from shared.auth.token_required import require_token
 
 # backend/routes/bills_routes.py
 from flask import Blueprint, request, jsonify
 from datetime import datetime, date, timedelta
 from backend.models.bill import Bill
 from backend.utils.forecasting import generate_forecast, get_bill_schedule_summary
-from backend.utils.auth_helpers import get_current_household_id
+from shared.utils.household_helpers import get_current_household_id
 from backend.database import db
 
 bills_bp = Blueprint("bills", __name__)

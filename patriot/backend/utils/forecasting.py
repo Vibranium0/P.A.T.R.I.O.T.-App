@@ -7,7 +7,7 @@ from ome
 from database import db
 
 
-def generate_forecast(household_id, start_date=None, months_to_project=3, buffer=100):
+def generate_forecast(household_id: int, start_date: date = None, months_to_project: int = 3, buffer: float = 100.0) -> dict:
     """
     Generate a comprehensive financial forecast for the household.
 
@@ -15,7 +15,7 @@ def generate_forecast(household_id, start_date=None, months_to_project=3, buffer
         household_id (int): Household ID to generate forecast for
         start_date (date): Starting date for forecast (default: today)
         months_to_project (int): Number of months to project forward (default: 3)
-        buffer (float): Minimum cash buffer to maintain (default: 100)
+        buffer (float): Minimum cash buffer to maintain (default: 100.0)
 
     Returns:
         dict: Contains projection array and summary statistics

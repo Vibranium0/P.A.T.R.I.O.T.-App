@@ -1,13 +1,13 @@
 # backend/routes/dashboard_routes.py
 from flask import Blueprint, jsonify, request
-from backend.auth.token_required import require_token
+from shared.auth.token_required import require_token
 from datetime import datetime, date, timedelta
 from backend.database import db
 from backend.models.fund import Fund
 from backend.models.transaction import Transaction
 from backend.models.income import Income
 from sqlalchemy import func, and_
-from backend.utils.auth_helpers import get_current_household_id
+from shared.utils.household_helpers import get_current_household_id
 
 dashboard_bp = Blueprint("dashboard", __name__)
 

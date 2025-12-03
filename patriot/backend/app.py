@@ -11,7 +11,7 @@ from database import db
 # Import blueprints
 
 # Import blueprints using absolute imports
-from routes.accounts_routes import accounts_bp
+from patriot.backend.routes.user_routes import accounts_bp
 from routes.financial_accounts_routes import financial_accounts_bp
 from routes.bills_routes import bills_bp
 from routes.funds_routes import funds_bp
@@ -20,10 +20,10 @@ from routes.income_routes import income_bp
 from routes.reports_routes import reports_bp
 from routes.dashboard_routes import dashboard_bp
 from routes.debts_routes import debts_bp
-from routes.households_routes import households_bp
+from shared.routes.households_routes import households_bp
 
 # Import models using absolute imports
-from models.household import Household, HouseholdInvite, user_household
+from shared.models.household import Household, HouseholdInvite, user_household
 from models.bill import Bill
 from models.fund import Fund
 from models.transaction import Transaction
