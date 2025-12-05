@@ -4,6 +4,7 @@ from shared.auth.token_required import require_token
 from backend.utils.forecasting import generate_forecast, get_bill_schedule_summary
 from datetime import datetime, date, timedelta
 from shared.utils.household_helpers import get_current_household_id
+from sqlalchemy import func
 
 reports_bp = Blueprint("reports", __name__)
 
@@ -276,8 +277,6 @@ def income_breakdown():
         user_id = get_jwt_identity()
 
         # Get income data grouped by category
-        from sqlalchemy import func
-
         income_data = (
             Income.query.with_entities(
                 Income.category, func.sum(Income.amount).label("total_amount")
@@ -306,8 +305,6 @@ def debt_breakdown():
         user_id = get_jwt_identity()
 
         # Get debt data grouped by category
-        from sqlalchemy import func
-
         debt_data = (
             Debt.query.with_entities(
                 Debt.category, func.sum(Debt.current_balance).label("total_balance")

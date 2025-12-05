@@ -11,7 +11,7 @@ from database import db
 # Import blueprints
 
 # Import blueprints using absolute imports
-from patriot.backend.routes.user_routes import accounts_bp
+from shared.routes.user_routes import accounts_bp
 from routes.financial_accounts_routes import financial_accounts_bp
 from routes.bills_routes import bills_bp
 from routes.funds_routes import funds_bp
@@ -23,7 +23,9 @@ from routes.debts_routes import debts_bp
 from shared.routes.households_routes import households_bp
 
 # Import models using absolute imports
-from shared.models.household import Household, HouseholdInvite, user_household
+from shared.models.household import create_household_models
+
+Household, HouseholdInvite, user_household = create_household_models(db)
 from models.bill import Bill
 from models.fund import Fund
 from models.transaction import Transaction
@@ -61,8 +63,16 @@ def create_app():
     jwt.init_app(app)
     migrate.init_app(app, db)
 
+    # Inject dependencies into shared blueprint before registering
+    from backend.models import User  # or from shared.models.user import User
+
+    households_bp.db = db
+    households_bp.User = User
+    households_bp.Household = Household
+    households_bp.user_household = user_household
+    households_bp.HouseholdInvite = HouseholdInvite
+
     # Register blueprints
-    app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(households_bp, url_prefix="/api/households")
     app.register_blueprint(accounts_bp, url_prefix="/api/accounts")
     app.register_blueprint(financial_accounts_bp, url_prefix="/api/financial-accounts")

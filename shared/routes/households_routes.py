@@ -4,11 +4,11 @@ Household Management Routes
 Handles creating households, inviting members, and managing household memberships.
 """
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import get_jwt_identity
 from auth.token_required import require_token
-from database import db
-from models.user import User
-from models.household import Household, user_household
-from models.household_invite import HouseholdInvite
+
+# The following should be injected from the app using this blueprint:
+# db, User, Household, user_household, HouseholdInvite
 from datetime import datetime, timedelta
 import secrets
 import string
@@ -25,7 +25,7 @@ def generate_invite_token():
 
 def get_user_household(user_id):
     """Get the user's default household ID"""
-    user = User.query.get(user_id)
+    user = households_bp.User.query.get(user_id)
     if not user:
         return None
     return user.default_household_id
@@ -37,7 +37,7 @@ def get_user_households():
     """Get all households the current user belongs to"""
     try:
         current_user_id = get_jwt_identity()
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
 
         if not user:
             return jsonify({"error": "User not found"}), 404
@@ -65,13 +65,13 @@ def get_household(household_id):
     """Get details of a specific household"""
     try:
         current_user_id = get_jwt_identity()
-        household = Household.query.get(household_id)
+        household = households_bp.Household.query.get(household_id)
 
         if not household:
             return jsonify({"error": "Household not found"}), 404
 
         # Check if user is a member
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
         if user not in household.members:
             return (
                 jsonify(
@@ -98,20 +98,20 @@ def create_household():
         if not name:
             return jsonify({"error": "Household name is required"}), 400
 
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
         if not user:
             return jsonify({"error": "User not found"}), 404
 
         # Create new household
-        household = Household(
+        household = households_bp.Household(
             name=name, created_by=current_user_id, created_at=datetime.utcnow()
         )
-        db.session.add(household)
-        db.session.flush()  # Get the household ID
+        households_bp.db.session.add(household)
+        households_bp.db.session.flush()  # Get the household ID
 
         # Add creator as owner
-        db.session.execute(
-            user_household.insert().values(
+        households_bp.db.session.execute(
+            households_bp.user_household.insert().values(
                 user_id=current_user_id,
                 household_id=household.id,
                 role="owner",
@@ -123,7 +123,7 @@ def create_household():
         if not user.default_household_id:
             user.default_household_id = household.id
 
-        db.session.commit()
+        households_bp.db.session.commit()
 
         return (
             jsonify(
@@ -136,7 +136,7 @@ def create_household():
         )
 
     except Exception as e:
-        db.session.rollback()
+        households_bp.db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
 
@@ -146,12 +146,12 @@ def update_household(household_id):
     """Update household details (owner only)"""
     try:
         current_user_id = get_jwt_identity()
-        household = Household.query.get(household_id)
+        household = households_bp.Household.query.get(household_id)
 
         if not household:
             return jsonify({"error": "Household not found"}), 404
 
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
         if not household.is_owner(user):
             return (
                 jsonify({"error": "Only the household owner can update details"}),
@@ -162,7 +162,7 @@ def update_household(household_id):
         if "name" in data:
             household.name = data["name"]
 
-        db.session.commit()
+        households_bp.db.session.commit()
 
         return (
             jsonify(
@@ -175,7 +175,7 @@ def update_household(household_id):
         )
 
     except Exception as e:
-        db.session.rollback()
+        households_bp.db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
 
@@ -185,13 +185,13 @@ def invite_member(household_id):
     """Invite someone to join the household (mission/operation)"""
     try:
         current_user_id = get_jwt_identity()
-        household = Household.query.get(household_id)
+        household = households_bp.Household.query.get(household_id)
 
         if not household:
             return jsonify({"error": "Household not found"}), 404
 
         # Check if user is a member (any member can invite)
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
         if user not in household.members:
             return jsonify({"error": "Only household members can send invites"}), 403
 
@@ -202,12 +202,14 @@ def invite_member(household_id):
             return jsonify({"error": "Email is required"}), 400
 
         # Check if user is already a member
-        existing_member = User.query.filter_by(email=invitee_email).first()
+        existing_member = households_bp.User.query.filter_by(
+            email=invitee_email
+        ).first()
         if existing_member and existing_member in household.members:
             return jsonify({"error": "This user is already a household member"}), 400
 
         # Check for pending invite
-        existing_invite = HouseholdInvite.query.filter_by(
+        existing_invite = households_bp.HouseholdInvite.query.filter_by(
             household_id=household_id, invitee_email=invitee_email, status="pending"
         ).first()
 
@@ -218,7 +220,7 @@ def invite_member(household_id):
             )
 
         # Create invite
-        invite = HouseholdInvite(
+        invite = households_bp.HouseholdInvite(
             household_id=household_id,
             inviter_id=current_user_id,
             invitee_email=invitee_email,
@@ -228,8 +230,8 @@ def invite_member(household_id):
             expires_at=datetime.utcnow() + timedelta(days=7),
         )
 
-        db.session.add(invite)
-        db.session.commit()
+        households_bp.db.session.add(invite)
+        households_bp.db.session.commit()
 
         # TODO: Send email with invite link
         # For now, return the token so it can be shared manually
@@ -248,7 +250,7 @@ def invite_member(household_id):
         )
 
     except Exception as e:
-        db.session.rollback()
+        households_bp.db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
 
@@ -257,7 +259,7 @@ def invite_member(household_id):
 def get_invite_details(token):
     """Get details of an invite (to show who's inviting and to which household)"""
     try:
-        invite = HouseholdInvite.query.filter_by(token=token).first()
+        invite = households_bp.HouseholdInvite.query.filter_by(token=token).first()
 
         if not invite:
             return jsonify({"error": "Invite not found"}), 404
@@ -270,7 +272,7 @@ def get_invite_details(token):
 
         if invite.is_expired():
             invite.status = "expired"
-            db.session.commit()
+            households_bp.db.session.commit()
             return jsonify({"error": "This invite has expired"}), 400
 
         return jsonify(invite.to_dict()), 200
@@ -285,12 +287,12 @@ def accept_invite(token):
     """Accept an invitation to join a household"""
     try:
         current_user_id = get_jwt_identity()
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
 
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        invite = HouseholdInvite.query.filter_by(token=token).first()
+        invite = households_bp.HouseholdInvite.query.filter_by(token=token).first()
 
         if not invite:
             return jsonify({"error": "Invite not found"}), 404
@@ -310,16 +312,16 @@ def accept_invite(token):
 
         if invite.is_expired():
             invite.status = "expired"
-            db.session.commit()
+            households_bp.db.session.commit()
             return jsonify({"error": "This invite has expired"}), 400
 
-        household = Household.query.get(invite.household_id)
+        household = households_bp.Household.query.get(invite.household_id)
         if not household:
             return jsonify({"error": "Household not found"}), 404
 
         # Add user to household
-        db.session.execute(
-            user_household.insert().values(
+        households_bp.db.session.execute(
+            households_bp.user_household.insert().values(
                 user_id=current_user_id,
                 household_id=household.id,
                 role="member",
@@ -334,7 +336,7 @@ def accept_invite(token):
         # Mark invite as accepted
         invite.status = "accepted"
 
-        db.session.commit()
+        households_bp.db.session.commit()
 
         return (
             jsonify(
@@ -347,7 +349,7 @@ def accept_invite(token):
         )
 
     except Exception as e:
-        db.session.rollback()
+        households_bp.db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
 
@@ -357,9 +359,9 @@ def reject_invite(token):
     """Reject an invitation"""
     try:
         current_user_id = get_jwt_identity()
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
 
-        invite = HouseholdInvite.query.filter_by(token=token).first()
+        invite = households_bp.HouseholdInvite.query.filter_by(token=token).first()
 
         if not invite:
             return jsonify({"error": "Invite not found"}), 404
@@ -377,12 +379,12 @@ def reject_invite(token):
             )
 
         invite.status = "rejected"
-        db.session.commit()
+        households_bp.db.session.commit()
 
         return jsonify({"message": "Invitation rejected"}), 200
 
     except Exception as e:
-        db.session.rollback()
+        households_bp.db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
 
@@ -392,19 +394,19 @@ def remove_member(household_id, user_id):
     """Remove a member from the household (owner only)"""
     try:
         current_user_id = get_jwt_identity()
-        household = Household.query.get(household_id)
+        household = households_bp.Household.query.get(household_id)
 
         if not household:
             return jsonify({"error": "Household not found"}), 404
 
-        current_user = User.query.get(current_user_id)
+        current_user = households_bp.User.query.get(current_user_id)
         if not household.is_owner(current_user):
             return (
                 jsonify({"error": "Only the household owner can remove members"}),
                 403,
             )
 
-        user_to_remove = User.query.get(user_id)
+        user_to_remove = households_bp.User.query.get(user_id)
         if not user_to_remove:
             return jsonify({"error": "User not found"}), 404
 
@@ -428,12 +430,12 @@ def remove_member(household_id, user_id):
         if user_to_remove.default_household_id == household_id:
             user_to_remove.default_household_id = None
 
-        db.session.commit()
+        households_bp.db.session.commit()
 
         return jsonify({"message": "Member removed successfully"}), 200
 
     except Exception as e:
-        db.session.rollback()
+        households_bp.db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
 
@@ -443,12 +445,12 @@ def leave_household(household_id):
     """Leave a household (members only, not owner)"""
     try:
         current_user_id = get_jwt_identity()
-        household = Household.query.get(household_id)
+        household = households_bp.Household.query.get(household_id)
 
         if not household:
             return jsonify({"error": "Household not found"}), 404
 
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
         if user not in household.members:
             return jsonify({"error": "You are not a member of this household"}), 400
 
@@ -469,12 +471,12 @@ def leave_household(household_id):
         if user.default_household_id == household_id:
             user.default_household_id = None
 
-        db.session.commit()
+        households_bp.db.session.commit()
 
         return jsonify({"message": "You have left the household"}), 200
 
     except Exception as e:
-        db.session.rollback()
+        households_bp.db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
 
@@ -484,12 +486,12 @@ def switch_default_household(household_id):
     """Switch to a different household as the default"""
     try:
         current_user_id = get_jwt_identity()
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
 
         if not user:
             return jsonify({"error": "User not found"}), 404
 
-        household = Household.query.get(household_id)
+        household = households_bp.Household.query.get(household_id)
         if not household:
             return jsonify({"error": "Household not found"}), 404
 
@@ -497,7 +499,7 @@ def switch_default_household(household_id):
             return jsonify({"error": "You are not a member of this household"}), 403
 
         user.default_household_id = household_id
-        db.session.commit()
+        households_bp.db.session.commit()
 
         return (
             jsonify(
@@ -510,7 +512,7 @@ def switch_default_household(household_id):
         )
 
     except Exception as e:
-        db.session.rollback()
+        households_bp.db.session.rollback()
         return jsonify({"error": str(e)}), 500
 
 
@@ -520,12 +522,12 @@ def delete_household(household_id):
     """Delete a household (owner only) - WARNING: deletes all associated data"""
     try:
         current_user_id = get_jwt_identity()
-        household = Household.query.get(household_id)
+        household = households_bp.Household.query.get(household_id)
 
         if not household:
             return jsonify({"error": "Household not found"}), 404
 
-        user = User.query.get(current_user_id)
+        user = households_bp.User.query.get(current_user_id)
         if not household.is_owner(user):
             return (
                 jsonify({"error": "Only the household owner can delete the household"}),
@@ -534,11 +536,11 @@ def delete_household(household_id):
 
         # TODO: This will cascade delete all funds, bills, accounts, transactions, etc.
         # Consider adding a confirmation step or soft delete
-        db.session.delete(household)
-        db.session.commit()
+        households_bp.db.session.delete(household)
+        households_bp.db.session.commit()
 
         return jsonify({"message": "Household deleted successfully"}), 200
 
     except Exception as e:
-        db.session.rollback()
+        households_bp.db.session.rollback()
         return jsonify({"error": str(e)}), 500

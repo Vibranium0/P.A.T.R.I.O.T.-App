@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from datetime import datetime
 from backend.database import db
 from backend.models.income import Income
+from backend.models.account import Account  # <-- Add this import at the top
 from shared.utils.household_helpers import get_current_household_id
 
 income_bp = Blueprint("income", __name__)
@@ -135,8 +136,6 @@ def create_income_entry():
         # Validate account if provided
         account = None
         if account_id:
-            from models import Account
-
             account = Account.query.filter_by(
                 id=account_id, household_id=household_id
             ).first()

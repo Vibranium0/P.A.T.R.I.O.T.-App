@@ -1,8 +1,9 @@
+import apiClient from '../../../shared/api/client';
+
 // lightweight frontend API helpers for accounts
-const base = "/api/accounts";
+const base = '/accounts';
 
 export async function listAccounts() {
-    const r = await fetch(base + "/list");
-    if (!r.ok) throw new Error("failed");
-    return r.json();
+    const { data } = await apiClient.get(base + '/list');
+    return data;
 }

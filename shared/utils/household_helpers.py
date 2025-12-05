@@ -3,8 +3,8 @@ Household helper functions for shared use across Patriot and Sentinel-Login
 """
 
 from flask_jwt_extended import get_jwt, get_jwt_identity
-from shared.models.household import Household, user_household
-from shared.models.user import User
+# These should be injected by the app using this module:
+# Household, user_household, User
 
 
 def get_current_household_id():
@@ -21,7 +21,7 @@ def get_user_household(user_id):
     Get a user's default household ID from database.
     Fallback when household_id is not in JWT claims.
     """
-    user = User.query.get(user_id)
+    user = globals()["User"].query.get(user_id)
     if not user:
         return None
     return user.default_household_id

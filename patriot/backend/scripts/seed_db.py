@@ -18,12 +18,17 @@ sys.path.insert(0, project_root)
 
 from app import create_app
 from database import db
+
 from models.fund import Fund
 from models.bill import Bill
 from models.transaction import Transaction
 from models.income import Income
 from models.debt import Debt
 from flask_bcrypt import Bcrypt
+from shared.models.user import User
+from shared.models.household import create_household_models
+
+Household, _, user_household = create_household_models(db)
 
 
 def seed_database():
@@ -62,7 +67,9 @@ def seed_database():
         print(f"✅ Created users: {user1.username}, {user2.username}")
 
         # Create a shared household and add both users
-        from shared.models import Household, UserHousehold
+        from shared.models.household import create_household_models
+
+        Household, _, _ = create_household_models(db)
 
         household = Household(name="Sample Household", created_by=user1.id)
         db.session.add(household)

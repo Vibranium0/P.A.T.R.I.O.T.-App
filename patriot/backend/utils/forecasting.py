@@ -1,13 +1,19 @@
 # backend/utils/forecasting.py
 from datetime import datetime, date, timedelta
+from typing import Optional
 from dateutil.relativedelta import relativedelta
 from models.bill import Bill
-from models.fund import Fundmodels.fund import Fundmodels.fund import Fundmodels.fund import Fund
-from ome
+from models.fund import Fund
+from models.income import Income
 from database import db
 
 
-def generate_forecast(household_id: int, start_date: date = None, months_to_project: int = 3, buffer: float = 100.0) -> dict:
+def generate_forecast(
+    household_id: int,
+    start_date: Optional[date] = None,
+    months_to_project: int = 3,
+    buffer: float = 100.0,
+) -> dict:
     """
     Generate a comprehensive financial forecast for the household.
 

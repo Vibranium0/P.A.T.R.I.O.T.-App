@@ -1,14 +1,8 @@
-const base = "/api/transactions";
+import apiClient from '../../../shared/api/client';
+
+const base = '/transactions';
 
 export async function createTransaction(payload) {
-  const r = await fetch(base, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  if (!r.ok) {
-    const txt = await r.text();
-    throw new Error(txt || "failed");
-  }
-  return r.json();
+  const { data } = await apiClient.post(base, payload);
+  return data;
 }

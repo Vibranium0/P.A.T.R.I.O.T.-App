@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from backend.database import db
-from backend.models import Transaction, Fund, Bill, User
+from backend.models import Transaction, Fund, Bill
+from backend.models.account import Account
+from shared.models.user import User
 from shared.auth.token_required import require_token
 from decimal import Decimal
 from datetime import datetime, date
@@ -102,8 +104,6 @@ def create_transaction():
             )
 
     # Validate account if provided
-    from models import Account
-
     account = None
     if account_id:
         account = Account.query.filter_by(
@@ -476,7 +476,7 @@ def update_transaction(transaction_id):
 
         if transaction.fund_id:
             fund = Fund.query.get(transaction.fund_id)
-            response_data["updated_fund_balance"] = float(fund.balance)
+            response_data["updated_fund_balance"] = str(float(fund.balance))
 
         return jsonify(response_data), 200
 
@@ -519,7 +519,7 @@ def delete_transaction(transaction_id):
 
         if transaction.fund_id:
             fund = Fund.query.get(transaction.fund_id)
-            response_data["updated_fund_balance"] = float(fund.balance)
+            response_data["updated_fund_balance"] = str(float(fund.balance))
 
         return jsonify(response_data), 200
 

@@ -1,6 +1,6 @@
 # backend/models/user.py
 from datetime import datetime
-from backend.database import db
+from patriot.backend.database import db
 
 
 class User(db.Model):
