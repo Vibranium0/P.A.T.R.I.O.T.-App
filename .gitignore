@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+.env
+venv/
+ENV/
+*.egg-info/
+*.egg
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Database
+*.sqlite3
+*.db
+
+# Migrations
+migrations/versions/*.pyc
+
+# Node
+node_modules/
+
+# Ignore installed Python packages
+backend/__pycache__/
+backend/venv/
+backend/ENV/
+backend/*.egg-info/
+backend/*.egg
+
+# Ignore frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+
+# Ignore static cache
+backend/static/cache/

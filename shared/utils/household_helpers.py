@@ -3,6 +3,7 @@ Household helper functions for shared use across Patriot and Sentinel-Login
 """
 
 from flask_jwt_extended import get_jwt, get_jwt_identity
+
 # These should be injected by the app using this module:
 # Household, user_household, User
 

@@ -1,14 +1,63 @@
 from flask import Blueprint, request, jsonify, current_app
 from datetime import datetime, timedelta
 import secrets
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from flask_bcrypt import Bcrypt
-from backend.database import db
-from backend.models.user import User
-from backend.utils.email_service import send_verification_email
-from backend.templates.verification_theme import get_verification_styles
+from flask_jwt_extended import (
+    create_access_token,
+    jwt_required,
+    get_jwt_identity,
+    create_refresh_token,
+    get_jwt,
+)
 
 auth_bp = Blueprint("auth", __name__)
+
+
+@auth_bp.route("/validate", methods=["GET"])
+@jwt_required()
+def validate():
+    """
+    Validate JWT and return user info. Returns 200 if valid, 401 if not.
+    """
+    current_user_id = get_jwt_identity()
+    user = User.query.get(int(current_user_id))
+    if not user:
+        return jsonify({"error": "user not found"}), 404
+    return (
+        jsonify(
+            {
+                "user_id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "household_id": user.default_household_id,
+            }
+        ),
+        200,
+    )
+
+
+@auth_bp.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)
+def refresh():
+    """
+    Issue a new access token using a valid refresh token.
+    Expects Authorization: Bearer <refresh_token>
+    """
+    current_user_id = get_jwt_identity()
+    user = User.query.get(int(current_user_id))
+    if not user:
+        return jsonify({"error": "user not found"}), 404
+    additional_claims = {"household_id": user.default_household_id}
+    access_token = create_access_token(
+        identity=str(user.id),
+        additional_claims=additional_claims,
+        expires_delta=timedelta(days=1),
+    )
+    return jsonify({"access_token": access_token}), 200
+
+from flask_bcrypt import Bcrypt
+from database import db
+from models.user import User
+from models.household import Household
 
 
 @auth_bp.route("/register", methods=["POST"])
@@ -27,95 +76,29 @@ def register():
     if existing:
         return jsonify({"error": "user exists"}), 409
 
-    token = secrets.token_urlsafe(32)
-    token_exp = datetime.utcnow() + timedelta(hours=24)
     bcrypt = Bcrypt(current_app)
     hashed = bcrypt.generate_password_hash(password).decode("utf-8")
+
+    # Create a new household for the user
+    household = Household()
+    db.session.add(household)
+    db.session.flush()  # get household.id before commit
 
     user = User(
         username=username,
         email=email,
         password=hashed,
-        is_verified=False,
-        verification_token=token,
-        token_expiration=token_exp,
+        default_household_id=household.id,
     )
-
     db.session.add(user)
-
     db.session.commit()
-    send_verification_email(email, token)
-
-    return jsonify({"message": "registered - verification email sent"}), 201
-
-
-@auth_bp.route("/verify-email", methods=["GET"])
-def verify_email():
-    token = request.args.get("token")
-    if not token:
-        return _verification_page("Error", "Verification token is required.", False)
-
-    user = User.query.filter_by(verification_token=token).first()
-    if not user:
-        return _verification_page("Error", "Invalid verification token.", False)
-    if user.token_expiration and user.token_expiration < datetime.utcnow():
-        return _verification_page(
-            "Error",
-            "Verification token has expired. Please request a new verification email.",
-            False,
-        )
-
-    user.is_verified = True
-    user.verification_token = None
-    user.token_expiration = None
-    db.session.commit()
-
-    return _verification_page(
-        "Success",
-        "Your email has been verified successfully! Welcome to P.A.T.R.I.O.T.",
-        True,
-    )
-
-
-def _verification_page(title, message, success):
-    """Generate a user-friendly HTML page for email verification results"""
-    # Frontend URL for redirecting after verification
-    frontend_url = current_app.config["APP_URL"]
-    login_url = f"{frontend_url}/login"
-    register_url = f"{frontend_url}/register"
-
-    # Get themed styles
-    styles = get_verification_styles()
-
-    html = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Email Verification - Sentinel Systems</title>
-        <style>
-            {styles}
-        </style>
-    </head>
-    <body>
-        <div class="background-logo"></div>
-        <div class="container">
-            <div class="header">
-                <div class="app-name">SENTINEL SYSTEMS</div>
-                <h1 class="title">{title}</h1>
-                <p class="message">{message}</p>
-                {"<a href='" + login_url + "' class='btn'>Continue to Login</a>" if success else "<a href='" + register_url + "' class='btn'>Request New Verification</a>"}
-            </div>
-        </div>
-    </body>
-    </html>
-    """
-    return html
+    return jsonify({"message": "registered"}), 201
 
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
-    identifier = data.get("email")  # Can be username or email
+    identifier = data.get("email") or data.get("username")
     password = data.get("password")
 
     if not identifier or not password:
@@ -135,21 +118,20 @@ def login():
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"error": "invalid password"}), 401
 
-    if not user.is_verified:
-        return jsonify({"error": "email not verified"}), 403
-
     # Include household_id in JWT claims
     additional_claims = {"household_id": user.default_household_id}
-    token = create_access_token(
+    access_token = create_access_token(
         identity=str(user.id),
         additional_claims=additional_claims,
         expires_delta=timedelta(days=1),
     )
+    refresh_token = create_refresh_token(identity=str(user.id))
 
     return (
         jsonify(
             {
-                "access_token": token,
+                "access_token": access_token,
+                "refresh_token": refresh_token,
                 "username": user.username,
                 "email": user.email,
                 "household_id": user.default_household_id,
@@ -175,148 +157,6 @@ def test_jwt():
         ),
         200,
     )
-
-
-@auth_bp.route("/resend-verification", methods=["POST"])
-def resend_verification():
-    """
-    Resend verification email to user.
-    Expects: {"email": "user@example.com"}
-    """
-    data = request.get_json()
-    email = data.get("email")
-
-    if not email:
-        return jsonify({"error": "email required"}), 400
-
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        return jsonify({"error": "user not found"}), 404
-
-    if user.is_verified:
-        return jsonify({"error": "user already verified"}), 400
-
-    # Generate new verification token and expiration
-    token = secrets.token_urlsafe(32)
-    token_exp = datetime.utcnow() + timedelta(hours=24)
-
-    # Update user with new token
-    user.verification_token = token
-    user.token_expiration = token_exp
-    db.session.commit()
-
-    # Send verification email
-    send_verification_email(email, token)
-
-    return jsonify({"message": "verification email resent"}), 200
-
-
-@auth_bp.route("/test-verification-page", methods=["GET"])
-def test_verification_page():
-    """
-    Test endpoint to preview the verification page.
-    Add ?success=true for success page, or ?success=false for error page
-    """
-    success = request.args.get("success", "true").lower() == "true"
-
-    if success:
-        return _verification_page(
-            "Success",
-            "Your email has been verified successfully! Welcome to P.A.T.R.I.O.T.",
-            True,
-        )
-    else:
-        return _verification_page(
-            "Error",
-            "Verification token has expired. Please request a new verification email.",
-            False,
-        )
-
-
-@auth_bp.route("/forgot-password", methods=["POST"])
-def forgot_password():
-    """
-    Request a password reset email.
-    Expects: {"email": "user@example.com"}
-    """
-    data = request.get_json()
-    email = data.get("email")
-
-    if not email:
-        return jsonify({"error": "email required"}), 400
-
-    user = User.query.filter_by(email=email).first()
-
-    # Always return success to prevent email enumeration
-    if not user:
-        return (
-            jsonify(
-                {"message": "If that email exists, a password reset link has been sent"}
-            ),
-            200,
-        )
-
-    # Generate reset token and expiration (1 hour)
-    reset_token = secrets.token_urlsafe(32)
-    reset_token_exp = datetime.utcnow() + timedelta(hours=1)
-
-    # Store token in user record
-    user.verification_token = reset_token
-    user.token_expiration = reset_token_exp
-    db.session.commit()
-
-    # Send password reset email
-    try:
-        from utils.email_service import send_password_reset_email
-
-        send_password_reset_email(email, reset_token)
-    except Exception as e:
-        current_app.logger.error(f"Failed to send password reset email: {str(e)}")
-        # Still return success to user for security
-
-    return (
-        jsonify(
-            {"message": "If that email exists, a password reset link has been sent"}
-        ),
-        200,
-    )
-
-
-@auth_bp.route("/reset-password", methods=["POST"])
-def reset_password():
-    """
-    Reset password with token.
-    Expects: {"token": "reset_token", "new_password": "newpass123"}
-    """
-    data = request.get_json()
-    token = data.get("token")
-    new_password = data.get("new_password")
-
-    if not token or not new_password:
-        return jsonify({"error": "token and new_password required"}), 400
-
-    if len(new_password) < 8:
-        return jsonify({"error": "password must be at least 8 characters"}), 400
-
-    user = User.query.filter_by(verification_token=token).first()
-
-    if not user:
-        return jsonify({"error": "invalid or expired reset token"}), 400
-
-    if user.token_expiration and user.token_expiration < datetime.utcnow():
-        return jsonify({"error": "reset token has expired"}), 400
-
-    # Hash new password
-    bcrypt = Bcrypt(current_app)
-    hashed = bcrypt.generate_password_hash(new_password).decode("utf-8")
-
-    # Update password and clear reset token
-    user.password = hashed
-    user.verification_token = None
-    user.token_expiration = None
-    db.session.commit()
-
-    return jsonify({"message": "password reset successful"}), 200
 
 
 # ============================================================================
@@ -351,14 +191,12 @@ def sentinel_user_lookup():
         return jsonify({"error": "user not found"}), 404
 
     # Return user data (password hash is safe to share - it's already hashed)
-    # Don't share verification tokens (they're single-use)
     return (
         jsonify(
             {
                 "username": user.username,
                 "email": user.email,
                 "password": user.password,  # Already hashed, safe to sync
-                "is_verified": user.is_verified,
                 "synced_from": current_app.config.get("APP_NAME", "Unknown App"),
             }
         ),
