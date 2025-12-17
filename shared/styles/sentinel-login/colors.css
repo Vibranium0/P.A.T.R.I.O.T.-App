@@ -1,0 +1,59 @@
+/* ==========================================================================  
+   Sentinel Systems Color System â€” "Repulsor Steel" Edition  
+   Complete palette and tone mapping  
+   ========================================================================== */
+
+:root {
+  /* ====== STRUCTURAL COLORS ====== */
+  --background: #0c0909; /* Deep iron-black */
+  --background-overlay: rgba(12, 9, 9, 0.85);
+  --card: #1a1414; /* Panel steel */
+  --border: #352626; /* Dark alloy outline */
+
+  /* ====== PRIMARY BRAND COLORS ====== */
+  --primary: #1fa4ff; /* Arc reactor blue */
+  --secondary: #63c3ff; /* Lighter reactor refraction */
+  --trim: #b11919; /* Hot-rod red armor plating */
+  --accent-light: #d6c38a; /* Brushed gold alloy */
+  --accent-dark: #8e8361; /* Aged brass shading */
+
+  /* ====== TEXT COLORS ====== */
+  --text-primary: #f0f3f7; /* Clean HUD white */
+  --text-secondary: #a4acb8; /* Muted console gray */
+  --text-accent: var(--accent); /* Soft gold highlight */
+
+  /* ====== STATUS COLORS ====== */
+  --success: #21c55d;
+  --warning: #fbbf24;
+  --danger: #ef4444;
+
+  /* ====== HIGHLIGHT & GLOW COLORS ====== */
+  --glow-primary: rgba(31, 164, 255, 0.4); /* Reactor bloom */
+  --glow-accent: rgba(214, 195, 138, 0.35); /* Gold sheen */
+  --glow-trim: rgba(177, 25, 25, 0.4); /* Red flare */
+
+  /* ====== UI ELEMENT BASES ====== */
+  --button-primary-bg: var(--accent-light);
+  --button-primary-text: var(--background);
+  --button-primary-hover: var(--primary);
+
+  --button-secondary-bg: transparent;
+  --button-secondary-border: var(--accent-light);
+  --button-secondary-hover: var(--primary);
+
+  /* ====== SPECIAL EFFECTS ====== */
+  --hud-line: rgba(31, 164, 255, 0.1);
+  --hud-node: rgba(31, 164, 255, 0.5);
+
+  --highlight-gradient: linear-gradient(
+    90deg,
+    var(--primary),
+    var(--secondary)
+  );
+
+  --alert-gradient: linear-gradient(
+    90deg,
+    var(--trim),
+    var(--danger)
+  );
+}
