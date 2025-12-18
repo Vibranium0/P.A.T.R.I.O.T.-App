@@ -1,8 +1,11 @@
 
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import styles from "./Login.module.css";
+import Button from "shared/ui/components/Button/Button";
+import TextBox from "shared/ui/components/TextBox/TextBox";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -35,39 +38,8 @@ const Login = () => {
     setLoading(false);
   };
 
-  return (
-    <motion.main
-      className={styles.loginContainer}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <form className={styles.loginForm} onSubmit={handleSubmit}>
-        <h2>Login to P.A.T.R.I.O.T.</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {error && <div style={{ color: "#e74c3c", marginBottom: "0.5rem" }}>{error}</div>}
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-        <div style={{ marginTop: "1rem", fontSize: "0.95em", color: "#aaa" }}>
-          Test user: <b>test@example.com</b><br />Password: <b>testpass123</b>
-        </div>
-      </form>
-    </motion.main>
-  );
+
+  return null;
 };
 
 export default Login;
