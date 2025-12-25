@@ -1,5 +1,4 @@
-@import "../ui/theme/colors.css";
-@import "../ui/theme/effects.css";
+/* Color palette is now provided by the app root or per-page theme. */
 
 /* ========================================================
    P.A.T.R.I.O.T. HUD MASTER MODULE
@@ -21,14 +20,19 @@
   position: absolute;
   height: 1px;
   width: 60%;
-  background: linear-gradient(90deg, transparent, var(--primary-blue), transparent);
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
   opacity: 0.4;
   animation: lineFlow 4s linear infinite;
 }
 
 @keyframes lineFlow {
-  0% { left: -30%; }
-  100% { left: 120%; }
+  0% {
+    left: -30%;
+  }
+
+  100% {
+    left: 120%;
+  }
 }
 
 /* ========================================================
@@ -38,37 +42,43 @@
 .scanLinesVertical {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.015) 0px,
-    rgba(255, 255, 255, 0) 2px,
-    rgba(255, 255, 255, 0.02) 4px
-  );
+  background: repeating-linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(255, 255, 255, 0) 2px,
+      rgba(255, 255, 255, 0.02) 4px);
   mix-blend-mode: overlay;
   animation: scanShiftV 6s linear infinite;
 }
 
 @keyframes scanShiftV {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-100%); }
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-100%);
+  }
 }
 
 .scanLinesHorizontal {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.015) 0px,
-    rgba(255, 255, 255, 0) 2px,
-    rgba(255, 255, 255, 0.02) 4px
-  );
+  background: repeating-linear-gradient(to right,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(255, 255, 255, 0) 2px,
+      rgba(255, 255, 255, 0.02) 4px);
   mix-blend-mode: overlay;
   animation: scanShiftH 10s linear infinite;
 }
 
 @keyframes scanShiftH {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 /* ========================================================
@@ -90,8 +100,13 @@
 }
 
 @keyframes gridShift {
-  0% { background-position: 0 0; }
-  100% { background-position: 60px 60px; }
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 60px;
+  }
 }
 
 /* ========================================================
@@ -105,7 +120,7 @@
   background-image:
     radial-gradient(circle at 50% 50%, var(--primary-blue) 1px, transparent 1px);
   background-size: 34px 34px;
-  mask-image: radial-gradient(circle, rgba(0,0,0,1), rgba(0,0,0,0.3));
+  mask-image: radial-gradient(circle, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.3));
 }
 
 .holoHexPulse {
@@ -113,9 +128,17 @@
 }
 
 @keyframes hexPulse {
-  0%   { opacity: 0.08; }
-  50%  { opacity: 0.16; }
-  100% { opacity: 0.08; }
+  0% {
+    opacity: 0.08;
+  }
+
+  50% {
+    opacity: 0.16;
+  }
+
+  100% {
+    opacity: 0.08;
+  }
 }
 
 /* ========================================================
@@ -141,13 +164,23 @@
 }
 
 @keyframes rotateSlow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes rotateReverse {
-  from { transform: rotate(360deg); }
-  to   { transform: rotate(0deg); }
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 /* ========================================================
@@ -159,9 +192,17 @@
 }
 
 @keyframes hudPulse {
-  0%   { text-shadow: 0 0 4px var(--glow-blue); }
-  50%  { text-shadow: 0 0 14px var(--primary-blue); }
-  100% { text-shadow: 0 0 4px var(--glow-blue); }
+  0% {
+    text-shadow: 0 0 4px var(--glow-blue);
+  }
+
+  50% {
+    text-shadow: 0 0 14px var(--primary-blue);
+  }
+
+  100% {
+    text-shadow: 0 0 4px var(--glow-blue);
+  }
 }
 
 .hudGlow {
@@ -169,9 +210,12 @@
 }
 
 @keyframes hudGlow {
-  0%,100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 5px var(--glow-blue), inset 0 0 3px var(--glow-blue);
   }
+
   50% {
     box-shadow: 0 0 20px var(--primary-blue), inset 0 0 6px var(--primary-blue);
   }

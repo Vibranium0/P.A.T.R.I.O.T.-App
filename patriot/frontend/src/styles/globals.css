@@ -2,14 +2,15 @@
    GLOBAL SYSTEM — RESET • BACKGROUND • TYPOGRAPHY • UTILITIES
    =========================================================== */
 
-@import "../ui/theme/colors.css";
-@import "../ui/theme/effects.css";
+@import "/shared/styles/patriot/colors.css";
+@import "/shared/styles/effects.css";
 
 /* ===========================
    RESET
    =========================== */
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   font-family: "Exo 2", sans-serif;
@@ -32,8 +33,7 @@ button {
 
 body {
   /* Layer 1 — Base steel texture */
-  background: var(--background-overlay)
-              url("../assets/blue_steel_texture.png");
+  background: var(--background-overlay) url("../assets/blue_steel_texture.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -82,7 +82,10 @@ body::after {
    TYPOGRAPHY
    =========================== */
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: "Exo 2", sans-serif;
   color: var(--text-primary);
   margin: 0;

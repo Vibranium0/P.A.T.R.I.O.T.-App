@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/hud.module.css";
+import styles from "../../../styles/hud.module.css";
 
 const HUDEffects = () => {
   const lines = Array.from({ length: 4 });

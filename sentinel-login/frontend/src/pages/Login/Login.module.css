@@ -1,2 +1,54 @@
-@import "../../../../shared/styles/patriot/colors.css";
-@import "../../../../shared/styles/effects.css";
+@import "/shared/styles/patriot/colors.css";
+@import "/shared/styles/effects.css";
+
+.background {
+    /* Layer 1 — Base steel texture */
+    background: var(--background-overlay) url("../../assets/patriot/blue_steel_texture.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    width: 100vw;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+
+    /* Create stacking context for pseudo-elements */
+    isolation: isolate;
+}
+
+.background::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
+        linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mix-blend-mode: overlay;
+}
+
+.background::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: var(--glass-opacity, rgba(0, 0, 0, 0.35));
+    backdrop-filter: var(--glass-blur, blur(8px));
+
+    .logo {
+        display: block;
+        margin: 0 auto;
+        margin-top: 8vh;
+        width: clamp(220px, 40vw, 420px);
+        max-width: 90vw;
+        height: auto;
+        z-index: 3;
+        position: relative;
+        filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
+    }
+}

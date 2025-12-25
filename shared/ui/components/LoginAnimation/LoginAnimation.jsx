@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./LoginAnimation.module.css";
-import logo from "../../assets/logo.png";
+import logo from "../../../../sentinel-login/frontend/src/assets/patriot/logo.png";
 
 const LoginAnimation = ({ onComplete }) => {
   const [stage, setStage] = useState("init"); // init → access
@@ -49,9 +49,8 @@ const LoginAnimation = ({ onComplete }) => {
           {/* Boot message */}
           <motion.p
             key={stage}
-            className={`${styles.text} ${
-              stage === "access" ? styles.accentGreen : ""
-            }`}
+            className={`${styles.text} ${stage === "access" ? styles.accentGreen : ""
+              }`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}

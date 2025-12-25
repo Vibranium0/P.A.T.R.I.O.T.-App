@@ -1,7 +1,15 @@
+/*
+    Color palette is now provided by the app root.
+    Do not import a specific palette here—this ensures components use the app's CSS variables.
+*/
+.textBox::placeholder {
+    font-family: "Exo 2", sans-serif;
+}
+
 /* Basic textbox styles for all types */
 .textBoxContainer {
     background: none;
-    border: 1px solid var(--accent-silver);
+    border: 1px solid var(--accent-light);
     border-radius: 0.5rem;
     box-shadow: var(--glow-soft);
     color: var(--text-primary);
@@ -14,9 +22,13 @@
     align-items: center;
 }
 
+.textBox {
+    font-family: "Exo 2", sans-serif;
+}
+
 .currencyBoxContainer {
     background: none;
-    border: 1px solid var(--accent-silver);
+    border: 1px solid var(--accent-light);
     border-radius: 0.5rem;
     box-shadow: var(--glow-soft);
     color: var(--text-primary);
@@ -31,7 +43,7 @@
 
 .dateInputBox {
     background: none;
-    border: 1px solid var(--accent-silver);
+    border: 1px solid var(--accent-light);
     border-radius: 0.5rem;
     box-shadow: var(--glow-soft);
     color: var(--text-primary);

@@ -11,6 +11,9 @@
    =========================================================== */
 
 :root {
+  /* ====== ALIASES FOR LEGACY/SHARED COMPONENTS ====== */
+  --primary-blue: var(--primary);
+  --secondary-blue: var(--secondary);
   /* ====== STRUCTURAL COLORS ====== */
   --background: #070b12;
   /* Deep steel blue-black */
@@ -21,15 +24,15 @@
   /* Subtle steel outline */
 
   /* ====== PRIMARY BRAND COLORS ====== */
-  --primary-blue: #1f8fff;
+  --primary: #1f8fff;
   /* StarkTech blue – core glow + accent */
-  --secondary-blue: #62b0ff;
+  --secondary: #62b0ff;
   /* Lighter blue for hover glows, gradients */
-  --trim-red: #c0272d;
+  --trim: #c0272d;
   /* Captain red trim – outlines, hero icons */
-  --accent-silver: #b9c0c9;
+  --accent-light: #b9c0c9;
   /* Metallic brushed silver for text/icons */
-  --accent-dark-silver: #8b9098;
+  --accent-dark: #8b9098;
   /* Deeper silver for gradients/shadows */
 
   /* ====== TEXT COLORS ====== */
@@ -37,7 +40,7 @@
   /* Main content, high contrast */
   --text-secondary: #9da6b1;
   /* Muted subtitles, timestamps */
-  --text-accent: var(--accent-silver);
+  --text-accent: var(--accent-light);
   /* Subtle silver highlights */
 
   /* ====== STATUS COLORS ====== */
@@ -49,27 +52,27 @@
   /* Errors, overdue, or critical alerts */
 
   /* ====== HIGHLIGHT & GLOW COLORS ====== */
-  --glow-blue: rgba(47, 143, 255, 0.4);
+  --glow-primary: rgba(47, 143, 255, 0.4);
   /* Subtle blue field glow */
-  --glow-silver: rgba(185, 192, 201, 0.35);
-  --glow-red: rgba(192, 39, 45, 0.4);
-  --glow-green: rgba(33, 197, 93, 0.35);
+  --glow-accent: rgba(185, 192, 201, 0.35);
+  --glow-danger: rgba(192, 39, 45, 0.4);
+  --glow-success: rgba(33, 197, 93, 0.35);
   /* Subtle green field glow for success */
 
   /* ====== UI ELEMENT BASES ====== */
-  --button-primary-bg: var(--accent-silver);
+  --button-primary-bg: var(--accent-light);
   --button-primary-text: var(--background);
-  --button-primary-hover: var(--primary-blue);
+  --button-primary-hover: var(--primary);
 
   --button-secondary-bg: transparent;
   --button-secondary-border: var(--accent-silver);
-  --button-secondary-hover: var(--primary-blue);
+  --button-secondary-hover: var(--primary);
 
   /* ====== SPECIAL EFFECTS ====== */
   --hud-line: rgba(47, 143, 255, 0.1);
   /* For grid or circuit overlays */
   --hud-node: rgba(47, 143, 255, 0.5);
   /* Circuit glow points */
-  --highlight-gradient: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+  --highlight-gradient: linear-gradient(90deg, var(--primary), var(--secondary));
   --alert-gradient: linear-gradient(90deg, var(--trim-red), var(--danger));
 }

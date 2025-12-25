@@ -1,5 +1,5 @@
-@import "../../ui/theme/colors.css";
-@import "../../ui/theme/effects.css";
+@import "/shared/styles/patriot/colors.css";
+@import "/shared/styles/effects.css";
 
 .funds {
     width: 100%;

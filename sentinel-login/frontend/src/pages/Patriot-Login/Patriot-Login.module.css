@@ -1,0 +1,215 @@
+/* HUD Effects Layer — between background and logo/form */
+.hudEffectsLayer {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hudEffectsLayer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
+        linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mix-blend-mode: overlay;
+    z-index: 1;
+}
+
+.hudEffectsLayer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: var(--glass-opacity, rgba(0, 0, 0, 0.35));
+    backdrop-filter: var(--glass-blur, blur(8px));
+    z-index: 2;
+}
+
+/* Color palette is now provided by the app root or per-page theme. */
+
+.patriotTitle {
+    font-family: 'Orbitron', 'Exo 2', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    color: var(--text-primary);
+    text-align: center;
+    text-shadow: 0 2px 24px rgba(31, 143, 255, 0.18), 0 1px 0 #000;
+    margin-bottom: 32px;
+    margin-top: 0;
+    z-index: 5;
+    position: relative;
+}
+
+.patriotTitle::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 90%;
+    background: radial-gradient(ellipse at center, rgba(31, 143, 255, 0.22) 0%, rgba(31, 143, 255, 0.08) 60%, transparent 100%);
+    filter: blur(12px);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.background {
+    /* Layer 1 — Base steel texture */
+    background: var(--background-overlay) url("../../assets/patriot/blue_steel_texture.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    width: 100vw;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.centerOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: auto;
+    height: 100vh;
+    width: 100vw;
+}
+
+.logoLayer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formLayer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.loginStack {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    pointer-events: auto;
+    position: static;
+}
+
+.logo {
+    width: clamp(330px, 60vw, 630px);
+    max-width: 95vw;
+    height: auto;
+    z-index: 2;
+    filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
+    opacity: 0.55;
+    transition: opacity 0.3s, filter 0.3s;
+    pointer-events: none;
+    margin: 0;
+}
+
+.cardWrapper {
+    z-index: 3;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loginStack {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    pointer-events: auto;
+}
+
+.logo {
+    width: clamp(330px, 60vw, 630px);
+    max-width: 95vw;
+    height: auto;
+    z-index: 2;
+    position: relative;
+    filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
+    opacity: 0.55;
+    transition: opacity 0.3s, filter 0.3s;
+}
+
+.loginForm {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+}
+
+.background::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
+        linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mix-blend-mode: overlay;
+}
+
+.background::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: var(--glass-opacity, rgba(0, 0, 0, 0.35));
+    backdrop-filter: var(--glass-blur, blur(8px));
+}
+
+.logo {
+    width: clamp(330px, 60vw, 630px);
+    max-width: 95vw;
+    height: auto;
+    z-index: 3;
+    position: relative;
+    filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
+    opacity: 0.55;
+    transition: opacity 0.3s, filter 0.3s;
+}

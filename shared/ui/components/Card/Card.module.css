@@ -1,5 +1,7 @@
-@import "../../ui/theme/colors.css";
-@import "../../ui/theme/effects.css";
+/*
+  Color palette is now provided by the app root.
+  Do not import a specific palette here—this ensures components use the app's CSS variables.
+*/
 
 /* ============================================
    BASE CARD (Glass + Holographic)
@@ -93,7 +95,7 @@
 
 /* ---- DEFAULT (Blue holographic) ---- */
 .default {
-  border-color: var(--accent-silver);
+  border-color: var(--accent-light);
 }
 
 /* ---- SUCCESS (Green glow) ---- */

@@ -1,3 +1,7 @@
+/*
+  Color palette is now provided by the app root.
+  Do not import a specific palette here—this ensures components use the app's CSS variables.
+*/
 /* ============================================
    BASE BUTTON STYLES
    ============================================ */
@@ -68,39 +72,42 @@
    VARIANTS — STARKTECH + CAPTAIN STYLE
    ============================================ */
 /* ——— SUCCESS (completed/verified action) */
+
 .success {
   background: linear-gradient(180deg,
       var(--success) 0%,
       #15803d 100%);
   color: var(--background);
   border: none;
-  box-shadow: 0 0 15px var(--glow-green);
+  box-shadow: 0 0 15px var(--glow-success);
 }
 
 .success:hover {
-  box-shadow: 0 0 28px var(--glow-green);
+  box-shadow: 0 0 28px var(--glow-success);
 }
 
 /* ——— SECONDARY SUCCESS (toggle/activated) */
+
 .secondarySuccess {
   background: rgba(33, 197, 93, 0.08);
   color: var(--success);
   border: 1px solid var(--success);
-  box-shadow: 0 0 10px var(--glow-green);
+  box-shadow: 0 0 10px var(--glow-success);
   backdrop-filter: blur(6px);
 }
 
 .secondarySuccess:hover {
   border-color: #15803d;
   color: #15803d;
-  box-shadow: 0 0 18px var(--glow-green);
+  box-shadow: 0 0 18px var(--glow-success);
 }
 
 /* ——— PRIMARY: silver → blue metallic */
+
 .primary {
   background: linear-gradient(180deg,
-      var(--accent-silver) 0%,
-      var(--primary-blue) 100%);
+      var(--accent-light) 0%,
+      var(--primary) 100%);
   color: var(--background);
   border: none;
   box-shadow: var(--glow-primary);
@@ -111,43 +118,46 @@
 }
 
 /* ——— SECONDARY: glass button */
+
 .secondary {
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-secondary);
-  border: 1px solid var(--accent-silver);
+  border: 1px solid var(--accent-light);
   backdrop-filter: blur(6px);
 }
 
 .secondary:hover {
-  border-color: var(--primary-blue);
+  border-color: var(--primary);
   color: var(--text-primary);
   box-shadow: var(--glow-soft);
 }
 
 /* ——— DANGER (critical action) */
+
 .danger {
   background: linear-gradient(180deg,
       var(--danger) 0%,
       #7f1d1d 100%);
   border: none;
   color: var(--text-primary);
-  box-shadow: 0 0 15px var(--glow-red);
+  box-shadow: 0 0 15px var(--glow-danger);
 }
 
 .danger:hover {
-  box-shadow: 0 0 28px var(--glow-red);
+  box-shadow: 0 0 28px var(--glow-danger);
 }
 
 /* ——— GHOST (transparent icon menu option) */
+
 .ghost {
   background: transparent;
   border: 1px solid transparent;
-  color: var(--accent-silver);
+  color: var(--accent-light);
 }
 
 .ghost:hover {
-  border-color: var(--primary-blue);
-  color: var(--primary-blue);
+  border-color: var(--primary);
+  color: var(--primary);
   box-shadow: var(--glow-soft);
 }
 
@@ -200,8 +210,9 @@
 }
 
 /* ——— Focus Ring (for accessibility + StarkTech feel) */
+
 .button:focus {
-  outline: 2px solid var(--primary-blue);
+  outline: 2px solid var(--primary);
   outline-offset: 3px;
-  box-shadow: 0 0 18px rgba(31, 143, 255, 0.6);
+  box-shadow: 0 0 18px var(--glow-primary);
 }
