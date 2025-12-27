@@ -11,9 +11,6 @@
    =========================================================== */
 
 :root {
-  /* ====== ALIASES FOR LEGACY/SHARED COMPONENTS ====== */
-  --primary-blue: var(--primary);
-  --secondary-blue: var(--secondary);
   /* ====== STRUCTURAL COLORS ====== */
   --background: #070b12;
   /* Deep steel blue-black */

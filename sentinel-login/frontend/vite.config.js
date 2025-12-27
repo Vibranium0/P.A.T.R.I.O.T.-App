@@ -21,6 +21,9 @@ export default defineConfig({
                 resolve(__dirname, '.'),
             ],
         },
+        proxy: {
+            '/auth': 'http://localhost:5000'
+        }
     },
     optimizeDeps: {
         include: ['classnames'],

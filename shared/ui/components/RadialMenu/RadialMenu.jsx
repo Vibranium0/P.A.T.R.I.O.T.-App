@@ -33,7 +33,7 @@ const RadialMenu = () => {
     { name: "Debt", icon: <ReceiptPercentIcon width={28} style={iconStyle} />, path: "/debt" },
     { name: "Reports", icon: <ChartPieIcon width={28} style={iconStyle} />, path: "/reports" },
     { name: "Settings", icon: <Cog6ToothIcon width={28} style={iconStyle} />, path: "/settings" },
-    { name: "Logout", icon: <ArrowRightOnRectangleIcon width={28} style={iconStyle} />, path: "/login" },
+    { name: "Logout", icon: <ArrowRightOnRectangleIcon width={28} style={iconStyle} />, path: "/patriot-login" },
   ];
 
   // Close when clicking outside

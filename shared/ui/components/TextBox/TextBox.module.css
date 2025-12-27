@@ -1,3 +1,7 @@
+.textBoxContainer input {
+    font-family: "Exo 2", sans-serif !important;
+}
+
 /*
     Color palette is now provided by the app root.
     Do not import a specific palette here—this ensures components use the app's CSS variables.
@@ -22,7 +26,8 @@
     align-items: center;
 }
 
-.textBox {
+.textBox,
+:global(input.textBox) {
     font-family: "Exo 2", sans-serif;
 }
 
@@ -67,7 +72,7 @@
     font-family: inherit;
     font-size: inherit;
     text-align: left;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 0.75rem;
     margin: 0 !important;
     line-height: 1;
     box-sizing: border-box;

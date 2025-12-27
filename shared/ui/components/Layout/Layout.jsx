@@ -14,7 +14,7 @@ function getPageTitle() {
   if (path.startsWith("/accounts")) return "Accounts";
   if (path.startsWith("/reports")) return "Reports";
   if (path.startsWith("/settings")) return "Settings";
-  if (path.startsWith("/login")) return "Login";
+  if (path.startsWith("/patriot-login")) return "Login";
   if (path.startsWith("/register")) return "Register";
   return "";
 }

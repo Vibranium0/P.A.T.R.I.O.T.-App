@@ -107,7 +107,7 @@
 .primary {
   background: linear-gradient(180deg,
       var(--accent-light) 0%,
-      var(--primary) 100%);
+      var(--accent-dark) 100%);
   color: var(--background);
   border: none;
   box-shadow: var(--glow-primary);
