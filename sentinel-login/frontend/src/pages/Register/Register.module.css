@@ -1,3 +1,24 @@
+/* HUD Effects Layer — between background and logo/form */
+.hudEffectsLayer {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.hudEffectsLayer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
+        linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mix-blend-mode: overlay;
+    z-index: 1;
+}
+
 /* Responsive breakpoints */
 @media (max-width: 1200px) {
     .logo {

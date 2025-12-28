@@ -60,22 +60,7 @@ This document describes all authentication-related endpoints for the Sentinel ba
 
 ---
 
-### 5. Email Verification
-- **GET** `/auth/verify-email?token=<token>`
-- **Response:**
-  - HTML page indicating verification result
 
-- **POST** `/auth/resend-verification`
-- **Request Body:**
-  ```json
-  { "email": "string" }
-  ```
-- **Response:**
-  - `200 OK` if email sent
-  - `404 Not Found` if user not found
-  - `400 Bad Request` if already verified
-
----
 
 ### 6. Password Reset
 - **POST** `/auth/forgot-password`
@@ -116,7 +101,6 @@ This document describes all authentication-related endpoints for the Sentinel ba
 ---
 
 ## Notes
-- All endpoints return JSON except `/auth/verify-email`, which returns HTML.
 - JWT access tokens are required for protected endpoints.
 - Use refresh tokens to obtain new access tokens via `/auth/refresh`.
 - Passwords must be at least 8 characters for reset.
@@ -124,7 +108,7 @@ This document describes all authentication-related endpoints for the Sentinel ba
 ---
 
 ## Example Usage
-- Register, verify email, login, use access token for protected routes, refresh token as needed, reset password if forgotten.
+- Register, login, use access token for protected routes, refresh token as needed, reset password if forgotten.
 
 ---
 

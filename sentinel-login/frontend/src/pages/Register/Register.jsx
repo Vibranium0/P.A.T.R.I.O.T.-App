@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { Helmet } from "react-helmet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import styles from "./Register.module.css";
 import logo from '../../assets/sentinel-login/Sentinel Systems.png';
@@ -14,6 +14,9 @@ import HUDEffects from "shared/ui/components/HUD/HUDEffects";
 import HUDLayer from "shared/ui/components/HUD/HUDLayer";
 
 const Register = () => {
+  const location = useLocation();
+  // Default to /patriot-login if not provided
+  const fromLogin = location.state?.from || "/patriot-login";
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -91,7 +94,7 @@ const Register = () => {
       const data = await res.json();
       if (res.ok) {
         setSuccess("Registration successful! Redirecting...");
-        setTimeout(() => navigate("/app-select"), 1200);
+        setTimeout(() => navigate(fromLogin), 1200);
       } else {
         setError(data.error || "Registration failed.");
         setSuccess("");
@@ -113,6 +116,10 @@ const Register = () => {
 
 
       <div className={styles.background}>
+        <div className={styles.hudEffectsLayer}>
+          <HUDEffects />
+          <HUDLayer />
+        </div>
         <div className={styles.logoContainer}>
           <img
             ref={logoRef}
@@ -128,88 +135,85 @@ const Register = () => {
           <div className={styles.sentinelTitle}>SENTINEL SYSTEMS</div>
           <Card>
             <form onSubmit={handleSubmit} className={styles.registerForm} aria-describedby={error ? "register-error" : undefined}>
-              <label htmlFor="register-email" style={{ width: '100%', textAlign: 'left', fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>Email
+              <TextBox
+                id="register-email"
+                value={email}
+                onChange={setEmail}
+                placeholder="Email"
+                type="email"
+                autoComplete="email"
+                required
+                aria-required="true"
+                aria-invalid={!!error && error.toLowerCase().includes('email')}
+                style={{ marginBottom: 16 }}
+              />
+              <TextBox
+                id="register-username"
+                value={username}
+                onChange={setUsername}
+                placeholder="Username"
+                type="text"
+                autoComplete="username"
+                required
+                aria-required="true"
+                aria-invalid={!!error && error.toLowerCase().includes('username')}
+                style={{ marginBottom: 16 }}
+              />
+              <div style={{ position: 'relative', width: '100%', marginBottom: 8 }}>
                 <TextBox
-                  id="register-email"
-                  value={email}
-                  onChange={setEmail}
-                  placeholder="Email"
-                  type="email"
-                  autoComplete="email"
+                  id="register-password"
+                  value={password}
+                  onChange={setPassword}
+                  placeholder="Password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="new-password"
                   required
                   aria-required="true"
-                  aria-invalid={!!error && error.toLowerCase().includes('email')}
+                  aria-invalid={!!error && error.toLowerCase().includes('password')}
+                  aria-describedby={error ? "register-error" : undefined}
+                  style={{ paddingRight: 38 }}
                 />
-              </label>
-              <label htmlFor="register-username" style={{ width: '100%', textAlign: 'left', fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>Username
-                <TextBox
-                  id="register-username"
-                  value={username}
-                  onChange={setUsername}
-                  placeholder="Username"
-                  type="text"
-                  autoComplete="username"
-                  required
-                  aria-required="true"
-                  aria-invalid={!!error && error.toLowerCase().includes('username')}
-                />
-              </label>
-              <label htmlFor="register-password" style={{ width: '100%', textAlign: 'left', fontWeight: 600, fontSize: 15, color: 'var(--text-primary)', position: 'relative' }}>Password
-                <div style={{ position: 'relative', width: '100%' }}>
-                  <TextBox
-                    id="register-password"
-                    value={password}
-                    onChange={setPassword}
-                    placeholder="Password"
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="new-password"
-                    required
-                    aria-required="true"
-                    aria-invalid={!!error && error.toLowerCase().includes('password')}
-                    aria-describedby={error ? "register-error" : undefined}
-                    style={{ paddingRight: 38 }}
-                  />
-                  <button
-                    type="button"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                    onClick={() => setShowPassword(v => !v)}
-                    style={{
-                      position: 'absolute',
-                      right: 8,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      background: 'none',
-                      border: 'none',
-                      padding: 0,
-                      margin: 0,
-                      cursor: 'pointer',
-                      color: 'var(--text-secondary)',
-                      fontSize: 22,
-                      zIndex: 2
-                    }}
-                    tabIndex={0}
-                  >
-                    {showPassword ? <FiEyeOff /> : <FiEye />}
-                  </button>
+                <button
+                  type="button"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  onClick={() => setShowPassword(v => !v)}
+                  style={{
+                    position: 'absolute',
+                    right: 8,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    margin: 0,
+                    cursor: 'pointer',
+                    color: 'var(--text-secondary)',
+                    fontSize: 22,
+                    zIndex: 2
+                  }}
+                  tabIndex={0}
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                </button>
+              </div>
+              {/* Password Strength Meter */}
+              {password && (
+                <div style={{
+                  marginTop: 6,
+                  marginBottom: 12,
+                  fontWeight: 700,
+                  fontFamily: "'Exo 2', 'Exo2', sans-serif",
+                  fontSize: 15,
+                  letterSpacing: 2,
+                  textTransform: 'uppercase',
+                  color: getPasswordStrength(password).color,
+                  textShadow: `0 0 8px ${getPasswordStrength(password).color}, 0 0 22px ${getPasswordStrength(password).color}`,
+                  filter: `drop-shadow(0 0 8px ${getPasswordStrength(password).glow})`,
+                  transition: 'color 0.2s, filter 0.2s',
+                }}>
+                  {getPasswordStrength(password).label}
                 </div>
-                {/* Password Strength Meter */}
-                {password && (
-                  <div style={{
-                    marginTop: 6,
-                    fontWeight: 700,
-                    fontFamily: "'Exo 2', 'Exo2', sans-serif",
-                    fontSize: 15,
-                    letterSpacing: 2,
-                    textTransform: 'uppercase',
-                    color: getPasswordStrength(password).color,
-                    textShadow: `0 0 8px ${getPasswordStrength(password).color}, 0 0 22px ${getPasswordStrength(password).color}`,
-                    filter: `drop-shadow(0 0 8px ${getPasswordStrength(password).glow})`,
-                    transition: 'color 0.2s, filter 0.2s',
-                  }}>
-                    {getPasswordStrength(password).label}
-                  </div>
-                )}
-              </label>
+              )}
               {error && (
                 <div
                   id="register-error"
@@ -251,15 +255,28 @@ const Register = () => {
                   {success === 'Registration successful! Redirecting...' ? 'WELCOME TO SENTINEL' : success.toUpperCase()}
                 </div>
               )}
-              <Button type="submit" disabled={loading}>
+              <Button type="submit" disabled={loading} style={{ marginBottom: 0 }}>
                 {loading ? "Registering..." : "Register"}
               </Button>
+              <div style={{ textAlign: "center", fontFamily: "'Exo 2', 'Exo2', sans-serif" }}>
+                <a
+                  href="#"
+                  style={{ color: "var(--primary)", textDecoration: "underline", fontSize: 15, cursor: "pointer", marginBottom: 8, display: "inline-block", fontFamily: "inherit" }}
+                  onClick={e => {
+                    e.preventDefault();
+                    navigate(fromLogin);
+                  }}
+                >
+                  Back to Login
+                </a>
+              </div>
             </form>
           </Card>
         </div>
       </div>
     </>
+
   );
-};
+}
 
 export default Register;

@@ -9,8 +9,6 @@ import PatriotLogin from "./pages/Patriot-Login/Patriot-Login";
 import Register from "./pages/Register/Register";
 import patriotTheme from "./pages/Patriot-Login/PatriotLoginTheme.module.css";
 import registerTheme from "./pages/Register/Register.module.css";
-// Placeholder for app selection page
-const AppSelect = () => <div style={{ color: '#fff', textAlign: 'center', marginTop: '10vh', fontSize: '2rem' }}>Choose your app after registration</div>;
 
 
 const App = () => {
@@ -24,7 +22,6 @@ const App = () => {
             <Routes>
                 <Route path="/patriot-login" element={<div className={patriotTheme["page-theme-patriot"]}><PatriotLogin /></div>} />
                 <Route path="/register" element={<div className={registerTheme["background"]}><Register /></div>} />
-                <Route path="/app-select" element={<AppSelect />} />
                 <Route path="*" element={<Navigate to="/patriot-login" replace />} />
             </Routes>
         </>

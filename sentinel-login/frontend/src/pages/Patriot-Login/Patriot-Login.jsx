@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import patriotTheme from "./PatriotLoginTheme.module.css";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import styles from "./Patriot-Login.module.css";
 import logo from '../../assets/patriot/logo.png';
@@ -133,7 +134,10 @@ const PatriotLogin = () => {
                       <a
                         href="#"
                         style={{ color: "var(--primary)", textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
-                        onClick={e => { e.preventDefault(); navigate("/register"); }}
+                        onClick={e => {
+                          e.preventDefault();
+                          navigate("/register", { state: { from: "/patriot-login" } });
+                        }}
                       >
                         Register
                       </a>
