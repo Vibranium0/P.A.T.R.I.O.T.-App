@@ -1,8 +1,8 @@
 # backend/routes/debts_routes.py
 from flask import Blueprint, request, jsonify
 from shared.auth.token_required import require_token
-from backend.database import db
-from backend.models.debt import Debt
+from patriot.backend.database import db
+from patriot.backend.models.debt import Debt
 from datetime import datetime, date
 from shared.utils.household_helpers import get_current_household_id, get_current_user_id
 

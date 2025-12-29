@@ -2,9 +2,9 @@
 from datetime import datetime, date, timedelta
 from typing import Optional
 from dateutil.relativedelta import relativedelta
-from models.bill import Bill
-from models.fund import Fund
-from models.income import Income
+from patriot.backend.models.bill import Bill
+from patriot.backend.models.fund import Fund
+from patriot.backend.models.income import Income
 from database import db
 
 

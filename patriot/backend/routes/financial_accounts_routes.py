@@ -3,8 +3,8 @@ Financial accounts routes
 """
 
 from flask import Blueprint, request, jsonify
-from backend.database import db
-from backend.models.account import Account
+from patriot.backend.database import db
+from patriot.backend.models.account import Account
 from shared.auth.token_required import require_token
 from shared.utils.household_helpers import get_current_household_id, get_current_user_id
 

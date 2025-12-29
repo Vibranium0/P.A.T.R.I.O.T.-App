@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
 
 funds_bp = Blueprint("funds", __name__)
-from database import db
-from models import Fund, Transaction
-from models.account import Account
+from patriot.backend.database import db
+from patriot.backend.models import Fund, Transaction
+from patriot.backend.models.account import Account
 from shared.utils.household_helpers import get_current_household_id
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime, date

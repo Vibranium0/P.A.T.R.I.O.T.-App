@@ -24,6 +24,9 @@ class User(db.Model):
         "Household", foreign_keys=[default_household_id], backref="default_for_users"
     )
 
+    security_question = db.Column(db.String(255), nullable=True)
+    security_answer = db.Column(db.String(255), nullable=True)
+
     def __repr__(self):
         return f"<User {self.username}>"
 
@@ -35,9 +38,9 @@ class User(db.Model):
             "email": self.email,
             "name": self.name,
             "theme": self.theme,
-            "is_verified": self.is_verified,
             "default_household_id": self.default_household_id,
             "created_at": self.created_at.isoformat() if self.created_at else None,
+            "security_question": self.security_question,
         }
 
         if include_households:

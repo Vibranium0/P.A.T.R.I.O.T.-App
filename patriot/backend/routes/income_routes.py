@@ -1,9 +1,9 @@
 from shared.auth.token_required import require_token
 from flask import Blueprint, request, jsonify
 from datetime import datetime
-from backend.database import db
-from backend.models.income import Income
-from backend.models.account import Account  # <-- Add this import at the top
+from patriot.backend.database import db
+from patriot.backend.models.income import Income
+from patriot.backend.models.account import Account
 from shared.utils.household_helpers import get_current_household_id
 
 income_bp = Blueprint("income", __name__)

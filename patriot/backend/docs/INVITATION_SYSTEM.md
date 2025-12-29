@@ -97,10 +97,7 @@ Both Alice and Bob now see:
 - Cannot be guessed or brute-forced
 - Single-use (marked as accepted/rejected after use)
 
-### Email Verification
-- Invite is tied to specific email address
-- User must be logged in with matching email to accept
-- Prevents wrong person from accepting
+
 
 ### Expiration
 - Invites expire after 7 days

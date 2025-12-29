@@ -22,4 +22,8 @@
     --hud-node: rgba(47, 143, 255, 0.5);
     --highlight-gradient: linear-gradient(90deg, var(--primary), var(--secondary));
     --alert-gradient: linear-gradient(90deg, var(--trim), var(--danger));
+
+    /* Ensure card backgrounds are visible (match Sentinel/Register) */
+    --glass-opacity: rgba(16, 23, 37, 0.72);
+    --glass-blur: blur(8px);
 }

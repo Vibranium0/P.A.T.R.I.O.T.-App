@@ -5,7 +5,7 @@ Handles creating households, inviting members, and managing household membership
 """
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt_identity
-from auth.token_required import require_token
+from shared.auth.token_required import require_token
 
 # The following should be injected from the app using this blueprint:
 # db, User, Household, user_household, HouseholdInvite

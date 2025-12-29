@@ -1,3 +1,51 @@
+from sqlalchemy.exc import SQLAlchemyError
+
+
+# --- Password Reset with Security Question ---
+@auth_bp.route("/password-reset/request", methods=["POST"])
+def password_reset_request():
+    data = request.get_json()
+    identifier = data.get("email") or data.get("username")
+    if not identifier:
+        return jsonify({"error": "username or email required"}), 400
+    user = User.query.filter(
+        (User.email == identifier) | (User.username == identifier)
+    ).first()
+    if not user or not user.security_question:
+        return jsonify({"error": "user not found or no security question set"}), 404
+    return jsonify({"security_question": user.security_question}), 200
+
+
+@auth_bp.route("/password-reset/confirm", methods=["POST"])
+def password_reset_confirm():
+    data = request.get_json()
+    identifier = data.get("email") or data.get("username")
+    security_answer = data.get("security_answer")
+    new_password = data.get("new_password")
+    if not identifier or not security_answer or not new_password:
+        return (
+            jsonify(
+                {"error": "username/email, security answer, and new password required"}
+            ),
+            400,
+        )
+    user = User.query.filter(
+        (User.email == identifier) | (User.username == identifier)
+    ).first()
+    if not user or not user.security_answer:
+        return jsonify({"error": "user not found or no security answer set"}), 404
+    if user.security_answer.strip().lower() != security_answer.strip().lower():
+        return jsonify({"error": "incorrect security answer"}), 403
+    bcrypt = Bcrypt(current_app)
+    user.password = bcrypt.generate_password_hash(new_password).decode("utf-8")
+    try:
+        db.session.commit()
+    except SQLAlchemyError:
+        db.session.rollback()
+        return jsonify({"error": "database error"}), 500
+    return jsonify({"message": "password reset successful"}), 200
+
+
 from flask import Blueprint, request, jsonify, current_app
 from datetime import datetime, timedelta
 import secrets
@@ -54,21 +102,38 @@ def refresh():
     )
     return jsonify({"access_token": access_token}), 200
 
+
 from flask_bcrypt import Bcrypt
 from database import db
-from models.user import User
-from models.household import Household
+from sentinel_login.backend.models.user import User
+from sentinel_login.backend.models.household import Household
 
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
+
     username = data.get("username")
     email = data.get("email")
     password = data.get("password")
+    security_question = data.get("security_question")
+    security_answer = data.get("security_answer")
 
-    if not username or not password or not email:
-        return jsonify({"error": "username, email, and password required"}), 400
+    if (
+        not username
+        or not password
+        or not email
+        or not security_question
+        or not security_answer
+    ):
+        return (
+            jsonify(
+                {
+                    "error": "username, email, password, security question, and answer required"
+                }
+            ),
+            400,
+        )
 
     existing = User.query.filter(
         (User.username == username) | (User.email == email)
@@ -89,6 +154,8 @@ def register():
         email=email,
         password=hashed,
         default_household_id=household.id,
+        security_question=security_question,
+        security_answer=security_answer,
     )
     db.session.add(user)
     db.session.commit()

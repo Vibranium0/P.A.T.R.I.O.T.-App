@@ -1,7 +1,7 @@
 # backend/models/bill.py
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
-from backend.database import db
+from patriot.backend.database import db
 
 
 class Bill(db.Model):

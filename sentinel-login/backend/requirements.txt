@@ -10,7 +10,6 @@ itsdangerous
 SQLAlchemy
 psycopg2-binary
 python-dotenv
-email-validator
 requests
 python-dateutil
 gunicorn

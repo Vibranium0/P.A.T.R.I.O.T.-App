@@ -3,7 +3,7 @@
 
 import os
 import sys
-from app import create_app
+from patriot.backend.app import create_app
 
 if __name__ == '__main__':
     app = create_app()

@@ -1,4 +1,4 @@
-from backend.database import db
+from patriot.backend.database import db
 
 """
 Account model for financial accounts (checking, savings, credit cards, etc.)

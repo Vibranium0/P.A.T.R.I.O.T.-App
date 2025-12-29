@@ -1,21 +1,114 @@
+/* Masked overlay for .background::after (dark overlay) */
+.bgMaskedOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: var(--glass-opacity, rgba(0, 0, 0, 0.35));
+  backdrop-filter: var(--glass-blur, blur(8px));
+  clip-path: var(--swipe-clip, polygon(0 0, 0 100%, 0 100%, 0 0));
+  transition: clip-path 0.01s linear;
+}
+
+/* Masked overlays for background effects (before/after) */
+.bgMasked::before,
+.bgMasked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  clip-path: var(--swipe-clip, polygon(0 0, 0 100%, 0 100%, 0 0));
+  transition: clip-path 0.01s linear;
+}
+
+/* Masked background: only revealed under the swipe overlay */
+.bgMasked {
+  pointer-events: none;
+  /* The clip-path will be set dynamically by JS to match the overlay position */
+  clip-path: var(--swipe-clip, polygon(0 0, 0 100%, 0 100%, 0 0));
+  transition: clip-path 0.01s linear;
+}
+
+/* Fade out previous background in sync with overlay sweep */
+.bgFadeOut {
+  animation: bgFadeOut 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  opacity: 1;
+}
+
+@keyframes bgFadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Destination background for transition swipe */
+.transitionBg {
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s linear;
+  will-change: transform, opacity;
+}
+
+.bgActive {
+  animation: bgSwipeReveal 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  opacity: 1;
+  /* Start with only the left edge visible, reveal to right */
+  clip-path: polygon(0 0, 0 100%, 0 100%, 0 0);
+}
+
+@keyframes bgSwipeReveal {
+  0% {
+    opacity: 1;
+    clip-path: polygon(0 0, 0 100%, 0 100%, 0 0);
+  }
+
+  10% {
+    opacity: 1;
+    clip-path: polygon(0 0, 0 100%, 0 100%, 0 0);
+  }
+
+  60% {
+    opacity: 1;
+    clip-path: polygon(0 0, 60% 0, 60% 100%, 0 100%);
+  }
+
+  100% {
+    opacity: 1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
 /* ===========================
    STARKTECH PAGE TRANSITIONS
    =========================== */
 
+
 .transitionOverlay {
   position: fixed;
   inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(47, 143, 255, 0) 0%,
-    rgba(47, 143, 255, 0.25) 40%,
-    rgba(47, 143, 255, 0) 80%
-  );
+  background: linear-gradient(120deg,
+      rgba(47, 143, 255, 0) 0%,
+      rgba(47, 143, 255, 0.25) 40%,
+      rgba(47, 143, 255, 0) 80%);
   mix-blend-mode: screen;
   opacity: 0;
   pointer-events: none;
   z-index: 999;
   transform: translateX(-100%);
+  /* Subtle scan lines for HUD effect */
+  overflow: hidden;
 }
 
 .transitionActive {
@@ -27,11 +120,57 @@
     transform: translateX(-100%);
     opacity: 0;
   }
+
   40% {
     opacity: 1;
   }
+
   100% {
     transform: translateX(100%);
     opacity: 0;
   }
+}
+
+@keyframes energyLine {
+  0% {
+    top: 0;
+    opacity: 0.7;
+  }
+
+  60% {
+    top: 60%;
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.transitionOverlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg,
+      rgba(47, 143, 255, 0.08) 0px,
+      rgba(47, 143, 255, 0.08) 1px,
+      transparent 2px,
+      transparent 6px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.transitionOverlay::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #1f8fff 60%, transparent);
+  opacity: 0.7;
+  filter: blur(1.5px);
+  animation: energyLine 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  z-index: 2;
 }

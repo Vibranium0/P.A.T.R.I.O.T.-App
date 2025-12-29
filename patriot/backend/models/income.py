@@ -1,5 +1,5 @@
 from datetime import date
-from database import db
+from patriot.backend.database import db
 
 
 class Income(db.Model):

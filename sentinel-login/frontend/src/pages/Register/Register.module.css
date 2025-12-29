@@ -1,3 +1,6 @@
+@import "/shared/styles/sentinel-login/colors.css";
+@import "/shared/styles/effects.css";
+
 /* HUD Effects Layer — between background and logo/form */
 .hudEffectsLayer {
     position: fixed;
@@ -169,6 +172,14 @@
     pointer-events: none;
 }
 
+
+/* Ensure card glass effect matches Patriot Login */
+:root,
+.background {
+    --glass-opacity: rgba(16, 23, 37, 0.72);
+    --glass-blur: blur(8px);
+}
+
 @import "/shared/styles/sentinel-login/colors.css";
 @import "/shared/styles/effects.css";
 
@@ -200,15 +211,6 @@
     mix-blend-mode: overlay;
 }
 
-.background::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2;
-    background: var(--glass-opacity, rgba(0, 0, 0, 0.35));
-    backdrop-filter: var(--glass-blur, blur(8px));
-}
 
 .logo {
     width: clamp(330px, 60vw, 630px);

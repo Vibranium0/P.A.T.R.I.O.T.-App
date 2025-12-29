@@ -5,33 +5,34 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from config import Config
-from database import db
+from patriot.backend.config import Config
+from patriot.backend.database import db
 
 # Import blueprints
 
 # Import blueprints using absolute imports
 from shared.routes.user_routes import accounts_bp
-from routes.financial_accounts_routes import financial_accounts_bp
-from routes.bills_routes import bills_bp
-from routes.funds_routes import funds_bp
-from routes.transactions_routes import tx_bp
-from routes.income_routes import income_bp
-from routes.reports_routes import reports_bp
-from routes.dashboard_routes import dashboard_bp
-from routes.debts_routes import debts_bp
+from patriot.backend.routes.financial_accounts_routes import financial_accounts_bp
+from patriot.backend.routes.bills_routes import bills_bp
+from patriot.backend.routes.funds_routes import funds_bp
+from patriot.backend.routes.transactions_routes import tx_bp
+from patriot.backend.routes.income_routes import income_bp
+from patriot.backend.routes.reports_routes import reports_bp
+from patriot.backend.routes.dashboard_routes import dashboard_bp
+from patriot.backend.routes.debts_routes import debts_bp
 from shared.routes.households_routes import households_bp
 
 # Import models using absolute imports
+
 from shared.models.household import create_household_models
 
 Household, HouseholdInvite, user_household = create_household_models(db)
-from models.bill import Bill
-from models.fund import Fund
-from models.transaction import Transaction
-from models.income import Income
-from models.debt import Debt
-from models.account import Account
+from patriot.backend.models.bill import Bill
+from patriot.backend.models.fund import Fund
+from patriot.backend.models.transaction import Transaction
+from patriot.backend.models.income import Income
+from patriot.backend.models.debt import Debt
+from patriot.backend.models.account import Account
 
 from flask_migrate import Migrate
 
@@ -64,7 +65,8 @@ def create_app():
     migrate.init_app(app, db)
 
     # Inject dependencies into shared blueprint before registering
-    from backend.models import User  # or from shared.models.user import User
+    from shared.models.user import create_user_model
+    User = create_user_model(db)
 
     households_bp.db = db
     households_bp.User = User

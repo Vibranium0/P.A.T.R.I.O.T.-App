@@ -51,8 +51,8 @@
 }
 
 .background {
-    /* Layer 1 — Base steel texture */
-    background: var(--background-overlay) url("../../assets/patriot/blue_steel_texture.png");
+    /* Use Sentinel background for both pages */
+    background: var(--background-overlay) url("../../assets/sentinel-login/gun_metal_texture.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -184,15 +184,6 @@
     mix-blend-mode: overlay;
 }
 
-.background::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2;
-    background: var(--glass-opacity, rgba(0, 0, 0, 0.35));
-    backdrop-filter: var(--glass-blur, blur(8px));
-}
 
 .logo {
     width: clamp(330px, 60vw, 630px);

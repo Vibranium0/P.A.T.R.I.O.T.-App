@@ -35,7 +35,6 @@ This document describes all authentication-related endpoints for the Sentinel ba
 - **Response:**
   - `200 OK` with access token and user info
   - `401 Unauthorized` if password invalid
-  - `403 Forbidden` if email not verified
   - `404 Not Found` if user not found
 
 ---
@@ -62,26 +61,6 @@ This document describes all authentication-related endpoints for the Sentinel ba
 
 
 
-### 6. Password Reset
-- **POST** `/auth/forgot-password`
-- **Request Body:**
-  ```json
-  { "email": "string" }
-  ```
-- **Response:**
-  - `200 OK` (always, for security)
-
-- **POST** `/auth/reset-password`
-- **Request Body:**
-  ```json
-  {
-    "token": "string",
-    "new_password": "string"
-  }
-  ```
-- **Response:**
-  - `200 OK` if reset successful
-  - `400 Bad Request` if token invalid/expired or password too short
 
 ---
 

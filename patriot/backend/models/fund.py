@@ -1,6 +1,6 @@
 # backend/models/fund.py
 from datetime import datetime, date, timedelta
-from database import db
+from patriot.backend.database import db
 
 
 class Fund(db.Model):

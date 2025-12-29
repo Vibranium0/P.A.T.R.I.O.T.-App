@@ -7,14 +7,14 @@ Your Flask budgeting app backend is fully functional and production-ready! All y
 ## ✅ Goals Achieved
 
 ### 1. **Complete Model Architecture**
-- ✅ **User** - Authentication, email verification, themes
+- ✅ **User** - Authentication, themes
 - ✅ **Fund** - Goal-oriented savings with automatic balance tracking
 - ✅ **Bill** - Recurring bills with autopay functionality
 - ✅ **Transaction** - Comprehensive financial transactions with fund linking
 - ✅ **Income** - Income tracking with source categorization
 
 ### 2. **Full API Coverage**
-- ✅ **Authentication** (`/api/auth`) - Register, login, email verification
+- ✅ **Authentication** (`/api/auth`) - Register, login
 - ✅ **Fund Management** (`/api/funds`) - CRUD with goal tracking and balance updates
 - ✅ **Transaction Management** (`/api/transactions`) - CRUD with automatic fund balance adjustment
 - ✅ **Income Tracking** (`/api/income`) - CRUD with source-based summaries
@@ -33,7 +33,7 @@ Your Flask budgeting app backend is fully functional and production-ready! All y
 - ✅ **Application Factory Pattern** - Proper Flask structure
 - ✅ **Database Initialization** - CLI commands for setup
 - ✅ **Database Seeding** - Sample data for development and testing
-- ✅ **Email Service** - Development and production email handling
+
 - ✅ **JSON Response Standards** - Consistent API responses
 
 ## 🏗️ Architecture Overview
@@ -52,8 +52,6 @@ User ──┐
 Authentication:
   POST /api/auth/register
   POST /api/auth/login
-  GET  /api/auth/verify-email
-  POST /api/auth/resend-verification
 
 Funds (Goal-Oriented):
   GET/POST    /api/funds
@@ -134,8 +132,6 @@ flask --app app:create_app reset-and-seed
 
 ### **Test Credentials**
 ```
-Email: test@example.com | Password: testpass123
-Email: demo@example.com | Password: demo123
 ```
 
 ## 🚀 Ready for Production
@@ -144,7 +140,7 @@ Email: demo@example.com | Password: demo123
 - ✅ All models implemented and tested
 - ✅ All API endpoints functional
 - ✅ Authentication working with JWT
-- ✅ Email verification system
+
 - ✅ Automatic balance management
 - ✅ Autopay functionality
 - ✅ Goal tracking system

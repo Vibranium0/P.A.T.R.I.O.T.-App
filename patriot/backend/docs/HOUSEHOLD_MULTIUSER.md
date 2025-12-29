@@ -297,11 +297,10 @@ funds = Fund.query.filter_by(household_id=household_id).all()
 - [ ] Delete household (owner only)
 
 ## Security Considerations
-- Household invites expire after 7 days
-- Only household owner can remove members
-- Members can leave anytime
-- Token-based invite acceptance (secure)
-- Email verification recommended before sending invites
+* Household invites expire after 7 days
+* Only household owner can remove members
+* Members can leave anytime
+* Token-based invite acceptance (secure)
 
 ## Performance Notes
 - user_household association table indexed on both keys

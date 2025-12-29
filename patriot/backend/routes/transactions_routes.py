@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify
-from backend.database import db
-from backend.models import Transaction, Fund, Bill
-from backend.models.account import Account
-from shared.models.user import User
+from patriot.backend.database import db
+from patriot.backend.models import Transaction, Fund, Bill
+from patriot.backend.models.account import Account
+from shared.models.user import create_user_model
+from patriot.backend.database import db
+User = create_user_model(db)
 from shared.auth.token_required import require_token
 from decimal import Decimal
 from datetime import datetime, date

@@ -16,16 +16,19 @@ project_root = os.path.dirname(
 )
 sys.path.insert(0, project_root)
 
-from app import create_app
-from database import db
+from patriot.backend.app import create_app
+from patriot.backend.database import db
 
-from models.fund import Fund
-from models.bill import Bill
-from models.transaction import Transaction
-from models.income import Income
-from models.debt import Debt
+from patriot.backend.models.fund import Fund
+from patriot.backend.models.bill import Bill
+from patriot.backend.models.transaction import Transaction
+from patriot.backend.models.income import Income
+from patriot.backend.models.debt import Debt
 from flask_bcrypt import Bcrypt
-from shared.models.user import User
+from shared.models.user import create_user_model
+from patriot.backend.database import db
+
+User = create_user_model(db)
 from shared.models.household import create_household_models
 
 Household, _, user_household = create_household_models(db)
@@ -48,7 +51,6 @@ def seed_database():
             password=user1_password,
             name="Test User",
             theme="light",
-            is_verified=True,
         )
 
         # Test User 2
@@ -59,7 +61,6 @@ def seed_database():
             password=user2_password,
             name="Demo User",
             theme="dark",
-            is_verified=True,
         )
 
         db.session.add_all([user1, user2])
@@ -240,7 +241,7 @@ def seed_database():
         # Create financial accounts for users
         print("Creating sample financial accounts...")
 
-        from models.account import Account
+        from patriot.backend.models.account import Account
 
         accounts = [
             # User 1 accounts
