@@ -25,7 +25,10 @@
 /* Responsive breakpoints */
 @media (max-width: 1200px) {
     .logo {
-        width: clamp(220px, 40vw, 420px);
+        height: 85vh;
+        max-height: 85vh;
+        width: auto;
+        max-width: 85vw;
     }
 
     .registerForm {
@@ -39,7 +42,10 @@
 
 @media (max-width: 900px) {
     .logo {
-        width: clamp(160px, 50vw, 320px);
+        height: 85vh;
+        max-height: 85vh;
+        width: auto;
+        max-width: 85vw;
     }
 
     .registerForm {
@@ -58,8 +64,10 @@
 
 @media (max-width: 600px) {
     .logo {
-        width: clamp(120px, 70vw, 200px);
-        max-width: 90vw;
+        height: 85vh;
+        max-height: 85vh;
+        width: auto;
+        max-width: 85vw;
     }
 
     .registerForm {
@@ -161,13 +169,13 @@
 
 .logoContainer {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    margin: 0;
     z-index: 3;
     pointer-events: none;
 }
@@ -179,9 +187,6 @@
     --glass-opacity: rgba(16, 23, 37, 0.72);
     --glass-blur: blur(8px);
 }
-
-@import "/shared/styles/sentinel-login/colors.css";
-@import "/shared/styles/effects.css";
 
 .background {
     /* Layer 1 — Gun metal texture */
@@ -213,9 +218,12 @@
 
 
 .logo {
-    width: clamp(330px, 60vw, 630px);
-    max-width: 95vw;
-    height: auto;
+    height: 85vh;
+    max-height: 85vh;
+    width: auto;
+    max-width: 85vw;
+    object-fit: contain;
+    display: block;
     z-index: 2;
     position: relative;
     filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));

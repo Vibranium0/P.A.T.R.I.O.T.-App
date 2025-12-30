@@ -13,7 +13,7 @@ export default defineConfig({
         dedupe: ['react', 'react-dom', 'classnames'],
     },
     server: {
-        port: 5173,
+        port: 5175,
         open: true,
         fs: {
             allow: [

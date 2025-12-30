@@ -84,9 +84,8 @@
     pointer-events: none;
     width: 100vw;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
 }
 
 .formLayer {
@@ -116,10 +115,14 @@
 }
 
 .logo {
-    width: clamp(330px, 60vw, 630px);
-    max-width: 95vw;
-    height: auto;
-    z-index: 2;
+    height: 85vh;
+    max-height: 85vh;
+    width: auto;
+    max-width: 85vw;
+    object-fit: contain;
+    display: block;
+    z-index: 3;
+    position: relative;
     filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
     opacity: 0.55;
     transition: opacity 0.3s, filter 0.3s;
@@ -148,14 +151,19 @@
 }
 
 .logo {
-    width: clamp(330px, 60vw, 630px);
-    max-width: 95vw;
-    height: auto;
-    z-index: 2;
+    height: 85vh;
+    max-height: 85vh;
+    width: auto;
+    max-width: 85vw;
+    object-fit: contain;
+    display: block;
+    z-index: 3;
     position: relative;
     filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
     opacity: 0.55;
     transition: opacity 0.3s, filter 0.3s;
+    pointer-events: none;
+    margin: 0;
 }
 
 .loginForm {
@@ -186,12 +194,17 @@
 
 
 .logo {
-    width: clamp(330px, 60vw, 630px);
-    max-width: 95vw;
-    height: auto;
+    height: 85vh;
+    max-height: 85vh;
+    width: auto;
+    max-width: 85vw;
+    object-fit: contain;
+    display: block;
     z-index: 3;
     position: relative;
     filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
     opacity: 0.55;
     transition: opacity 0.3s, filter 0.3s;
+    pointer-events: none;
+    margin: 0;
 }
