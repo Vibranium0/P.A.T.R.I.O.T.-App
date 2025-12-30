@@ -152,19 +152,79 @@
     position: relative;
 }
 
+.hudEffectsLayer {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.hudEffectsLayer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
+        linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mix-blend-mode: overlay;
+    z-index: 1;
+}
+
+.centerOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: auto;
+    height: 100vh;
+    width: 100vw;
+}
+
+.formLayer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.cardWrapper {
+    z-index: 101;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
 .formContainer {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
+    display: grid;
+    place-items: center;
+    z-index: 4;
+    pointer-events: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.formStack {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 4;
-    pointer-events: auto;
     gap: 24px;
+    width: 100%;
+    max-width: 480px;
+    padding: 0;
 }
 
 .logoContainer {

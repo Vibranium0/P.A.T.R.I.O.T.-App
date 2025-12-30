@@ -4,7 +4,7 @@ import Layout from "../../../shared/ui/components/Layout/Layout.jsx";
 
 // Pages
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
-import PatriotLogin from "../../../sentinel-login/frontend/src/pages/Patriot-Login/Patriot-Login.jsx";
+import PatriotLogin from "../../sentinel_login/frontend/src/pages/Patriot-Login/Patriot-Login.jsx";
 import Bills from "./pages/Bills/Bills.jsx";
 import Funds from "./pages/Funds/Funds.jsx";
 import Income from "./pages/Income/Income.jsx";

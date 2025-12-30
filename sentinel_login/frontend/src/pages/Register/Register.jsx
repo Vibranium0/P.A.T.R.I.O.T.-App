@@ -72,10 +72,6 @@ const Register = () => {
   return (
     <>
       <div className={styles.background}>
-        <div className={styles.hudEffectsLayer}>
-          <HUDEffects />
-          <HUDLayer />
-        </div>
         <div className={styles.logoContainer}>
           <AnimatedCard>
             <img
@@ -88,19 +84,23 @@ const Register = () => {
             />
           </AnimatedCard>
         </div>
-        {/* HUD Effects Layer moved to app.jsx for static rendering */}
-        <div className={styles.formContainer}>
-          <motion.div
-            className={styles.sentinelTitle}
-            initial={{ opacity: 0, y: 32, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.45, ease: "easeOut" }}
-          >
-            SENTINEL SYSTEMS
-          </motion.div>
-          <AnimatedCard>
-            <Card>
-              <form onSubmit={handleSubmit} className={styles.registerForm} aria-describedby={error ? "register-error" : undefined}>
+        <div className={styles.hudEffectsLayer}>
+          <HUDEffects />
+          <HUDLayer />
+        </div>
+        <div className={styles.formLayer}>
+          <div className={styles.cardWrapper}>
+              <motion.div
+                className={styles.sentinelTitle}
+                initial={{ opacity: 0, y: 32, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.45, ease: "easeOut" }}
+              >
+                SENTINEL SYSTEMS
+              </motion.div>
+              <AnimatedCard>
+                <Card>
+                  <form onSubmit={handleSubmit} className={styles.registerForm} aria-describedby={error ? "register-error" : undefined}>
                 {/* Email field removed */}
                 <TextBox
                   id="register-username"
@@ -258,6 +258,7 @@ const Register = () => {
               </form>
             </Card>
           </AnimatedCard>
+          </div>
         </div>
       </div>
     </>

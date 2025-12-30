@@ -7,6 +7,13 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# Kill any existing processes on ports 5000, 5001, 5173, 5175
+echo "Killing existing processes on ports 5000, 5001, 5173, 5175..."
+pkill -9 -f 'python.*app.py' 2>/dev/null || true
+pkill -9 -f 'npm run dev' 2>/dev/null || true
+lsof -ti:5000,5001,5173,5174,5175 | xargs kill -9 2>/dev/null || true
+sleep 2
+
 # Start Patriot Backend
 cd "$SCRIPT_DIR/patriot/backend"
 if [ -f venv/bin/activate ]; then
