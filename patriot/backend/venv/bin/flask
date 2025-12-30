@@ -1,4 +1,4 @@
-#!/Users/christian/Documents/Projects/P.A.T.R.I.O.T./P.A.T.R.I.O.T.-App/patriot/backend/venv/bin/python3
+#!/workspaces/P.A.T.R.I.O.T.-App/patriot/backend/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

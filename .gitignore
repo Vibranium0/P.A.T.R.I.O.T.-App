@@ -7,8 +7,10 @@ __pycache__/
 .env
 venv/
 ENV/
+env/
 *.egg-info/
 *.egg
+*.pyc
 
 # VS Code
 .vscode/
@@ -23,23 +25,54 @@ logs/
 # Database
 *.sqlite3
 *.db
+instance/
 
 # Migrations
 migrations/versions/*.pyc
 
 # Node
 node_modules/
+dist/
+build/
+.vite/
 
-# Ignore installed Python packages
-backend/__pycache__/
+# All venv directories
+**/venv/
+**/ENV/
+**/env/
+**/__pycache__/
+
+# All node_modules directories
+**/node_modules/
+**/dist/
+**/build/
+
+# Frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+patriot/frontend/node_modules/
+patriot/frontend/dist/
+sentinel_login/frontend/node_modules/
+sentinel_login/frontend/dist/
+
+# Backend virtual environments
 backend/venv/
 backend/ENV/
 backend/*.egg-info/
 backend/*.egg
+patriot/backend/venv/
+patriot/backend/ENV/
+patriot/backend/instance/
+sentinel_login/backend/venv/
+sentinel_login/backend/ENV/
+sentinel_login/backend/instance/
 
-# Ignore frontend build artifacts
-frontend/node_modules/
-frontend/dist/
-
-# Ignore static cache
+# Static cache
 backend/static/cache/
+
+# Log files in root
+patriot_backend.log
+patriot_frontend.log
+sentinel_backend.log
+sentinel_frontend.log
+nohup.out
