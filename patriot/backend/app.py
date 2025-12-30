@@ -65,8 +65,7 @@ def create_app():
     migrate.init_app(app, db)
 
     # Inject dependencies into shared blueprint before registering
-    from shared.models.user import create_user_model
-    User = create_user_model(db)
+    from patriot.backend.models.user import User
 
     households_bp.db = db
     households_bp.User = User

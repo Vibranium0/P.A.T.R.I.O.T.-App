@@ -1,15 +1,32 @@
+from flask import Blueprint, request, jsonify, current_app
+from datetime import datetime, timedelta
+import secrets
+from flask_jwt_extended import (
+    create_access_token,
+    jwt_required,
+    get_jwt_identity,
+    create_refresh_token,
+    get_jwt,
+)
 from sqlalchemy.exc import SQLAlchemyError
+from flask_bcrypt import Bcrypt
+
+from sentinel_login.backend.database import db
+from sentinel_login.backend.models.user import User
+from sentinel_login.backend.models.household import Household
+
+auth_bp = Blueprint("auth", __name__)
 
 
 # --- Password Reset with Security Question ---
 @auth_bp.route("/password-reset/request", methods=["POST"])
 def password_reset_request():
     data = request.get_json()
-    identifier = data.get("email") or data.get("username")
+    identifier = data.get("username")
     if not identifier:
-        return jsonify({"error": "username or email required"}), 400
+        return jsonify({"error": "username required"}), 400
     user = User.query.filter(
-        (User.email == identifier) | (User.username == identifier)
+        (User.username == identifier)
     ).first()
     if not user or not user.security_question:
         return jsonify({"error": "user not found or no security question set"}), 404
@@ -19,18 +36,18 @@ def password_reset_request():
 @auth_bp.route("/password-reset/confirm", methods=["POST"])
 def password_reset_confirm():
     data = request.get_json()
-    identifier = data.get("email") or data.get("username")
+    identifier = data.get("username")
     security_answer = data.get("security_answer")
     new_password = data.get("new_password")
     if not identifier or not security_answer or not new_password:
         return (
             jsonify(
-                {"error": "username/email, security answer, and new password required"}
+                {"error": "username, security answer, and new password required"}
             ),
             400,
         )
     user = User.query.filter(
-        (User.email == identifier) | (User.username == identifier)
+        (User.username == identifier)
     ).first()
     if not user or not user.security_answer:
         return jsonify({"error": "user not found or no security answer set"}), 404
@@ -44,20 +61,6 @@ def password_reset_confirm():
         db.session.rollback()
         return jsonify({"error": "database error"}), 500
     return jsonify({"message": "password reset successful"}), 200
-
-
-from flask import Blueprint, request, jsonify, current_app
-from datetime import datetime, timedelta
-import secrets
-from flask_jwt_extended import (
-    create_access_token,
-    jwt_required,
-    get_jwt_identity,
-    create_refresh_token,
-    get_jwt,
-)
-
-auth_bp = Blueprint("auth", __name__)
 
 
 @auth_bp.route("/validate", methods=["GET"])
@@ -75,7 +78,7 @@ def validate():
             {
                 "user_id": user.id,
                 "username": user.username,
-                "email": user.email,
+                # "email": user.email,  # Removed
                 "household_id": user.default_household_id,
             }
         ),
@@ -103,18 +106,11 @@ def refresh():
     return jsonify({"access_token": access_token}), 200
 
 
-from flask_bcrypt import Bcrypt
-from database import db
-from sentinel_login.backend.models.user import User
-from sentinel_login.backend.models.household import Household
-
-
 @auth_bp.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
 
     username = data.get("username")
-    email = data.get("email")
     password = data.get("password")
     security_question = data.get("security_question")
     security_answer = data.get("security_answer")
@@ -122,21 +118,20 @@ def register():
     if (
         not username
         or not password
-        or not email
         or not security_question
         or not security_answer
     ):
         return (
             jsonify(
                 {
-                    "error": "username, email, password, security question, and answer required"
+                    "error": "username, password, security question, and answer required"
                 }
             ),
             400,
         )
 
     existing = User.query.filter(
-        (User.username == username) | (User.email == email)
+        (User.username == username)
     ).first()
     if existing:
         return jsonify({"error": "user exists"}), 409
@@ -151,7 +146,6 @@ def register():
 
     user = User(
         username=username,
-        email=email,
         password=hashed,
         default_household_id=household.id,
         security_question=security_question,
@@ -165,15 +159,15 @@ def register():
 @auth_bp.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
-    identifier = data.get("email") or data.get("username")
+    identifier = data.get("username")
     password = data.get("password")
 
     if not identifier or not password:
-        return jsonify({"error": "username/email and password required"}), 400
+        return jsonify({"error": "username and password required"}), 400
 
-    # Try to find user by email OR username
+    # Try to find user by username only
     user = User.query.filter(
-        (User.email == identifier) | (User.username == identifier)
+        (User.username == identifier)
     ).first()
 
     # Sentinel sync logic removed: no cross-app sync available in sentinel-login

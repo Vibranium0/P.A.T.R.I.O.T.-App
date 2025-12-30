@@ -21,7 +21,7 @@ const PasswordReset = () => {
             const res = await fetch("/auth/password-reset/request", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: identifier, username: identifier })
+                body: JSON.stringify({ username: identifier })
             });
             const data = await res.json();
             if (res.ok && data.security_question) {
@@ -43,7 +43,7 @@ const PasswordReset = () => {
             const res = await fetch("/auth/password-reset/confirm", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: identifier, username: identifier, security_answer: securityAnswer, new_password: newPassword })
+                body: JSON.stringify({ username: identifier, security_answer: securityAnswer, new_password: newPassword })
             });
             const data = await res.json();
             if (res.ok) {
@@ -66,7 +66,7 @@ const PasswordReset = () => {
                         id="reset-identifier"
                         value={identifier}
                         onChange={setIdentifier}
-                        placeholder="Email or Username"
+                        placeholder="Username"
                         type="text"
                         required
                         style={{ marginBottom: 16 }}

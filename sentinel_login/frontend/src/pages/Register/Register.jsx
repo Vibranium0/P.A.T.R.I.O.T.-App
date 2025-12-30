@@ -19,7 +19,6 @@ const Register = () => {
   const location = useLocation();
   // Default to /patriot-login if not provided
   const fromLogin = location.state?.from || "/patriot-login";
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -42,7 +41,7 @@ const Register = () => {
       const res = await fetch("/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, password, security_question: securityQuestion, security_answer: securityAnswer })
+        body: JSON.stringify({ username, password, security_question: securityQuestion, security_answer: securityAnswer })
       });
       const data = await res.json();
       if (res.ok && data.message) {
@@ -102,18 +101,7 @@ const Register = () => {
           <AnimatedCard>
             <Card>
               <form onSubmit={handleSubmit} className={styles.registerForm} aria-describedby={error ? "register-error" : undefined}>
-                <TextBox
-                  id="register-email"
-                  value={email}
-                  onChange={setEmail}
-                  placeholder="Email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  aria-required="true"
-                  aria-invalid={!!error && error.toLowerCase().includes('email')}
-                  style={{ marginBottom: 16 }}
-                />
+                {/* Email field removed */}
                 <TextBox
                   id="register-username"
                   value={username}

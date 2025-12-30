@@ -37,7 +37,7 @@ const PatriotLogin = () => {
       const res = await fetch("/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: identifier, email: identifier, password })
+        body: JSON.stringify({ username: identifier, password })
       });
       const data = await res.json();
       if (res.ok && data.access_token) {
@@ -102,7 +102,7 @@ const PatriotLogin = () => {
                           <TextBox
                             value={identifier}
                             onChange={setIdentifier}
-                            placeholder="Username or Email"
+                            placeholder="Username"
                             type="text"
                             autoComplete="username"
                             required

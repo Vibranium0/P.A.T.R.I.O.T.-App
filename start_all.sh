@@ -21,7 +21,7 @@ nohup npm run dev > ../../patriot_frontend.log 2>&1 &
 cd ../../..
 
 # Start Sentinel Backend
-cd sentinel-login/backend
+cd sentinel_login/backend
 if [ -f venv/bin/activate ]; then
   source venv/bin/activate
 fi
@@ -29,7 +29,7 @@ PYTHONPATH=../.. nohup python app.py > ../../sentinel_backend.log 2>&1 &
 cd ../../..
 
 # Start Sentinel Frontend
-cd sentinel-login/frontend
+cd sentinel_login/frontend
 nohup npm run dev > ../../sentinel_frontend.log 2>&1 &
 cd ../../..
 

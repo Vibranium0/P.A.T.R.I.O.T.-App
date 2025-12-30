@@ -13,10 +13,12 @@ def create_household_models(db):
         ),
         db.Column("role", db.String(20), default="member"),  # 'owner' or 'member'
         db.Column("joined_at", db.DateTime, default=datetime.utcnow),
+        extend_existing=True
     )
 
     class Household(db.Model):
         __tablename__ = "households"
+        __table_args__ = {'extend_existing': True}
 
         id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(120), nullable=False)
@@ -109,6 +111,7 @@ def create_household_models(db):
 
     class HouseholdInvite(db.Model):
         __tablename__ = "household_invites"
+        __table_args__ = {'extend_existing': True}
 
         id = db.Column(db.Integer, primary_key=True)
         household_id = db.Column(

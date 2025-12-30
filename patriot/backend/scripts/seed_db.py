@@ -25,10 +25,7 @@ from patriot.backend.models.transaction import Transaction
 from patriot.backend.models.income import Income
 from patriot.backend.models.debt import Debt
 from flask_bcrypt import Bcrypt
-from shared.models.user import create_user_model
-from patriot.backend.database import db
-
-User = create_user_model(db)
+from patriot.backend.models.user import User
 from shared.models.household import create_household_models
 
 Household, _, user_household = create_household_models(db)

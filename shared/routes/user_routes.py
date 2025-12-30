@@ -1,8 +1,6 @@
 from flask import Blueprint, request, jsonify
 from patriot.backend.database import db
-from shared.models.user import create_user_model
-from patriot.backend.database import db
-User = create_user_model(db)
+from patriot.backend.models.user import User
 from shared.auth.token_required import require_token
 
 accounts_bp = Blueprint("accounts", __name__)

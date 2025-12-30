@@ -4,7 +4,10 @@ from shared.auth.token_required import require_token
 from flask import Blueprint, request, jsonify
 from datetime import datetime, date, timedelta
 from patriot.backend.models.bill import Bill
-from patriot.backend.utils.forecasting import generate_forecast, get_bill_schedule_summary
+from patriot.backend.utils.forecasting import (
+    generate_forecast,
+    get_bill_schedule_summary,
+)
 from shared.utils.household_helpers import get_current_household_id
 from patriot.backend.database import db
 

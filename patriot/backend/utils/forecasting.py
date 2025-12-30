@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from patriot.backend.models.bill import Bill
 from patriot.backend.models.fund import Fund
 from patriot.backend.models.income import Income
-from database import db
+from patriot.backend.database import db
 
 
 def generate_forecast(

@@ -1,7 +1,13 @@
-# Factory function to create User model with a given db instance
+
+# Module-level cache to prevent double creation per db instance
+_user_model_cache = {}
+
 def create_user_model(db):
+    if id(db) in _user_model_cache:
+        return _user_model_cache[id(db)]
     class User(db.Model):
         __tablename__ = "users"
+        __table_args__ = {'extend_existing': True}
 
         id = db.Column(db.Integer, primary_key=True)
         username = db.Column(db.String(80), unique=True, nullable=False)
@@ -21,4 +27,5 @@ def create_user_model(db):
                 "is_active": self.is_active,
             }
 
+    _user_model_cache[id(db)] = User
     return User

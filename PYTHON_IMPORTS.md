@@ -23,7 +23,7 @@ P.A.T.R.I.O.T.-App/
       routes/
       utils/
     frontend/
-  sentinel-login/
+  sentinel_login/
     backend/
       models/
       routes/
