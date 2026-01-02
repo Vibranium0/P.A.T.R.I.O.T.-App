@@ -22,7 +22,7 @@ export default defineConfig({
             ],
         },
         proxy: {
-            '/auth': 'http://localhost:5000'
+            '/auth': 'http://localhost:5001'
         }
     },
     optimizeDeps: {

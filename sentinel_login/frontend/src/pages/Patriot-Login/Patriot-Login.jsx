@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { initBackgroundLogoRecalibration } from "shared/utils/background-logo-recalibration";
 import patriotTheme from "./PatriotLoginTheme.module.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -27,6 +28,12 @@ const PatriotLogin = () => {
   // Use app-level transition overlay
   const { triggerTransition, active: transitionActive } = useTransitionOverlay();
   const navigate = useNavigate();
+
+  // Initialize background logo recalibration on mount
+  useEffect(() => {
+    const cleanup = initBackgroundLogoRecalibration();
+    return cleanup;
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,15 +74,14 @@ const PatriotLogin = () => {
           {!transitionActive && (
             <>
               <div className={styles.logoLayer}>
-                <AnimatedCard>
-                  <img
-                    src={logo}
-                    alt="Sentinel Logo"
-                    className={styles.logo}
-                    draggable={false}
-                    aria-hidden="true"
-                  />
-                </AnimatedCard>
+                <img
+                  src={logo}
+                  alt="Sentinel Logo"
+                  className={styles.logo}
+                  data-role="background-logo"
+                  draggable={false}
+                  aria-hidden="true"
+                />
               </div>
               {/* HUD Effects Layer (cheese) */}
               <div className={styles.hudEffectsLayer}>

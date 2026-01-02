@@ -1,0 +1,82 @@
+/**
+ * STANDARDIZED RESPONSIVE BREAKPOINTS
+ * 
+ * Reusable media queries for consistent sizing across all pages.
+ * Import this file and apply classes to your page containers.
+ */
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Desktop - Large screens */
+@media (max-width: 1200px) {
+    :root {
+        --content-max-width: 450px;
+        --content-padding: 1.5rem;
+        --title-size: 2.2rem;
+    }
+}
+
+/* Tablet - iPad and similar */
+@media (max-width: 900px) {
+    :root {
+        --content-max-width: 480px;
+        --content-padding: 1.5rem;
+        --title-size: 2rem;
+    }
+}
+
+/* Tablet Portrait - iPad in portrait mode */
+@media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
+    :root {
+        --content-max-width: 520px;
+        --content-padding: 2rem;
+        --title-size: 2.2rem;
+    }
+}
+
+/* Tablet Landscape - iPad in landscape mode */
+@media (min-width: 744px) and (max-width: 1200px) and (orientation: landscape) {
+    :root {
+        --content-max-width: 480px;
+        --content-padding: 1.5rem;
+        --title-size: 1.9rem;
+    }
+}
+
+/* Mobile - Larger phones (iPhone 14 Pro Max, etc) */
+@media (max-width: 430px) {
+    :root {
+        --content-max-width: 100%;
+        --content-padding: 1rem;
+        --title-size: 1.6rem;
+    }
+}
+
+/* Mobile - Standard phones (iPhone 14, 13, 12) */
+@media (max-width: 390px) {
+    :root {
+        --content-max-width: 100%;
+        --content-padding: 0.75rem;
+        --title-size: 1.4rem;
+    }
+}
+
+/* Mobile - Smaller phones (iPhone SE) */
+@media (max-width: 375px) {
+    :root {
+        --content-max-width: 100%;
+        --content-padding: 0.5rem;
+        --title-size: 1.3rem;
+    }
+}
+
+/* Mobile - Very small screens */
+@media (max-width: 320px) {
+    :root {
+        --content-max-width: 100%;
+        --content-padding: 0.25rem;
+        --title-size: 1.1rem;
+    }
+}

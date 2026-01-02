@@ -1,0 +1,193 @@
+/**
+ * BACKGROUND LOGO SYSTEM
+ * 
+ * Viewport-based sizing with Stark-tech HUD recalibration animations.
+ * Only for background/hero logos - not navigation or inline logos.
+ */
+
+/* ============================================
+   BASE BACKGROUND LOGO SIZING
+   ============================================ */
+
+.background-logo,
+[data-role="background-logo"] {
+    /* Base size: 85% of larger viewport dimension */
+    width: 85vmax;
+    height: 85vmax;
+    
+    /* Constrain to prevent overflow on extreme aspect ratios */
+    max-width: 85vw;
+    max-height: 85vh;
+    
+    /* Maintain aspect ratio */
+    object-fit: contain;
+    display: block;
+    position: relative;
+    
+    /* GPU-accelerated rendering hint */
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    
+    /* Base transition - mechanical precision */
+    transition: 
+        transform 280ms cubic-bezier(0.4, 0.0, 0.2, 1),
+        opacity 280ms cubic-bezier(0.4, 0.0, 0.2, 1),
+        filter 280ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Mobile-safe viewport units with svh support */
+@supports (height: 1svh) {
+    .background-logo,
+    [data-role="background-logo"] {
+        max-height: 85svh;
+    }
+}
+
+/* Use svmax when available for dynamic chrome handling */
+@supports (width: 1svmax) {
+    .background-logo,
+    [data-role="background-logo"] {
+        width: 85svmax;
+        height: 85svmax;
+    }
+}
+
+/* ============================================
+   STARK-TECH HUD RECALIBRATION ANIMATIONS
+   ============================================ */
+
+/* Viewport resize animation - feels like HUD recalculating */
+@media (prefers-reduced-motion: no-preference) {
+    .background-logo,
+    [data-role="background-logo"] {
+        /* Smooth recalibration during orientation/resize */
+        animation-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+}
+
+/* Orientation change - deliberate mechanical recalibration */
+@media (orientation: portrait) {
+    .background-logo,
+    [data-role="background-logo"] {
+        /* Portrait sizing optimization */
+        transform: translateZ(0) scale(1);
+    }
+}
+
+@media (orientation: landscape) {
+    .background-logo,
+    [data-role="background-logo"] {
+        /* Landscape sizing optimization */
+        transform: translateZ(0) scale(1);
+    }
+}
+
+/* ============================================
+   PAGE TRANSITION STATES
+   ============================================ */
+
+/* Entering - HUD powering up */
+.background-logo--entering,
+[data-role="background-logo"][data-state="entering"] {
+    opacity: 0;
+    transform: translateZ(0) scale(0.92);
+    filter: blur(8px) brightness(1.2);
+    transition: 
+        transform 350ms cubic-bezier(0.0, 0.0, 0.2, 1),
+        opacity 350ms cubic-bezier(0.0, 0.0, 0.2, 1),
+        filter 350ms cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+/* Active - stable state */
+.background-logo--active,
+[data-role="background-logo"][data-state="active"] {
+    opacity: 1;
+    transform: translateZ(0) scale(1);
+    filter: none;
+}
+
+/* Exiting - HUD powering down */
+.background-logo--exiting,
+[data-role="background-logo"][data-state="exiting"] {
+    opacity: 0;
+    transform: translateZ(0) scale(1.08);
+    filter: blur(8px) brightness(0.8);
+    transition: 
+        transform 280ms cubic-bezier(0.4, 0.0, 1.0, 1.0),
+        opacity 280ms cubic-bezier(0.4, 0.0, 1.0, 1.0),
+        filter 280ms cubic-bezier(0.4, 0.0, 1.0, 1.0);
+}
+
+/* ============================================
+   ACCESSIBILITY & PERFORMANCE
+   ============================================ */
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .background-logo,
+    [data-role="background-logo"] {
+        animation: none;
+        transition: none;
+        will-change: auto;
+    }
+}
+
+/* Remove will-change after transitions complete */
+.background-logo:not(:hover):not(:focus),
+[data-role="background-logo"]:not(:hover):not(:focus) {
+    will-change: auto;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+/* Tablet optimization - stable sizing across orientations */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .background-logo,
+    [data-role="background-logo"] {
+        /* Smooth transition during tablet orientation changes */
+        transition-duration: 320ms;
+    }
+}
+
+/* Large desktop - prevent excessive sizing */
+@media (min-width: 1920px) {
+    .background-logo,
+    [data-role="background-logo"] {
+        /* Cap at reasonable size for large displays */
+        max-width: 1632px; /* 85% of 1920px */
+        max-height: 1020px; /* 85% of 1200px typical height */
+    }
+}
+
+/* Ultra-wide displays */
+@media (min-aspect-ratio: 21/9) {
+    .background-logo,
+    [data-role="background-logo"] {
+        /* Bias toward height on ultra-wide displays */
+        width: auto;
+        height: 85vh;
+        max-width: 85vw;
+    }
+    
+    @supports (height: 1svh) {
+        .background-logo,
+        [data-role="background-logo"] {
+            height: 85svh;
+        }
+    }
+}
+
+/* ============================================
+   HOVER/INTERACTION STATES (OPTIONAL)
+   ============================================ */
+
+/* Subtle interaction feedback for interactive background logos */
+.background-logo--interactive:hover,
+[data-role="background-logo"][data-interactive="true"]:hover {
+    transform: translateZ(0) scale(1.02);
+    filter: brightness(1.1);
+    transition-duration: 180ms;
+}

@@ -32,8 +32,56 @@
     gap: 0.5rem;
 }
 
+@media (max-width: 1200px) {
+    .funds {
+        padding: 1rem 1.5rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .funds {
+        padding: 0.75rem 1rem;
+    }
+    
+    .headerRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+}
+
+@media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+}
+
 @media (max-width: 768px) {
     .grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 430px) {
+    .funds {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .headerActions {
+        width: 100%;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 390px) {
+    .funds {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .grid {
+        gap: 0.75rem;
     }
 }

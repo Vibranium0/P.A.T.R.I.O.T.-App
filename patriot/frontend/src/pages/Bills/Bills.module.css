@@ -326,3 +326,58 @@ input[type="date"].modalInput::-ms-expand {
   padding-left: 1.2rem;
   text-indent: 0.8rem;
 }
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+@media (max-width: 1200px) {
+  .modalForm {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .modalCreateButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .modalTitle {
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
+  .modalForm {
+    gap: 1.2rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .modalInput {
+    font-size: 1rem;
+    padding: 0.75rem 0.9rem;
+  }
+  
+  .modalTitle {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .inputSymbol {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .modalForm {
+    gap: 0.9rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .modalInput {
+    padding: 0.65rem 0.8rem;
+  }
+}

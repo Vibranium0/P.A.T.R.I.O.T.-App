@@ -1,12 +1,14 @@
 from flask import Flask
-from config import Config
-from database import db
-from routes.auth_routes import auth_bp
+from flask_cors import CORS
+from sentinel_login.backend.config import Config
+from sentinel_login.backend.database import db
+from sentinel_login.backend.routes.auth_routes import auth_bp
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 app.config.from_object(Config)
+CORS(app)
 
 # Initialize extensions
 bcrypt = Bcrypt(app)

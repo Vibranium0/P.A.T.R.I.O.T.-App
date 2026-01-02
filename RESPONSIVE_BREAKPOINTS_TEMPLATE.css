@@ -1,0 +1,50 @@
+/**
+ * PATRIOT APP - STANDARD RESPONSIVE BREAKPOINTS
+ * 
+ * Add these to the bottom of any Patriot page CSS file for consistent mobile support.
+ * Adjust the class names to match your specific page (e.g., .page, .grid, .container, etc.)
+ */
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Desktop - Large screens */
+@media (max-width: 1200px) {
+    /* Reduce grid columns, adjust spacing */
+}
+
+/* Tablet - iPad and similar */
+@media (max-width: 900px) {
+    /* Single column layouts, increase touch targets */
+}
+
+/* Tablet Portrait - iPad in portrait mode */
+@media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
+    /* Optimize for tall narrow viewport */
+}
+
+/* Tablet Landscape - iPad in landscape mode */
+@media (min-width: 744px) and (max-width: 1200px) and (orientation: landscape) {
+    /* Optimize for wide short viewport */
+}
+
+/* Mobile - Larger phones (iPhone 14 Pro Max, etc) */
+@media (max-width: 430px) {
+    /* Compact layouts, larger fonts for readability */
+}
+
+/* Mobile - Standard phones (iPhone 14, 13, 12) */
+@media (max-width: 390px) {
+    /* Further reduce spacing and font sizes */
+}
+
+/* Mobile - Smaller phones (iPhone SE) */
+@media (max-width: 375px) {
+    /* Minimal spacing, ensure content fits */
+}
+
+/* Mobile - Very small screens */
+@media (max-width: 320px) {
+    /* Fallback for very small devices */
+}

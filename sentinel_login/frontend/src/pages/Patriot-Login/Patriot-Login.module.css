@@ -57,7 +57,8 @@
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: 100svh; /* Mobile-safe viewport height */
     width: 100vw;
     position: fixed;
     inset: 0;
@@ -71,35 +72,36 @@
     inset: 0;
     z-index: 2;
     pointer-events: auto;
-    height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: 100svh; /* Mobile-safe */
     width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .logoLayer {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
     z-index: 2;
     pointer-events: none;
     width: 100vw;
-    height: 100vh;
-    display: grid;
-    place-items: center;
+    min-height: 100vh; /* Fallback */
+    min-height: 100svh; /* Mobile-safe */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .formLayer {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
     z-index: 100;
-    width: 100vw;
-    height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     pointer-events: auto;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .loginStack {
@@ -115,8 +117,10 @@
 }
 
 .logo {
-    height: 85vh;
-    max-height: 85vh;
+    height: 85vh; /* Fallback */
+    height: 85svh; /* Mobile-safe */
+    max-height: 85vh; /* Fallback */
+    max-height: 85svh; /* Mobile-safe */
     width: auto;
     max-width: 85vw;
     object-fit: contain;
@@ -133,10 +137,11 @@
 .cardWrapper {
     z-index: 101;
     width: 100%;
-    max-width: 420px;
+    max-width: 480px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 24px;
 }
 
 .loginStack {
@@ -150,25 +155,9 @@
     pointer-events: auto;
 }
 
-.logo {
-    height: 85vh;
-    max-height: 85vh;
-    width: auto;
-    max-width: 85vw;
-    object-fit: contain;
-    display: block;
-    z-index: 3;
-    position: relative;
-    filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
-    opacity: 0.55;
-    transition: opacity 0.3s, filter 0.3s;
-    pointer-events: none;
-    margin: 0;
-}
-
 .loginForm {
     width: 100%;
-    max-width: 420px;
+    max-width: 480px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -192,19 +181,112 @@
     mix-blend-mode: overlay;
 }
 
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
 
-.logo {
-    height: 85vh;
-    max-height: 85vh;
-    width: auto;
-    max-width: 85vw;
-    object-fit: contain;
-    display: block;
-    z-index: 3;
-    position: relative;
-    filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
-    opacity: 0.55;
-    transition: opacity 0.3s, filter 0.3s;
-    pointer-events: none;
-    margin: 0;
+/* Desktop - Large screens */
+@media (max-width: 1200px) {
+    .patriotTitle {
+        font-size: 2.3rem;
+    }
+    
+    .loginStack,
+    .cardWrapper {
+        max-width: 480px;
+    }
+}
+
+/* Tablet - iPad and similar */
+@media (max-width: 900px) {
+    .patriotTitle {
+        font-size: 2rem;
+    }
+    
+    .loginStack,
+    .cardWrapper,
+    .loginForm {
+        max-width: 480px;
+    }
+}
+
+/* Tablet Portrait - iPad in portrait mode */
+@media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
+    .patriotTitle {
+        font-size: 2.2rem;
+        margin-bottom: 28px;
+    }
+    
+    .loginStack,
+    .cardWrapper,
+    .loginForm {
+        max-width: 480px;
+    }
+}
+
+/* Tablet Landscape - iPad in landscape mode */
+@media (min-width: 744px) and (max-width: 1200px) and (orientation: landscape) {
+    .patriotTitle {
+        font-size: 1.9rem;
+        margin-bottom: 24px;
+    }
+    
+    .loginStack,
+    .cardWrapper,
+    .loginForm {
+        max-width: 480px;
+    }
+}
+
+/* Mobile - Larger phones (iPhone 14 Pro Max, etc) */
+@media (max-width: 430px) {
+    .patriotTitle {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        letter-spacing: 0.12em;
+    }
+    
+    .loginStack,
+    .cardWrapper,
+    .loginForm {
+        max-width: 100%;
+    }
+    
+    .formLayer {
+        padding: 1rem;
+    }
+
+    .background {
+        background-attachment: scroll;
+    }
+}
+
+/* Mobile - Standard phones (iPhone 14, 13, 12) */
+@media (max-width: 390px) {
+    .patriotTitle {
+        font-size: 1.3rem;
+        margin-bottom: 16px;
+    }
+    
+    .loginStack,
+    .cardWrapper {
+        /* No padding needed */
+    }
+}
+
+/* Mobile - Smaller phones (iPhone SE) */
+@media (max-width: 375px) {
+    .patriotTitle {
+        font-size: 1.2rem;
+        margin-bottom: 14px;
+        letter-spacing: 0.1em;
+    }
+}
+
+/* Mobile - Very small screens */
+@media (max-width: 320px) {
+    .patriotTitle {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
 }
