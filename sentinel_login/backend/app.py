@@ -8,7 +8,9 @@ from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CORS(app)
+
+# Configure CORS to allow credentials (for HttpOnly cookies)
+CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://127.0.0.1:5173"])
 
 # Initialize extensions
 bcrypt = Bcrypt(app)

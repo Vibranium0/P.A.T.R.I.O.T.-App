@@ -10,6 +10,7 @@ export default function TextBox({ value, onChange, placeholder = 'Bill Name', ..
                 value={value}
                 onChange={e => onChange(e.target.value)}
                 placeholder={placeholder}
+                autoCapitalize="off"
                 {...props}
             />
         </div>

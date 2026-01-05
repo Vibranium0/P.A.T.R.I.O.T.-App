@@ -1,6 +1,7 @@
 
 import Layout from "../../../shared/ui/components/Layout/Layout.jsx";
-
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import TokenHandler from "./components/TokenHandler.jsx";
 
 // Pages
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
@@ -15,77 +16,95 @@ import Accounts from "./pages/Accounts/Accounts.jsx";
 
 export default function App() {
   return (
-    <Routes>
-      <Route
-        path="/login"
-        element={<PatriotLogin />}
-      />
+    <TokenHandler>
+      <Routes>
+        <Route
+          path="/login"
+          element={<PatriotLogin />}
+        />
       <Route
         path="/accounts"
         element={
-          <Layout>
-            <Accounts />
-          </Layout>
+          <ProtectedRoute>
+            <Layout>
+              <Accounts />
+            </Layout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/"
         element={
-          <Layout>
-            <Dashboard />
-          </Layout>
+          <ProtectedRoute>
+            <Layout>
+              <Dashboard />
+            </Layout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/dashboard"
         element={
-          <Layout>
-            <Dashboard />
-          </Layout>
+          <ProtectedRoute>
+            <Layout>
+              <Dashboard />
+            </Layout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/bills"
         element={
-          <Layout>
-            <Bills />
-          </Layout>
+          <ProtectedRoute>
+            <Layout>
+              <Bills />
+            </Layout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/funds"
         element={
-          <Layout>
-            <Funds />
-          </Layout>
+          <ProtectedRoute>
+            <Layout>
+              <Funds />
+            </Layout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/income"
         element={
-          <Layout>
-            <Income />
-          </Layout>
+          <ProtectedRoute>
+            <Layout>
+              <Income />
+            </Layout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/reports"
         element={
-          <Layout>
-            <Reports />
-          </Layout>
+          <ProtectedRoute>
+            <Layout>
+              <Reports />
+            </Layout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/settings"
         element={
-          <Layout>
-            <Settings />
-          </Layout>
+          <ProtectedRoute>
+            <Layout>
+              <Settings />
+            </Layout>
+          </ProtectedRoute>
         }
       />
       {/* Catch-all redirect */}
       <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
+    </TokenHandler>
   );
 }

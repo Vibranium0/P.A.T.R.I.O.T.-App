@@ -25,6 +25,11 @@ class Config:
         minutes=int(os.getenv("JWT_ACCESS_MINUTES", "30"))
     )
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=int(os.getenv("JWT_REFRESH_DAYS", "7")))
+    
+    # JWT Cookie Configuration (for HttpOnly cookies)
+    JWT_TOKEN_LOCATION = ["headers", "cookies"]  # Accept JWT from both headers and cookies
+    JWT_COOKIE_SECURE = os.getenv("JWT_COOKIE_SECURE", "False").lower() in ("true", "1", "yes")  # Set to True in production with HTTPS
+    JWT_COOKIE_CSRF_PROTECT = False  # Disable CSRF protection (using SameSite instead)
 
     # Email Configuration removed (no email verification)
 

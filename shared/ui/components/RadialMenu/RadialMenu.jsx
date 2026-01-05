@@ -48,8 +48,18 @@ const RadialMenu = () => {
     return () => document.removeEventListener("mousedown", onOutside);
   }, []);
 
-  const handleNavigate = (path) => {
+  const handleNavigate = (path, item) => {
     setOpen(false);
+    
+    // Handle logout - clear all auth data and redirect to login
+    if (item.name === "Logout") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("remember_me");
+      navigate(path);
+      return;
+    }
+    
     navigate(path);
   };
 
@@ -70,7 +80,7 @@ const RadialMenu = () => {
                 "--radius": `${radius}px`,
                 "--delay": `${index * 0.05}s`,
               }}
-              onClick={() => handleNavigate(item.path)}
+              onClick={() => handleNavigate(item.path, item)}
             >
               {item.icon}
             </button>

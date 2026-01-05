@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app, make_response
 from datetime import datetime, timedelta
 import secrets
 from flask_jwt_extended import (
@@ -87,23 +87,80 @@ def validate():
 
 
 @auth_bp.route("/refresh", methods=["POST"])
-@jwt_required(refresh=True)
+@jwt_required(refresh=True, locations=["cookies"])
 def refresh():
     """
-    Issue a new access token using a valid refresh token.
-    Expects Authorization: Bearer <refresh_token>
+    Issue a new access token using a valid refresh token from HttpOnly cookie.
+    Also issues a new refresh token to implement token rotation.
     """
     current_user_id = get_jwt_identity()
     user = User.query.get(int(current_user_id))
     if not user:
         return jsonify({"error": "user not found"}), 404
+    
+    # Get remember_me preference from request body if provided
+    data = request.get_json() or {}
+    remember_me = data.get("remember_me", False)
+    
+    # Set token durations based on remember_me
+    access_expires = timedelta(days=30) if remember_me else timedelta(days=1)
+    refresh_expires = timedelta(days=90) if remember_me else timedelta(days=7)
+    
     additional_claims = {"household_id": user.default_household_id}
     access_token = create_access_token(
         identity=str(user.id),
         additional_claims=additional_claims,
-        expires_delta=timedelta(days=1),
+        expires_delta=access_expires,
     )
-    return jsonify({"access_token": access_token}), 200
+    
+    # Issue new refresh token (token rotation for security)
+    new_refresh_token = create_refresh_token(
+        identity=str(user.id),
+        expires_delta=refresh_expires
+    )
+    
+    response = make_response(
+        jsonify({"access_token": access_token}),
+        200
+    )
+    
+    # Set new refresh token as HttpOnly cookie
+    response.set_cookie(
+        "refresh_token_cookie",  # Flask-JWT-Extended default name
+        value=new_refresh_token,
+        httponly=True,
+        secure=current_app.config.get("JWT_COOKIE_SECURE", False),
+        samesite="Lax",
+        max_age=int(refresh_expires.total_seconds()),
+        path="/",
+    )
+    
+    return response
+
+
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+    """
+    Logout by clearing the refresh token cookie.
+    Access token in memory will be discarded by frontend.
+    """
+    response = make_response(
+        jsonify({"message": "logged out successfully"}),
+        200
+    )
+    
+    # Clear the refresh token cookie
+    response.set_cookie(
+        "refresh_token_cookie",  # Flask-JWT-Extended default name
+        value="",
+        httponly=True,
+        secure=current_app.config.get("JWT_COOKIE_SECURE", False),
+        samesite="Lax",
+        max_age=0,  # Expire immediately
+        path="/",
+    )
+    
+    return response
 
 
 @auth_bp.route("/register", methods=["POST"])
@@ -183,6 +240,7 @@ def login():
     data = request.get_json()
     identifier = data.get("username")
     password = data.get("password")
+    remember_me = data.get("remember_me", False)
 
     if not identifier or not password:
         return jsonify({"error": "username and password required"}), 400
@@ -198,30 +256,53 @@ def login():
         return jsonify({"error": "user not found"}), 404
 
     bcrypt = Bcrypt(current_app)
-    if not bcrypt.check_password_hash(user.password, password):
+    if not bcrypt.check_password_hash(user.password_hash, password):
         return jsonify({"error": "invalid password"}), 401
 
     # Include household_id in JWT claims
     additional_claims = {"household_id": user.default_household_id}
+    
+    # Extend token duration if remember_me is true
+    access_expires = timedelta(days=30) if remember_me else timedelta(days=1)
+    refresh_expires = timedelta(days=90) if remember_me else timedelta(days=7)
+    
     access_token = create_access_token(
         identity=str(user.id),
         additional_claims=additional_claims,
-        expires_delta=timedelta(days=1),
+        expires_delta=access_expires,
     )
-    refresh_token = create_refresh_token(identity=str(user.id))
+    refresh_token = create_refresh_token(
+        identity=str(user.id),
+        expires_delta=refresh_expires
+    )
 
-    return (
+    # Create response with access token in body
+    response = make_response(
         jsonify(
             {
                 "access_token": access_token,
-                "refresh_token": refresh_token,
                 "username": user.username,
                 "email": user.email,
                 "household_id": user.default_household_id,
+                "remember_me": remember_me,
             }
         ),
         200,
     )
+    
+    # Set refresh token as HttpOnly cookie (XSS protection)
+    # Flask-JWT-Extended expects specific cookie names
+    response.set_cookie(
+        "refresh_token_cookie",  # Flask-JWT-Extended default name
+        value=refresh_token,
+        httponly=True,
+        secure=current_app.config.get("JWT_COOKIE_SECURE", False),  # True in production with HTTPS
+        samesite="Lax",  # CSRF protection
+        max_age=int(refresh_expires.total_seconds()),
+        path="/",
+    )
+    
+    return response
 
 
 @auth_bp.route("/test-jwt", methods=["GET"])

@@ -1,0 +1,147 @@
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 6px;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.checkboxBox {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border: 2px solid;
+}
+
+.icon {
+  transition: transform 0.2s ease;
+}
+
+.checked .icon {
+  animation: checkboxPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes checkboxPop {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.label {
+  font-size: 15px;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+/* Variant styles */
+.primary .checkboxBox {
+  border-color: rgba(31, 143, 255, 0.3);
+}
+
+.primary .checkboxBox.checked {
+  border-color: var(--primary);
+  background: rgba(31, 143, 255, 0.08);
+  box-shadow: 0 0 10px var(--glow-primary);
+  backdrop-filter: blur(6px);
+}
+
+.primary .icon {
+  color: var(--primary);
+}
+
+.primary .label {
+  color: var(--text-secondary);
+}
+
+.primary:has(.checked) .label {
+  color: var(--primary);
+}
+
+.success .checkboxBox {
+  border-color: var(--accent-light);
+  background: rgba(129, 140, 151, 0.08);
+  backdrop-filter: blur(6px);
+}
+
+.success .checkboxBox.checked {
+  border-color: var(--success);
+  background: rgba(33, 197, 93, 0.08);
+  box-shadow: 0 0 10px var(--glow-success);
+  backdrop-filter: blur(6px);
+}
+
+.success .icon {
+  color: var(--success);
+}
+
+.success .label {
+  color: var(--accent-light);
+}
+
+.success:has(.checked) .label {
+  color: var(--success);
+}
+
+.secondary .checkboxBox {
+  border-color: var(--accent-light);
+}
+
+.secondary .checkboxBox.checked {
+  border-color: var(--accent);
+  background: rgba(129, 140, 151, 0.08);
+  box-shadow: 0 0 10px rgba(129, 140, 151, 0.3);
+  backdrop-filter: blur(6px);
+}
+
+.secondary .icon {
+  color: var(--accent);
+}
+
+.secondary .label {
+  color: var(--text-secondary);
+}
+
+.secondary:has(.checked) .label {
+  color: var(--accent);
+}
+
+.danger .checkboxBox {
+  border-color: rgba(255, 82, 82, 0.3);
+}
+
+.danger .checkboxBox.checked {
+  border-color: var(--danger);
+  background: rgba(255, 82, 82, 0.08);
+  box-shadow: 0 0 10px var(--glow-danger);
+  backdrop-filter: blur(6px);
+}
+
+.danger .icon {
+  color: var(--danger);
+}
+
+.danger .label {
+  color: var(--text-secondary);
+}
+
+.danger:has(.checked) .label {
+  color: var(--danger);
+}

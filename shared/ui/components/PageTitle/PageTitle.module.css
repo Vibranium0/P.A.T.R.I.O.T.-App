@@ -1,6 +1,6 @@
 .pageTitle {
     font-family: 'Orbitron', 'Exo 2', sans-serif;
-    font-size: 42px;
+    font-size: clamp(24px, 5.5vw, 36px);
     font-weight: 900;
     letter-spacing: 0.18em;
     line-height: 1.2;
@@ -9,9 +9,27 @@
     text-shadow: 0 0 24px var(--glow-primary), 0 0 12px var(--glow-primary), 0 1px 8px rgba(0, 0, 0, 0.8);
     margin-bottom: 20px;
     margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
     z-index: 100;
     position: relative;
     white-space: nowrap;
+    max-width: 100%;
+    width: 100%;
+    display: block;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* Chrome/Edge specific - smaller font size and tighter letter spacing */
+@supports (-webkit-app-region: no-drag) {
+    .pageTitle {
+        font-size: clamp(22px, 5vw, 32px);
+        letter-spacing: 0.14em;
+        margin-bottom: 28px;
+    }
 }
 
 .pageTitle::before {
@@ -31,21 +49,21 @@
 /* Desktop - Large screens */
 @media (max-width: 1200px) {
     .pageTitle {
-        font-size: 34px;
+        font-size: clamp(22px, 5vw, 32px);
     }
 }
 
 /* Tablet - iPad and similar */
 @media (max-width: 900px) {
     .pageTitle {
-        font-size: 30px;
+        font-size: clamp(20px, 4.5vw, 28px);
     }
 }
 
 /* Tablet Portrait - iPad in portrait mode */
 @media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
     .pageTitle {
-        font-size: 35px;
+        font-size: clamp(22px, 4.8vw, 30px);
         margin-bottom: 28px;
     }
 }
@@ -53,7 +71,7 @@
 /* Tablet Landscape - iPad in landscape mode */
 @media (min-width: 744px) and (max-width: 1200px) and (orientation: landscape) {
     .pageTitle {
-        font-size: 30px;
+        font-size: clamp(20px, 4.5vw, 28px);
         margin-bottom: 24px;
     }
 }
@@ -61,7 +79,7 @@
 /* Mobile - Larger phones (iPhone 14 Pro Max, etc) */
 @media (max-width: 430px) {
     .pageTitle {
-        font-size: 24px;
+        font-size: clamp(18px, 5vw, 22px);
         margin-bottom: 20px;
         letter-spacing: 0.12em;
     }

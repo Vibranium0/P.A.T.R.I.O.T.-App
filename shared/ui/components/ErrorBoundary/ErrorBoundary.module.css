@@ -1,0 +1,138 @@
+.errorContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, 
+    rgba(10, 15, 25, 0.95) 0%, 
+    rgba(20, 30, 45, 0.95) 100%);
+}
+
+.errorCard {
+  max-width: 600px;
+  width: 100%;
+  padding: 48px;
+  background: rgba(30, 40, 60, 0.8);
+  border: 1px solid var(--accent-light);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+              0 0 20px rgba(31, 143, 255, 0.1);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.errorIcon {
+  font-size: 64px;
+  margin-bottom: 24px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.errorTitle {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--danger);
+  margin-bottom: 16px;
+  font-family: 'Exo 2', sans-serif;
+  text-shadow: 0 0 10px var(--glow-danger);
+}
+
+.errorMessage {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  line-height: 1.6;
+  font-family: 'Exo 2', sans-serif;
+}
+
+.errorDetails {
+  margin: 24px 0;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--accent-dark);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.errorDetails summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 12px;
+  user-select: none;
+  font-family: 'Exo 2', sans-serif;
+}
+
+.errorDetails summary:hover {
+  color: var(--primary);
+}
+
+.errorStack {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
+}
+
+.errorStack p {
+  margin-bottom: 12px;
+}
+
+.errorStack pre {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.errorActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.errorActions button {
+  min-width: 120px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .errorCard {
+    padding: 32px 24px;
+  }
+
+  .errorIcon {
+    font-size: 48px;
+  }
+
+  .errorTitle {
+    font-size: 24px;
+  }
+
+  .errorMessage {
+    font-size: 14px;
+  }
+
+  .errorActions {
+    flex-direction: column;
+  }
+
+  .errorActions button {
+    width: 100%;
+  }
+}
