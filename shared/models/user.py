@@ -16,6 +16,11 @@ def create_user_model(db):
         theme = db.Column(db.String(50), default="light")
         password_hash = db.Column(db.String(128), nullable=False)
         is_active = db.Column(db.Boolean, default=True)
+        
+        # Sentinel-login specific fields
+        default_household_id = db.Column(db.Integer, db.ForeignKey("households.id"), nullable=True)
+        security_question = db.Column(db.String(255), nullable=True)
+        security_answer = db.Column(db.String(255), nullable=True)
 
         def to_dict(self):
             return {

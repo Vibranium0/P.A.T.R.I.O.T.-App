@@ -9,9 +9,11 @@ import styles from "./Patriot-Login.module.css";
 import logo from '../../assets/patriot/logo.png';
 import Button from "shared/ui/components/Button/Button";
 import TextBox from "shared/ui/components/TextBox/TextBox";
+import PasswordTextBox from "shared/ui/components/PasswordTextBox";
 import AnimatedCard from "shared/ui/components/AnimatedCard";
 import Card from "shared/ui/components/Card/Card";
 import ShakeOnError from "shared/ui/components/ShakeOnError";
+import { PageTitle } from "shared/ui/components/PageTitle";
 
 import { useTransitionOverlay } from "../../TransitionOverlayContext.jsx";
 
@@ -91,16 +93,17 @@ const PatriotLogin = () => {
               <div className={styles.centerOverlay}>
                 <div className={styles.formLayer}>
                   <div className={styles.cardWrapper}>
-                    <motion.h1
-                      className={styles.patriotTitle}
-                      initial={{ opacity: 0, y: 32, scale: 0.98 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ duration: 0.45, ease: "easeOut" }}
-                    >
-                      P.A.T.R.I.O.T.
-                    </motion.h1>
                     <AnimatedCard>
                       <Card>
+                        <PageTitle>P.A.T.R.I.O.T.</PageTitle>
+                        <motion.p
+                          className={styles.subtitle}
+                          initial={{ opacity: 0, y: 16 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.45, ease: "easeOut", delay: 0.15 }}
+                        >
+                          Personalized Accounting & Tactical Resource Intelligence for Organized Tracking
+                        </motion.p>
                         <form
                           className={styles.loginForm}
                           onSubmit={handleSubmit}
@@ -113,11 +116,10 @@ const PatriotLogin = () => {
                             autoComplete="username"
                             required
                           />
-                          <TextBox
+                          <PasswordTextBox
                             value={password}
                             onChange={setPassword}
                             placeholder="Password"
-                            type="password"
                             autoComplete="current-password"
                             required
                           />
@@ -164,7 +166,15 @@ const PatriotLogin = () => {
                         <div style={{ marginTop: 18, textAlign: "center", fontFamily: "'Exo 2', 'Exo2', sans-serif" }}>
                           <a
                             href="#"
-                            style={{ color: "var(--primary)", textDecoration: "underline", fontSize: 15, cursor: "pointer", marginBottom: 8, display: "inline-block", fontFamily: "inherit" }}
+                            style={{ 
+                              color: "var(--primary)", 
+                              textDecoration: "underline", 
+                              fontSize: 15, 
+                              cursor: "pointer", 
+                              marginBottom: 8, 
+                              display: "inline-block", 
+                              fontFamily: "inherit"
+                            }}
                             onClick={e => {
                               e.preventDefault();
                               triggerTransition(() => navigate("/reset-password"), "right");
@@ -173,11 +183,20 @@ const PatriotLogin = () => {
                             Forgot password?
                           </a>
                           <br />
-                          <span style={{ color: "var(--text-secondary)", fontSize: 15, fontFamily: "inherit" }}>
+                          <span style={{ 
+                            color: "var(--text-secondary)", 
+                            fontSize: 15, 
+                            fontFamily: "inherit"
+                          }}>
                             Don&apos;t have an account?{' '}
                             <a
                               href="#"
-                              style={{ color: "var(--primary)", textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
+                              style={{ 
+                                color: "var(--primary)", 
+                                textDecoration: "underline", 
+                                cursor: "pointer", 
+                                fontFamily: "inherit"
+                              }}
                               onClick={e => {
                                 e.preventDefault();
                                 triggerTransition(() => navigate("/register", { state: { from: "/patriot-login" } }), "right");

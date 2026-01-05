@@ -130,6 +130,14 @@ def register():
             400,
         )
 
+    # Validate field lengths
+    if len(username) > 80:
+        return jsonify({"error": "username must be 80 characters or less"}), 400
+    if len(security_question) > 255:
+        return jsonify({"error": "security question must be 255 characters or less"}), 400
+    if len(security_answer) > 255:
+        return jsonify({"error": "security answer must be 255 characters or less"}), 400
+
     existing = User.query.filter(
         (User.username == username)
     ).first()
@@ -139,21 +147,35 @@ def register():
     bcrypt = Bcrypt(current_app)
     hashed = bcrypt.generate_password_hash(password).decode("utf-8")
 
-    # Create a new household for the user
-    household = Household()
-    db.session.add(household)
-    db.session.flush()  # get household.id before commit
+    # Use username as email if email not provided (for backward compatibility)
+    email = data.get("email", f"{username}@sentinel.local")
+    
+    try:
+        user = User(
+            username=username,
+            email=email,
+            password_hash=hashed,
+            security_question=security_question,
+            security_answer=security_answer,
+        )
+        db.session.add(user)
+        db.session.flush()  # get user.id before creating household
 
-    user = User(
-        username=username,
-        password=hashed,
-        default_household_id=household.id,
-        security_question=security_question,
-        security_answer=security_answer,
-    )
-    db.session.add(user)
-    db.session.commit()
-    return jsonify({"message": "registered"}), 201
+        # Create a new household for the user with required fields
+        household = Household(
+            name=f"{username}'s Household"
+        )
+        db.session.add(household)
+        db.session.flush()  # get household.id before commit
+
+        # Update user's default household
+        user.default_household_id = household.id
+        db.session.commit()
+        return jsonify({"message": "registered"}), 201
+    except Exception as e:
+        db.session.rollback()
+        print(f"Registration error: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 
 @auth_bp.route("/login", methods=["POST"])

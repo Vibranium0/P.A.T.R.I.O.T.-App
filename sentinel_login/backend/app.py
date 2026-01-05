@@ -20,6 +20,12 @@ app.register_blueprint(auth_bp, url_prefix="/auth")
 
 if __name__ == "__main__":
     with app.app_context():
-        db.create_all()
-        print("✅ Sentinel database tables created.")
+        # Only create tables if they don't exist (migration script handles schema updates)
+        from sqlalchemy import text
+        result = db.session.execute(text("SELECT name FROM sqlite_master WHERE type='table' AND name='users'"))
+        if not result.fetchone():
+            db.create_all()
+            print("✅ Sentinel database tables created.")
+        else:
+            print("✅ Sentinel database tables already exist.")
     app.run(debug=True, host="0.0.0.0", port=5001)

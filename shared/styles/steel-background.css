@@ -1,0 +1,64 @@
+/* ==========================================================================
+   SHARED STEEL BACKGROUND SYSTEM
+   Centralized brushed steel texture with CSS-based color overlays
+   ========================================================================== */
+
+:root {
+  /* Default overlay for steel texture - can be overridden per theme */
+  --steel-overlay-color: rgba(12, 9, 9, 0.25);
+  
+  /* Path to shared steel texture - relative paths will be resolved per app */
+  --steel-texture-path: url("../../sentinel_login/frontend/src/assets/sentinel-login/gun_metal_texture.jpg");
+}
+
+/* ==========================================================================
+   STEEL BACKGROUND BASE CLASS
+   Apply to any container that needs the steel texture background
+   ========================================================================== */
+
+.steel-background {
+  /* Layer structure (bottom to top):
+     1. Base steel texture
+     2. Color overlay (controlled via --steel-overlay-color)
+  */
+  background: 
+    linear-gradient(
+      var(--steel-overlay-color),
+      var(--steel-overlay-color)
+    ),
+    var(--steel-texture-path);
+  
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  
+  /* GPU acceleration for smooth transitions */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Mobile optimization - prevent fixed attachment jank */
+@media (max-width: 430px) {
+  .steel-background {
+    background-attachment: scroll;
+  }
+}
+
+/* ==========================================================================
+   HELPER: Blue Steel Effect (for P.A.T.R.I.O.T.)
+   Navy overlay creates brushed blue steel appearance
+   ========================================================================== */
+
+.blue-steel-effect {
+  --steel-overlay-color: rgba(15, 30, 51, 0.25);
+}
+
+/* ==========================================================================
+   HELPER: Dark Steel Effect (for Sentinel)
+   Subtle darkening for iron-black aesthetic
+   ========================================================================== */
+
+.dark-steel-effect {
+  --steel-overlay-color: rgba(12, 9, 9, 0.25);
+}

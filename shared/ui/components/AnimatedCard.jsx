@@ -20,7 +20,7 @@ const AnimatedCard = ({ children, style, ...props }) => (
         initial="hidden"
         animate="visible"
         variants={mountVariants}
-        style={style}
+        style={{ width: '100%', ...style }}
         {...props}
     >
         {children}

@@ -22,37 +22,21 @@
 
 /* Color palette is now provided by the app root or per-page theme. */
 
-.patriotTitle {
-    font-family: 'Orbitron', 'Exo 2', sans-serif;
-    font-size: 2.6rem;
-    font-weight: 900;
-    letter-spacing: 0.18em;
-    color: var(--text-primary);
+.subtitle {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--accent-light);
     text-align: center;
-    text-shadow: 0 2px 24px rgba(31, 143, 255, 0.18), 0 1px 0 #000;
-    margin-bottom: 32px;
-    margin-top: 0;
-    z-index: 100;
-    position: relative;
-}
-
-.patriotTitle::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 120%;
-    height: 90%;
-    background: radial-gradient(ellipse at center, rgba(31, 143, 255, 0.22) 0%, rgba(31, 143, 255, 0.08) 60%, transparent 100%);
-    filter: blur(12px);
-    z-index: -1;
-    pointer-events: none;
+    margin-bottom: 20px;
+    margin-top: -24px;
+    text-shadow: 0 0 16px var(--glow-accent), 0 0 8px var(--glow-accent), 0 1px 8px rgba(0, 0, 0, 0.8);
 }
 
 .background {
-    /* Use Sentinel background for both pages */
-    background: var(--background-overlay) url("../../assets/sentinel-login/gun_metal_texture.jpg");
+    /* Steel texture base layer */
+    background: url("../../assets/sentinel-login/gun_metal_texture.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -65,6 +49,34 @@
     z-index: 0;
     overflow: hidden;
     isolation: isolate;
+    
+    /* GPU acceleration for smooth transitions */
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Blue steel color overlay - sits above texture, below HUD grid */
+.background::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0.5;
+    background: var(--steel-overlay-color, rgba(15, 30, 51, 0.25));
+}
+
+/* HUD grid overlay - sits above color tint */
+.background::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background:
+        linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
+        linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mix-blend-mode: overlay;
 }
 
 .centerOverlay {
@@ -94,14 +106,16 @@
 }
 
 .formLayer {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 100;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     pointer-events: auto;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    padding: 2rem env(safe-area-inset-right) 2rem env(safe-area-inset-left);
+    overflow-y: auto;
 }
 
 .loginStack {
@@ -136,28 +150,16 @@
 
 .cardWrapper {
     z-index: 101;
-    width: 100%;
-    max-width: 480px;
+    width: 320px;
+    max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 24px;
 }
 
-.loginStack {
-    width: 100%;
-    max-width: 480px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 102;
-    pointer-events: auto;
-}
-
 .loginForm {
     width: 100%;
-    max-width: 480px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -168,29 +170,12 @@
     box-shadow: none;
 }
 
-.background::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    background:
-        linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
-        linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mix-blend-mode: overlay;
-}
-
 /* ============================================
    RESPONSIVE BREAKPOINTS
    ============================================ */
 
 /* Desktop - Large screens */
 @media (max-width: 1200px) {
-    .patriotTitle {
-        font-size: 2.3rem;
-    }
-    
     .loginStack,
     .cardWrapper {
         max-width: 480px;
@@ -199,53 +184,33 @@
 
 /* Tablet - iPad and similar */
 @media (max-width: 900px) {
-    .patriotTitle {
-        font-size: 2rem;
-    }
-    
     .loginStack,
     .cardWrapper,
     .loginForm {
-        max-width: 480px;
+        
     }
 }
 
 /* Tablet Portrait - iPad in portrait mode */
 @media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
-    .patriotTitle {
-        font-size: 2.2rem;
-        margin-bottom: 28px;
-    }
-    
     .loginStack,
     .cardWrapper,
     .loginForm {
-        max-width: 480px;
+        
     }
 }
 
 /* Tablet Landscape - iPad in landscape mode */
 @media (min-width: 744px) and (max-width: 1200px) and (orientation: landscape) {
-    .patriotTitle {
-        font-size: 1.9rem;
-        margin-bottom: 24px;
-    }
-    
     .loginStack,
     .cardWrapper,
     .loginForm {
-        max-width: 480px;
+        
     }
 }
 
 /* Mobile - Larger phones (iPhone 14 Pro Max, etc) */
 @media (max-width: 430px) {
-    .patriotTitle {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-        letter-spacing: 0.12em;
-    }
-    
     .loginStack,
     .cardWrapper,
     .loginForm {
@@ -263,11 +228,6 @@
 
 /* Mobile - Standard phones (iPhone 14, 13, 12) */
 @media (max-width: 390px) {
-    .patriotTitle {
-        font-size: 1.3rem;
-        margin-bottom: 16px;
-    }
-    
     .loginStack,
     .cardWrapper {
         /* No padding needed */
@@ -276,17 +236,10 @@
 
 /* Mobile - Smaller phones (iPhone SE) */
 @media (max-width: 375px) {
-    .patriotTitle {
-        font-size: 1.2rem;
-        margin-bottom: 14px;
-        letter-spacing: 0.1em;
-    }
+    /* No specific overrides needed */
 }
 
 /* Mobile - Very small screens */
 @media (max-width: 320px) {
-    .patriotTitle {
-        font-size: 1rem;
-        margin-bottom: 12px;
-    }
+    /* No specific overrides needed */
 }

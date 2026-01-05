@@ -32,12 +32,21 @@ button {
    =========================== */
 
 body {
-  /* Layer 1 — Base steel texture */
-  background: var(--background-overlay) url("../assets/blue_steel_texture.png");
+  /* Shared steel texture with blue-steel overlay */
+  background: 
+    linear-gradient(
+      var(--steel-overlay-color, rgba(15, 30, 51, 0.25)),
+      var(--steel-overlay-color, rgba(15, 30, 51, 0.25))
+    ),
+    url("../../sentinel_login/frontend/src/assets/sentinel-login/gun_metal_texture.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
+
+  /* GPU acceleration for smooth transitions */
+  will-change: transform;
+  transform: translateZ(0);
 
   /* Prevent overscroll bounce on iOS */
   overscroll-behavior-y: none;
@@ -114,4 +123,14 @@ p {
 
 .text-warning {
   color: var(--warning);
+}
+
+/* ===========================
+   MOBILE OPTIMIZATIONS
+   =========================== */
+
+@media (max-width: 430px) {
+  body {
+    background-attachment: scroll;
+  }
 }

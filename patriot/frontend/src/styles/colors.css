@@ -72,4 +72,8 @@
   /* Circuit glow points */
   --highlight-gradient: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
   --alert-gradient: linear-gradient(90deg, var(--trim-red), var(--danger));
+  
+  /* ====== STEEL BACKGROUND OVERLAY ====== */
+  --steel-overlay-color: rgba(15, 30, 51, 0.25);
+  /* Navy blue overlay for brushed blue steel effect */
 }

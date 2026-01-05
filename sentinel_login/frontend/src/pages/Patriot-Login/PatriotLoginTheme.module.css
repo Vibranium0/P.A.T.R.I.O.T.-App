@@ -26,4 +26,7 @@
     /* Ensure card backgrounds are visible (match Sentinel/Register) */
     --glass-opacity: rgba(16, 23, 37, 0.72);
     --glass-blur: blur(8px);
+    
+    /* Blue steel background overlay - navy tint creates brushed blue steel effect */
+    --steel-overlay-color: rgba(15, 30, 51, 0.25);
 }

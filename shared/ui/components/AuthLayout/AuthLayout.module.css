@@ -1,0 +1,245 @@
+/**
+ * AuthLayout - Shared authentication page layout
+ * 
+ * Provides consistent structure for all auth pages:
+ * - Background with theme-specific image
+ * - Background logo with orientation detection
+ * - HUD effects layer
+ * - Centered content area with fixed 480px width
+ * - Responsive breakpoints for tablets and phones
+ */
+
+/* ============================================
+   ROOT CONTAINER
+   ============================================ */
+
+.authLayout {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+/* ============================================
+   BACKGROUND LAYER
+   ============================================ */
+
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.background::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ============================================
+   LOGO LAYER - BACKGROUND CENTERED LOGO
+   ============================================ */
+
+.logoLayer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.logo {
+  height: 85vh;
+  height: 85svh;
+  max-height: 85vh;
+  max-height: 85svh;
+  width: auto;
+  max-width: 85vw;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 4px 32px rgba(0, 0, 0, 0.45));
+  opacity: 0.55;
+  transition: opacity 0.3s, filter 0.3s;
+  pointer-events: none;
+  margin: 0;
+}
+
+/* ============================================
+   HUD EFFECTS LAYER
+   ============================================ */
+
+.hudEffectsLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hudEffectsLayer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
+    linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* ============================================
+   CONTENT LAYER - FORM AREA
+   ============================================ */
+
+.contentLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.contentWrapper {
+  z-index: 101;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ============================================
+   TITLE
+   ============================================ */
+
+.title {
+  font-family: 'Orbitron', 'Exo 2', sans-serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: var(--text-primary);
+  text-align: center;
+  text-shadow: 0 2px 24px rgba(31, 143, 255, 0.18), 0 1px 0 #000;
+  margin-bottom: 0;
+  margin-top: 0;
+  z-index: 5;
+  position: relative;
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Desktop - Large screens */
+@media (max-width: 1200px) {
+  .contentWrapper {
+    max-width: 480px;
+  }
+
+  .title {
+    font-size: 2.3rem;
+  }
+}
+
+/* Tablet - iPad and similar */
+@media (max-width: 900px) {
+  .contentWrapper {
+    max-width: 480px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
+
+/* Tablet Portrait - iPad in portrait mode */
+@media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
+  .contentWrapper {
+    max-width: 480px;
+  }
+
+  .title {
+    font-size: 2.2rem;
+    margin-bottom: 4px;
+  }
+}
+
+/* Tablet Landscape - iPad in landscape mode */
+@media (min-width: 744px) and (max-width: 1200px) and (orientation: landscape) {
+  .contentWrapper {
+    max-width: 480px;
+  }
+
+  .title {
+    font-size: 1.9rem;
+  }
+}
+
+/* Mobile - Larger phones (iPhone 14 Pro Max, etc) */
+@media (max-width: 430px) {
+  .contentWrapper {
+    max-width: 100%;
+  }
+
+  .contentLayer {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 4px;
+    letter-spacing: 0.12em;
+  }
+
+  .background {
+    background-attachment: scroll;
+  }
+}
+
+/* Mobile - Standard phones (iPhone 14, 13, 12) */
+@media (max-width: 390px) {
+  .title {
+    font-size: 1.3rem;
+  }
+}
+
+/* Mobile - Smaller phones (iPhone SE) */
+@media (max-width: 375px) {
+  .title {
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+  }
+}
+
+/* Mobile - Very small screens */
+@media (max-width: 320px) {
+  .title {
+    font-size: 1rem;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .logo,
+  .title {
+    transition: none;
+  }
+}

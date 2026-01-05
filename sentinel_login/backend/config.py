@@ -13,8 +13,10 @@ class Config:
     # Security
     SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-change-in-production")
 
-    # Database
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///sentinel-login.db")
+    # Database - use absolute path to avoid multiple database files
+    _base_dir = os.path.abspath(os.path.dirname(__file__))
+    _db_path = os.path.join(_base_dir, "instance", "sentinel-login.db")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", f"sqlite:///{_db_path}")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # JWT Configuration

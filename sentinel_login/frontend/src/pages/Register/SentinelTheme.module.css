@@ -1,0 +1,32 @@
+.page-theme-sentinel {
+    /* Sentinel Systems Color Palette - "Repulsor Steel" Edition */
+    --background: #0c0909;
+    --background-overlay: rgba(12, 9, 9, 0.85);
+    --card: #1a1414;
+    --border: #352626;
+    --primary: #1fa4ff;
+    --secondary: #63c3ff;
+    --trim: #b11919;
+    --accent-light: #d6c38a;
+    --accent-dark: #8e8361;
+    --text-primary: #f0f3f7;
+    --text-secondary: #a4acb8;
+    --success: #21c55d;
+    --warning: #fbbf24;
+    --danger: #ef4444;
+    --glow-primary: rgba(31, 164, 255, 0.4);
+    --glow-accent: rgba(214, 195, 138, 0.35);
+    --glow-danger: rgba(177, 25, 25, 0.4);
+    --glow-success: rgba(33, 197, 93, 0.35);
+    --hud-line: rgba(31, 164, 255, 0.1);
+    --hud-node: rgba(31, 164, 255, 0.5);
+    --highlight-gradient: linear-gradient(90deg, var(--primary), var(--secondary));
+    --alert-gradient: linear-gradient(90deg, var(--trim), var(--danger));
+
+    /* Ensure card backgrounds are visible */
+    --glass-opacity: rgba(26, 20, 20, 0.72);
+    --glass-blur: blur(8px);
+    
+    /* Dark steel background overlay - subtle darkening for iron-black aesthetic */
+    --steel-overlay-color: rgba(12, 9, 9, 0.25);
+}

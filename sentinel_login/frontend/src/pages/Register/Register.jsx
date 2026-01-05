@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { FiEye, FiEyeOff } from "react-icons/fi";
 import { initBackgroundLogoRecalibration } from "shared/utils/background-logo-recalibration";
 import { Helmet } from "react-helmet";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import styles from "./Register.module.css";
+import sentinelTheme from "./SentinelTheme.module.css";
 import logo from '../../assets/sentinel-login/Sentinel Systems.png';
 
 import Button from "shared/ui/components/Button/Button";
 import TextBox from "shared/ui/components/TextBox/TextBox";
+import PasswordTextBox from "shared/ui/components/PasswordTextBox";
+import SelectBox from "shared/ui/components/SelectBox";
 import AnimatedCard from "shared/ui/components/AnimatedCard";
 import { useTransitionOverlay } from "../../TransitionOverlayContext.jsx";
 import ShakeOnError from "shared/ui/components/ShakeOnError";
 import Card from "shared/ui/components/Card/Card";
+import { PageTitle } from "shared/ui/components/PageTitle";
 import HUDEffects from "shared/ui/components/HUD/HUDEffects";
 import HUDLayer from "shared/ui/components/HUD/HUDLayer";
 
@@ -26,8 +29,6 @@ const Register = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [securityQuestion, setSecurityQuestion] = useState("");
   const [securityAnswer, setSecurityAnswer] = useState("");
 
@@ -54,28 +55,58 @@ const Register = () => {
     setError("");
     setSuccess("");
 
-    // Client-side validation
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
+    // Client-side validation - check all fields and collect errors
+    const missingFields = [];
+    
+    if (!username.trim()) {
+      missingFields.push("Username");
+    } else if (username.trim().length < 3) {
+      setError("Username must be at least 3 characters");
       return;
     }
 
-    if (password.length < 6) {
+    if (!password) {
+      missingFields.push("Password");
+    } else if (password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
     }
 
-    if (!securityQuestion) {
-      setError("Please select a security question");
+    if (!confirmPassword) {
+      missingFields.push("Confirm Password");
+    } else if (password !== confirmPassword) {
+      setError("Passwords do not match");
       return;
     }
 
-    if (securityAnswer.trim().length < 2) {
+    if (!securityQuestion) {
+      missingFields.push("Security Question");
+    }
+
+    if (!securityAnswer.trim()) {
+      missingFields.push("Security Answer");
+    } else if (securityAnswer.trim().length < 2) {
       setError("Security answer must be at least 2 characters");
       return;
     }
 
+    // If there are missing fields, format the error message
+    if (missingFields.length > 0) {
+      if (missingFields.length === 5) {
+        setError("All fields are required");
+      } else {
+        setError(`Required fields: ${missingFields.join(", ")}`);
+      }
+      return;
+    }
+
     setLoading(true);
+    console.log("Submitting registration with:", {
+      username,
+      password: "***",
+      security_question: securityQuestion,
+      security_answer: securityAnswer
+    });
     try {
       const res = await fetch("/auth/register", {
         method: "POST",
@@ -83,16 +114,19 @@ const Register = () => {
         body: JSON.stringify({ username, password, security_question: securityQuestion, security_answer: securityAnswer })
       });
       const data = await res.json();
+      console.log("Registration response:", { status: res.status, data });
       if (res.ok && data.message) {
         setSuccess("Registration successful! Redirecting...");
         setTimeout(() => {
           triggerTransition(() => navigate(fromLogin), "left");
         }, 1500);
       } else {
+        console.error("Registration failed:", data);
         setError(data.error || "Registration failed.");
       }
     } catch (err) {
-      setError("Network error. Try again.");
+      console.error("Registration error:", err);
+      setError(err.message || "Network error. Try again.");
     }
     setLoading(false);
   };
@@ -110,7 +144,8 @@ const Register = () => {
 
   return (
     <>
-      <div className={styles.background}>
+      <div className={sentinelTheme["page-theme-sentinel"]}>
+        <div className={styles.background}>
         <div className={styles.logoContainer}>
           <img
             src={logo}
@@ -126,18 +161,12 @@ const Register = () => {
         </div>
         <div className={styles.formLayer}>
           <div className={styles.cardWrapper}>
-              <motion.div
-                className={styles.sentinelTitle}
-                initial={{ opacity: 0, y: 32, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-              >
-                SENTINEL SYSTEMS
-              </motion.div>
               <AnimatedCard>
                 <Card>
+                  <PageTitle allowWrap>SENTINEL SYSTEMS</PageTitle>
                   <form 
                     onSubmit={handleSubmit} 
+                    noValidate
                     className={styles.registerForm} 
                     aria-describedby={error ? "register-error" : undefined}
                     style={{ 
@@ -155,53 +184,21 @@ const Register = () => {
                   type="text"
                   autoComplete="username"
                   autoFocus
-                  required
+                  maxLength={80}
                   aria-required="true"
                   aria-invalid={!!error && error.toLowerCase().includes('username')}
-                  style={{ marginBottom: 16 }}
                 />
-                <div style={{ position: 'relative', width: '100%', marginBottom: 16 }}>
-                  <TextBox
+                <div style={{ width: '100%' }}>
+                  <PasswordTextBox
                     id="register-password"
                     value={password}
                     onChange={setPassword}
                     placeholder="Password"
-                    type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
-                    required
                     aria-required="true"
                     aria-invalid={!!error && error.toLowerCase().includes('password')}
                     aria-describedby={error ? "register-error" : undefined}
-                    style={{ paddingRight: 38 }}
                   />
-                  <button
-                    type="button"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                    onClick={() => setShowPassword(v => !v)}
-                    style={{
-                      position: 'absolute',
-                      right: 8,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      background: 'none',
-                      border: 'none',
-                      padding: 0,
-                      margin: 0,
-                      cursor: 'pointer',
-                      color: 'var(--text-secondary)',
-                      fontSize: 22,
-                      zIndex: 2,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: 24,
-                      height: 24,
-                      lineHeight: 1
-                    }}
-                    tabIndex={0}
-                  >
-                    {showPassword ? <FiEyeOff /> : <FiEye />}
-                  </button>
                   {/* Password Strength Meter - now inside password field container for minimal gap */}
                   {password && (
                     <div style={{
@@ -224,47 +221,16 @@ const Register = () => {
                     </div>
                   )}
                 </div>
-                <div style={{ position: 'relative', width: '100%', marginBottom: 16 }}>
-                  <TextBox
+                <div style={{ width: '100%' }}>
+                  <PasswordTextBox
                     id="register-confirm-password"
                     value={confirmPassword}
                     onChange={setConfirmPassword}
                     placeholder="Confirm Password"
-                    type={showConfirmPassword ? "text" : "password"}
                     autoComplete="new-password"
-                    required
                     aria-required="true"
                     aria-invalid={!!error && error.toLowerCase().includes('password')}
-                    style={{ paddingRight: 38 }}
                   />
-                  <button
-                    type="button"
-                    aria-label={showConfirmPassword ? "Hide password" : "Show password"}
-                    onClick={() => setShowConfirmPassword(v => !v)}
-                    style={{
-                      position: 'absolute',
-                      right: 8,
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      background: 'none',
-                      border: 'none',
-                      padding: 0,
-                      margin: 0,
-                      cursor: 'pointer',
-                      color: 'var(--text-secondary)',
-                      fontSize: 22,
-                      zIndex: 2,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: 24,
-                      height: 24,
-                      lineHeight: 1
-                    }}
-                    tabIndex={0}
-                  >
-                    {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
-                  </button>
                   {/* Password match indicator */}
                   {confirmPassword && (
                     <div style={{
@@ -287,6 +253,26 @@ const Register = () => {
                     </div>
                   )}
                 </div>
+                <SelectBox
+                  id="register-security-question"
+                  value={securityQuestion}
+                  onChange={(e) => setSecurityQuestion(e.target.value)}
+                  options={securityQuestions}
+                  placeholder="Select a Security Question"
+                  ariaRequired="true"
+                  ariaInvalid={!!error && error.toLowerCase().includes('security question')}
+                />
+                <TextBox
+                  id="register-security-answer"
+                  value={securityAnswer}
+                  onChange={setSecurityAnswer}
+                  placeholder="Security Answer"
+                  type="text"
+                  autoComplete="off"
+                  maxLength={255}
+                  aria-required="true"
+                  aria-invalid={!!error && error.toLowerCase().includes('security answer')}
+                />
                 {error && (
                   <ShakeOnError trigger={error}>
                     <div
@@ -330,58 +316,6 @@ const Register = () => {
                     {success === 'Registration successful! Redirecting...' ? 'WELCOME TO SENTINEL' : success.toUpperCase()}
                   </div>
                 )}
-                <select
-                  id="register-security-question"
-                  value={securityQuestion}
-                  onChange={(e) => setSecurityQuestion(e.target.value)}
-                  required
-                  aria-required="true"
-                  aria-invalid={!!error && error.toLowerCase().includes('security question')}
-                  style={{
-                    width: '100%',
-                    height: '2.75rem',
-                    padding: '0.75rem 0.75rem',
-                    marginBottom: 16,
-                    background: 'none',
-                    border: '1px solid var(--accent-light)',
-                    borderRadius: '0.5rem',
-                    boxShadow: 'var(--glow-soft)',
-                    color: securityQuestion ? 'var(--text-primary)' : 'var(--text-secondary)',
-                    fontFamily: "'Exo 2', 'Exo2', sans-serif",
-                    fontSize: '15px',
-                    fontWeight: securityQuestion ? 600 : 400,
-                    letterSpacing: '0.05em',
-                    opacity: securityQuestion ? 1 : 0.55,
-                    cursor: 'pointer',
-                    transition: 'border-color 0.18s, box-shadow 0.18s, color 0.18s, opacity 0.18s',
-                    outline: 'none'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = 'var(--primary)';
-                    e.target.style.boxShadow = '0 0 0 2px var(--primary), 0 0 12px var(--primary), var(--glow-soft)';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = 'var(--accent-light)';
-                    e.target.style.boxShadow = 'var(--glow-soft)';
-                  }}
-                >
-                  <option value="" disabled>Select a security question</option>
-                  {securityQuestions.map((q, idx) => (
-                    <option key={idx} value={q} style={{ background: 'var(--card-bg, #0f1621)', color: 'var(--text-primary, #fff)' }}>{q}</option>
-                  ))}
-                </select>
-                <TextBox
-                  id="register-security-answer"
-                  value={securityAnswer}
-                  onChange={setSecurityAnswer}
-                  placeholder="Security Answer"
-                  type="text"
-                  autoComplete="off"
-                  required
-                  aria-required="true"
-                  aria-invalid={!!error && error.toLowerCase().includes('security answer')}
-                  style={{ marginBottom: 16 }}
-                />
                 <Button type="submit" disabled={loading} style={{ marginBottom: 0 }}>
                   {loading ? "Registering..." : "Register"}
                 </Button>
@@ -403,6 +337,7 @@ const Register = () => {
           </AnimatedCard>
           </div>
         </div>
+      </div>
       </div>
     </>
   );
