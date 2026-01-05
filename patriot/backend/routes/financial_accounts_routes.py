@@ -5,14 +5,14 @@ Financial accounts routes
 from flask import Blueprint, request, jsonify
 from patriot.backend.database import db
 from patriot.backend.models.account import Account
-from shared.auth.token_required import require_token
+from flask_jwt_extended import jwt_required
 from shared.utils.household_helpers import get_current_household_id, get_current_user_id
 
 financial_accounts_bp = Blueprint("financial_accounts", __name__)
 
 
 @financial_accounts_bp.route("/", methods=["GET"])
-@require_token
+@jwt_required()
 def get_accounts():
     """Get all financial accounts for the current user."""
     household_id = get_current_household_id()
@@ -33,7 +33,7 @@ def get_accounts():
 
 
 @financial_accounts_bp.route("/", methods=["POST"])
-@require_token
+@jwt_required()
 def create_account():
     """Create a new financial account."""
     household_id = get_current_household_id()
@@ -80,7 +80,7 @@ def create_account():
 
 
 @financial_accounts_bp.route("/<int:account_id>", methods=["GET"])
-@require_token
+@jwt_required()
 def get_account(account_id):
     """Get a specific financial account."""
     household_id = get_current_household_id()
@@ -96,7 +96,7 @@ def get_account(account_id):
 
 
 @financial_accounts_bp.route("/<int:account_id>", methods=["PUT"])
-@require_token
+@jwt_required()
 def update_account(account_id):
     """Update a financial account."""
     household_id = get_current_household_id()
@@ -136,7 +136,7 @@ def update_account(account_id):
 
 
 @financial_accounts_bp.route("/<int:account_id>", methods=["DELETE"])
-@require_token
+@jwt_required()
 def delete_account(account_id):
     """Delete (deactivate) a financial account."""
     household_id = get_current_household_id()

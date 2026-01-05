@@ -5,6 +5,7 @@ import { Navigate, useLocation } from "react-router-dom";
  * ProtectedRoute - Protects routes that require authentication
  * Checks for JWT token and validates it with the backend
  * Redirects to /login if not authenticated
+ * Stores user ID from validation response
  */
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = checking, true/false = result
@@ -30,15 +31,36 @@ const ProtectedRoute = ({ children }) => {
         });
 
         if (response.ok) {
+          const data = await response.json();
+          
+          // Store user ID from validation response
+          if (data.user_id) {
+            localStorage.setItem("user_id", data.user_id);
+          }
+          
+          // Store other user info if provided
+          if (data.username) {
+            localStorage.setItem("username", data.username);
+          }
+          if (data.household_id) {
+            localStorage.setItem("household_id", data.household_id);
+          }
+          
           setIsAuthenticated(true);
         } else {
           // Token is invalid or expired
           localStorage.removeItem("token");
+          localStorage.removeItem("user_id");
+          localStorage.removeItem("username");
+          localStorage.removeItem("household_id");
           setIsAuthenticated(false);
         }
       } catch (error) {
         console.error("Auth validation error:", error);
         localStorage.removeItem("token");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("username");
+        localStorage.removeItem("household_id");
         setIsAuthenticated(false);
       }
     };

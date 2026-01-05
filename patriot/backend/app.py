@@ -20,6 +20,7 @@ from patriot.backend.routes.income_routes import income_bp
 from patriot.backend.routes.reports_routes import reports_bp
 from patriot.backend.routes.dashboard_routes import dashboard_bp
 from patriot.backend.routes.debts_routes import debts_bp
+from patriot.backend.routes.auth_routes import auth_bp
 from shared.routes.households_routes import households_bp
 
 # Import models using absolute imports
@@ -84,6 +85,7 @@ def create_app():
     app.register_blueprint(reports_bp, url_prefix="/api/reports")
     app.register_blueprint(dashboard_bp, url_prefix="/api/dashboard")
     app.register_blueprint(debts_bp, url_prefix="/api/debts")
+    app.register_blueprint(auth_bp, url_prefix="/auth")
 
     # CLI command for database setup
     @app.cli.command("init-db")

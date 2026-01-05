@@ -1,4 +1,4 @@
-from shared.auth.token_required import require_token
+from flask_jwt_extended import jwt_required
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 from patriot.backend.database import db
@@ -10,7 +10,7 @@ income_bp = Blueprint("income", __name__)
 
 
 @income_bp.route("/", methods=["GET"])
-@require_token
+@jwt_required()
 def get_income_entries():
     """Get all income entries for the logged-in user"""
     try:
@@ -74,7 +74,7 @@ def get_income_entries():
 
 
 @income_bp.route("/", methods=["POST"])
-@require_token
+@jwt_required()
 def create_income_entry():
     """Create a new income entry"""
     try:
@@ -190,7 +190,7 @@ def create_income_entry():
 
 
 @income_bp.route("/<int:income_id>", methods=["DELETE"])
-@require_token
+@jwt_required()
 def delete_income_entry(income_id):
     """Delete an income entry"""
     try:
@@ -235,7 +235,7 @@ def delete_income_entry(income_id):
 
 
 @income_bp.route("/summary", methods=["GET"])
-@require_token
+@jwt_required()
 def get_income_summary():
     """Get income summary breakdown by source type"""
     try:

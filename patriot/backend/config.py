@@ -26,7 +26,12 @@ class Config:
 
     # Application Settings
     APP_NAME = "Patriot"
-    APP_URL = os.getenv("APP_URL", "http://localhost:5173")
+    APP_URL = os.getenv("APP_URL", "http://localhost:5174")
+    APP_BACKEND_URL = os.getenv("APP_BACKEND_URL", "http://localhost:5000")
+    
+    # Sentinel Integration
+    SENTINEL_LOGIN_URL = os.getenv("SENTINEL_LOGIN_URL", "http://localhost:5001")
+    SENTINEL_ENABLED = os.getenv("SENTINEL_ENABLED", "true").lower() in ("1", "true", "yes", "on")
 
     @property
     def is_development(self):
