@@ -3,7 +3,7 @@ from patriot.backend.database import db
 from patriot.backend.models import Transaction, Fund, Bill
 from patriot.backend.models.account import Account
 from patriot.backend.models.user import User
-from shared.auth.token_required import require_token
+from flask_jwt_extended import jwt_required
 from decimal import Decimal
 from datetime import datetime, date
 from sqlalchemy import func
@@ -13,7 +13,7 @@ tx_bp = Blueprint("transactions", __name__)
 
 
 @tx_bp.route("/", methods=["GET"])
-@require_token
+@jwt_required()
 def list_transactions():
     """Get all transactions for the current user"""
     household_id = get_current_household_id()
@@ -31,7 +31,7 @@ def list_transactions():
 
 
 @tx_bp.route("/", methods=["POST"])
-@require_token
+@jwt_required()
 def create_transaction():
     """Create a new transaction and automatically update fund balance if fund_id is provided"""
     household_id = get_current_household_id()
@@ -244,7 +244,7 @@ def create_transaction():
 
 
 @tx_bp.route("/auto-generate", methods=["POST"])
-@require_token
+@jwt_required()
 def auto_generate_transactions():
     """Create new transactions for bills marked as autopay and due today or earlier"""
     household_id = get_current_household_id()
@@ -333,7 +333,7 @@ def auto_generate_transactions():
 
 
 @tx_bp.route("/<int:transaction_id>", methods=["GET"])
-@require_token
+@jwt_required()
 def get_transaction(transaction_id):
     """Get a specific transaction"""
     household_id = get_current_household_id()
@@ -351,7 +351,7 @@ def get_transaction(transaction_id):
 
 
 @tx_bp.route("/<int:transaction_id>", methods=["PUT"])
-@require_token
+@jwt_required()
 def update_transaction(transaction_id):
     """Update a transaction and adjust fund balance if applicable"""
     household_id = get_current_household_id()
@@ -486,7 +486,7 @@ def update_transaction(transaction_id):
 
 
 @tx_bp.route("/<int:transaction_id>", methods=["DELETE"])
-@require_token
+@jwt_required()
 def delete_transaction(transaction_id):
     """Delete a transaction and update the linked fund balance"""
     household_id = get_current_household_id()
@@ -532,7 +532,7 @@ def delete_transaction(transaction_id):
 
 
 @tx_bp.route("/by-category", methods=["GET"])
-@require_token
+@jwt_required()
 def get_transactions_by_category():
     """Get transactions grouped by category"""
     household_id = get_current_household_id()
@@ -581,7 +581,7 @@ def get_transactions_by_category():
 
 
 @tx_bp.route("/summary", methods=["GET"])
-@require_token
+@jwt_required()
 def get_transaction_summary():
     """Get transaction summary (income, expenses, balance)"""
     household_id = get_current_household_id()
@@ -636,7 +636,7 @@ def get_transaction_summary():
 
 
 @tx_bp.route("/<int:transaction_id>/skip", methods=["PUT"])
-@require_token
+@jwt_required()
 def skip_recurring_instance(transaction_id):
     """Mark a recurring transaction instance as skipped"""
     household_id = get_current_household_id()
@@ -672,7 +672,7 @@ def skip_recurring_instance(transaction_id):
 
 
 @tx_bp.route("/process-recurring", methods=["POST"])
-@require_token
+@jwt_required()
 def process_recurring_transactions():
     """Create instances for recurring transactions that are due"""
     household_id = get_current_household_id()

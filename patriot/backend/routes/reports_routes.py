@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from patriot.backend.models import Fund, Transaction, Bill, Income, Debt
-from shared.auth.token_required import require_token
+from flask_jwt_extended import jwt_required
 from patriot.backend.utils.forecasting import (
     generate_forecast,
     get_bill_schedule_summary,
@@ -13,7 +13,7 @@ reports_bp = Blueprint("reports", __name__)
 
 
 @reports_bp.route("/summary", methods=["GET"])
-@require_token
+@jwt_required()
 def summary_report():
     """Enhanced summary report with forecasting data"""
     household_id = get_current_household_id()
@@ -91,7 +91,7 @@ def summary_report():
 
 
 @reports_bp.route("/forecast", methods=["GET"])
-@require_token
+@jwt_required()
 def forecast_report():
     """Comprehensive forecast report with customizable parameters"""
     household_id = get_current_household_id()
@@ -127,7 +127,7 @@ def forecast_report():
 
 
 @reports_bp.route("/upcoming-bills", methods=["GET"])
-@require_token
+@jwt_required()
 def upcoming_bills_report():
     """Get upcoming bills with optional date range"""
     household_id = get_current_household_id()
@@ -163,7 +163,7 @@ def upcoming_bills_report():
 
 
 @reports_bp.route("/financial-health", methods=["GET"])
-@require_token
+@jwt_required()
 def financial_health_report():
     """Comprehensive financial health analysis"""
     household_id = get_current_household_id()
@@ -273,7 +273,7 @@ def _generate_recommendations(health_status, emergency_fund_ratio, forecast_summ
 
 
 @reports_bp.route("/income-breakdown", methods=["GET"])
-@require_token
+@jwt_required()
 def income_breakdown():
     """Get income breakdown by category for charts"""
     try:
@@ -301,7 +301,7 @@ def income_breakdown():
 
 
 @reports_bp.route("/debt-breakdown", methods=["GET"])
-@require_token
+@jwt_required()
 def debt_breakdown():
     """Get debt breakdown by category for charts"""
     try:

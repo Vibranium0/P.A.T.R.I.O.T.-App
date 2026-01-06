@@ -1,4 +1,4 @@
-from shared.auth.token_required import require_token
+from flask_jwt_extended import jwt_required
 
 # backend/routes/bills_routes.py
 from flask import Blueprint, request, jsonify
@@ -15,7 +15,7 @@ bills_bp = Blueprint("bills", __name__)
 
 
 @bills_bp.route("/", methods=["GET"])
-@require_token
+@jwt_required()
 def get_bills():
     """Get all bills for the current household"""
     household_id = get_current_household_id()
@@ -32,7 +32,7 @@ def get_bills():
 
 
 @bills_bp.route("/", methods=["POST"])
-@require_token
+@jwt_required()
 def create_bill():
     """Create a new bill"""
     household_id = get_current_household_id()
@@ -83,7 +83,7 @@ def create_bill():
 
 
 @bills_bp.route("/<int:bill_id>", methods=["PUT"])
-@require_token
+@jwt_required()
 def update_bill(bill_id):
     """Update an existing bill"""
     household_id = get_current_household_id()
@@ -134,7 +134,7 @@ def update_bill(bill_id):
 
 
 @bills_bp.route("/<int:bill_id>", methods=["DELETE"])
-@require_token
+@jwt_required()
 def delete_bill(bill_id):
     """Delete a bill (soft delete by setting is_active=False)"""
     household_id = get_current_household_id()
@@ -157,7 +157,7 @@ def delete_bill(bill_id):
 
 
 @bills_bp.route("/<int:bill_id>/pay", methods=["POST"])
-@require_token
+@jwt_required()
 def mark_bill_paid(bill_id):
     """Mark a bill as paid and update next due date"""
     household_id = get_current_household_id()
@@ -179,7 +179,7 @@ def mark_bill_paid(bill_id):
 
 
 @bills_bp.route("/schedule", methods=["GET"])
-@require_token
+@jwt_required()
 def get_bill_schedule():
     """
     Returns a projected schedule of all bills, deposits, and balances for the given user.
@@ -218,7 +218,7 @@ def get_bill_schedule():
 
 
 @bills_bp.route("/upcoming", methods=["GET"])
-@require_token
+@jwt_required()
 def get_upcoming_bills():
     """Get bills due in the next N days (default: 7 days)"""
     household_id = get_current_household_id()
@@ -246,7 +246,7 @@ def get_upcoming_bills():
 
 
 @bills_bp.route("/categories", methods=["GET"])
-@require_token
+@jwt_required()
 def get_bill_categories():
     """Get all unique bill categories for the user"""
     household_id = get_current_household_id()
@@ -270,7 +270,7 @@ def get_bill_categories():
 
 
 @bills_bp.route("/schedule", methods=["GET"])
-@require_token
+@jwt_required()
 def get_schedule():
     """Get saved bills schedule for the current user"""
     household_id = get_current_household_id()
@@ -287,7 +287,7 @@ def get_schedule():
 
 
 @bills_bp.route("/schedule/update", methods=["POST"])
-@require_token
+@jwt_required()
 def update_schedule():
     """Save bills schedule for the current user"""
     household_id = get_current_household_id()

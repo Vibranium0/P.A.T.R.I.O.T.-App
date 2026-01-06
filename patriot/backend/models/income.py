@@ -28,3 +28,14 @@ class Income(db.Model):
             "description": self.description,
             "account_id": self.account_id,
         }
+
+    @staticmethod
+    def get_total_for_period(household_id, start_date, end_date):
+        """Get total income for a specific period"""
+        result = (
+            db.session.query(db.func.sum(Income.amount))
+            .filter_by(household_id=household_id)
+            .filter(Income.date >= start_date, Income.date <= end_date)
+            .scalar()
+        )
+        return float(result) if result else 0.0

@@ -20,7 +20,12 @@ from patriot.backend.routes.income_routes import income_bp
 from patriot.backend.routes.reports_routes import reports_bp
 from patriot.backend.routes.dashboard_routes import dashboard_bp
 from patriot.backend.routes.debts_routes import debts_bp
+from patriot.backend.routes.auth_routes import auth_bp
 from shared.routes.households_routes import households_bp
+from patriot.backend.routes.categories_routes import categories_bp
+from patriot.backend.routes.expenses_routes import expenses_bp
+from patriot.backend.routes.goals_routes import goals_bp
+from patriot.backend.routes.savings_routes import savings_bp
 
 # Import models using absolute imports
 
@@ -33,6 +38,10 @@ from patriot.backend.models.transaction import Transaction
 from patriot.backend.models.income import Income
 from patriot.backend.models.debt import Debt
 from patriot.backend.models.account import Account
+from patriot.backend.models.category import Category
+from patriot.backend.models.expense import Expense
+from patriot.backend.models.goal import Goal
+from patriot.backend.models.saving import Saving
 
 from flask_migrate import Migrate
 
@@ -84,6 +93,11 @@ def create_app():
     app.register_blueprint(reports_bp, url_prefix="/api/reports")
     app.register_blueprint(dashboard_bp, url_prefix="/api/dashboard")
     app.register_blueprint(debts_bp, url_prefix="/api/debts")
+    app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(categories_bp, url_prefix="/api/categories")
+    app.register_blueprint(expenses_bp, url_prefix="/api/expenses")
+    app.register_blueprint(goals_bp, url_prefix="/api/goals")
+    app.register_blueprint(savings_bp, url_prefix="/api/savings")
 
     # CLI command for database setup
     @app.cli.command("init-db")
