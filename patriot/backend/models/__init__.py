@@ -9,6 +9,10 @@ from patriot.backend.models.bill import Bill
 from patriot.backend.models.income import Income
 from patriot.backend.models.account import Account
 from patriot.backend.models.debt import Debt
+from patriot.backend.models.category import Category
+from patriot.backend.models.expense import Expense
+from patriot.backend.models.goal import Goal
+from patriot.backend.models.saving import Saving
 
 from shared.models.household import create_household_models
 
@@ -25,6 +29,10 @@ __all__ = [
     "Household",
     "HouseholdInvite",
     "user_household",
+    "Category",
+    "Expense",
+    "Goal",
+    "Saving",
 ]
 
 from patriot.backend.models.user import User

@@ -328,16 +328,153 @@ VITE_SENTINEL_LOGIN_URL=https://login.yourdomain.com
 VITE_API_URL=https://api.yourdomain.com
 ```
 
+## Secure Token Storage
+
+### Token Storage Strategy
+
+The application uses a secure two-token approach:
+- **Access Token**: Stored in memory (React Context/state)
+- **Refresh Token**: Stored as HttpOnly cookie (XSS protection)
+
+### Security Benefits
+
+#### Before (localStorage)
+- ❌ Both tokens stored in localStorage
+- ❌ Vulnerable to XSS attacks
+- ❌ Accessible via JavaScript
+- ❌ Can be stolen by malicious scripts
+
+#### After (Memory + HttpOnly Cookie)
+- ✅ Access token in React Context (memory only)
+- ✅ Refresh token in HttpOnly cookie (not accessible to JavaScript)
+- ✅ Protected from XSS attacks
+- ✅ Automatic cookie transmission with `credentials: 'include'`
+- ✅ SameSite=Lax for CSRF protection
+- ✅ Token rotation on refresh (each refresh issues new tokens)
+
+### Backend Configuration
+
+#### Flask JWT Settings (`config.py`)
+```python
+JWT_TOKEN_LOCATION = ["headers", "cookies"]
+JWT_COOKIE_SECURE = False  # Set to True in production with HTTPS
+JWT_COOKIE_CSRF_PROTECT = False  # Using SameSite instead
+```
+
+#### CORS with Credentials (`app.py`)
+```python
+CORS(app, 
+     supports_credentials=True, 
+     origins=["http://localhost:5173", "http://127.0.0.1:5173"])
+```
+
+### Cookie Attributes
+
+```
+Set-Cookie: refresh_token_cookie=eyJ...; 
+  HttpOnly;           // Not accessible to JavaScript (XSS protection)
+  Secure;             // Only sent over HTTPS (production)
+  SameSite=Lax;       // CSRF protection, allows navigation
+  Max-Age=7776000;    // 90 days with remember_me, 7 days without
+  Path=/;             // Available to all routes
+```
+
+### Token Flow Details
+
+#### Login Flow
+1. User submits credentials + remember_me flag
+2. Backend validates credentials
+3. Backend creates access_token + refresh_token
+4. Backend returns:
+   - JSON body: `{ access_token, username, email, household_id, remember_me }`
+   - Set-Cookie header: `refresh_token_cookie=...; HttpOnly; SameSite=Lax`
+5. Frontend stores access_token in AuthContext (memory)
+6. Frontend schedules token refresh 5 minutes before expiry
+
+#### Refresh Flow (Automatic)
+1. AuthContext schedules setTimeout 5 minutes before token expiry
+2. Frontend calls `POST /auth/refresh` with `credentials: 'include'`
+3. Browser automatically sends refresh_token_cookie
+4. Backend validates refresh token from cookie
+5. Backend issues new access_token + new refresh_token
+6. Frontend updates access_token in AuthContext
+7. Frontend schedules next refresh
+
+#### Logout Flow
+1. Frontend calls `POST /auth/logout` with `credentials: 'include'`
+2. Backend sets cookie: `refresh_token_cookie=''; max_age=0`
+3. Frontend clears AuthContext state
+4. Frontend redirects to /patriot-login
+
+#### Page Refresh / Cold Start
+1. User navigates to app or refreshes page
+2. AuthContext useEffect runs on mount
+3. Frontend calls `POST /auth/refresh` with `credentials: 'include'`
+4. Browser automatically sends refresh_token_cookie if present
+5. If valid: Backend issues new access_token, user stays logged in
+6. If invalid/missing: User redirected to login
+
+### AuthContext Implementation
+
+The `AuthContext` (`sentinel_login/frontend/src/contexts/AuthContext.jsx`) manages tokens in memory:
+
+```javascript
+// Key features:
+- accessToken (state): Stored in memory, lost on page refresh
+- scheduleTokenRefresh(): Decodes JWT, calculates expiry, schedules refresh
+- refreshAccessToken(): Calls backend with credentials: 'include'
+- logout(): Calls backend logout endpoint, clears memory state
+```
+
+### Security Testing
+
+#### Verify HttpOnly Cookie Protection
+```bash
+# Login and save cookies
+curl -c cookies.txt -X POST http://localhost:5001/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"test","password":"test","remember_me":true}'
+
+# Verify cookie is set
+cat cookies.txt
+
+# Test refresh reads from cookie
+curl -b cookies.txt -X POST http://localhost:5001/auth/refresh \
+  -H "Content-Type: application/json" \
+  -d '{"remember_me":true}'
+```
+
+#### Manual Browser Testing
+1. Login with remember_me enabled
+2. Open DevTools → Application → Cookies → Check for `refresh_token_cookie`
+3. Verify HttpOnly flag is set
+4. Open DevTools → Console → Type `document.cookie` → refresh token not visible
+5. Check localStorage → only `remember_me` visible, no tokens
+6. Refresh page → Should stay logged in via automatic token refresh
+7. Logout → Cookie should be cleared
+
+### Production Checklist
+
+Before deploying to production with HTTPS:
+
+1. ✅ Set environment variable: `JWT_COOKIE_SECURE=True`
+2. ✅ Update CORS origins to production domain
+3. ✅ Ensure HTTPS is enabled
+4. ✅ Test cookie behavior in production environment
+5. ✅ Verify SameSite policy works with your domain structure
+
 ## Related Documentation
 
-- [SECURE_TOKEN_STORAGE.md](../SECURE_TOKEN_STORAGE.md) - Token security implementation
 - [sentinel_login/QUICK_REFERENCE.md](../sentinel_login/QUICK_REFERENCE.md) - API reference
 - [START_SCRIPT_GUIDE.md](../START_SCRIPT_GUIDE.md) - How to start all services
+- [PYTHON_IMPORTS.md](../PYTHON_IMPORTS.md) - Import structure guide
 
 ## File Inventory
 
 ### Sentinel Login
 - `sentinel_login/frontend/src/pages/Patriot-Login/Patriot-Login.jsx` - Login page with redirect logic
+- `sentinel_login/frontend/src/contexts/AuthContext.jsx` - Token management in memory
+- `sentinel_login/backend/routes/auth_routes.py` - Login, refresh, logout with cookie handling
 - `sentinel_login/frontend/.env.development` - Environment config
 
 ### P.A.T.R.I.O.T. App
