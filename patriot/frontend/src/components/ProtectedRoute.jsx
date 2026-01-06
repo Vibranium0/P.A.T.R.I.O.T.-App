@@ -14,6 +14,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem("token");
+      console.log("[ProtectedRoute] Token:", token);
 
       if (!token) {
         setIsAuthenticated(false);
@@ -29,15 +30,20 @@ const ProtectedRoute = ({ children }) => {
             "Content-Type": "application/json"
           }
         });
+        console.log("[ProtectedRoute] /auth/validate status:", response.status);
+        let data = {};
+        try {
+          data = await response.json();
+        } catch (e) {
+          console.log("[ProtectedRoute] Error parsing JSON:", e);
+        }
+        console.log("[ProtectedRoute] /auth/validate response:", data);
 
         if (response.ok) {
-          const data = await response.json();
-          
           // Store user ID from validation response
           if (data.user_id) {
             localStorage.setItem("user_id", data.user_id);
           }
-          
           // Store other user info if provided
           if (data.username) {
             localStorage.setItem("username", data.username);
@@ -45,7 +51,6 @@ const ProtectedRoute = ({ children }) => {
           if (data.household_id) {
             localStorage.setItem("household_id", data.household_id);
           }
-          
           setIsAuthenticated(true);
         } else {
           // Token is invalid or expired

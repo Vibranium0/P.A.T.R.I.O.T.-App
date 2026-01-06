@@ -31,11 +31,9 @@ const TokenHandler = ({ children }) => {
 
       // Optional: Show success message
       console.log('✅ Authenticated successfully via Sentinel Login');
-      
-      // If we're on root or login page, redirect to dashboard
-      if (location.pathname === '/' || location.pathname === '/login') {
-        navigate('/dashboard', { replace: true });
-      }
+
+      // Force reload so ProtectedRoute sees the token
+      window.location.reload();
     }
   }, [location, navigate]);
 
