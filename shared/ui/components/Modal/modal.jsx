@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Modal.module.css";
+import styles from "./modal.module.css";
 import Card from "../Card/Card";
 import Button from "../Button/Button";
 

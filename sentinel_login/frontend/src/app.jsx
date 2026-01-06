@@ -46,7 +46,7 @@ const App = () => {
             <AuthProvider>
                 <TransitionProvider>
                     {/* HUD Effects Layer (static, global) */}
-                    <div style={{ position: 'fixed', inset: 0, zIndex: 4, pointerEvents: 'none' }}>
+                    <div style={{ position: 'fixed', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
                         <HUDEffects />
                         <HUDLayer />
                     </div>

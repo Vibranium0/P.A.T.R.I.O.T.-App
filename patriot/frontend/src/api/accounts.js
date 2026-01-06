@@ -1,4 +1,4 @@
-import apiClient from '../../../shared/api/client';
+import apiClient from './client.js';
 
 // lightweight frontend API helpers for accounts
 const base = '/accounts';

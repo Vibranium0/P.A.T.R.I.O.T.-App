@@ -93,7 +93,7 @@ const ProtectedRoute = ({ children }) => {
   // Redirect to Sentinel Login if not authenticated
   if (!isAuthenticated) {
     // Get Sentinel Login URL from env or use default
-    const sentinelLoginUrl = import.meta.env.VITE_SENTINEL_LOGIN_URL || 'http://localhost:5173';
+    const sentinelLoginUrl = import.meta.env.VITE_SENTINEL_LOGIN_URL || 'https://curly-chainsaw-xrw5w677gjxc65gg-5175.app.github.dev';
     const currentUrl = window.location.origin + location.pathname;
     
     // Redirect to Sentinel Login with return URL

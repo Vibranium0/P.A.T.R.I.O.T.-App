@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./LoginAnimation.module.css";
-import logo from "../../../../sentinel-login/frontend/src/assets/patriot/logo.png";
+import logo from "../../../../sentinel_login/frontend/src/assets/patriot/logo.png";
 
 const LoginAnimation = ({ onComplete }) => {
   const [stage, setStage] = useState("init"); // init → access

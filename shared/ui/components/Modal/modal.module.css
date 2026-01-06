@@ -1,5 +1,4 @@
-@import "../../ui/theme/colors.css";
-@import "../../ui/theme/effects.css";
+/* Color palette is now provided by the app root. */
 
 /* Modal background overlay */
 .overlay {

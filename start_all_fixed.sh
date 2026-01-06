@@ -62,33 +62,27 @@ mkdir -p "$SCRIPT_DIR/sentinel_login/backend/instance"
 # Run database migrations (use sentinel venv if available)
 echo "Running database migrations..."
 if [ -f "$SCRIPT_DIR/sentinel_login/backend/venv/bin/python3" ]; then
-  "$SCRIPT_DIR/sentinel_login/backend/venv/bin/python3" "$SCRIPT_DIR/run_migrations.py" 2>&1 | tee "$SCRIPT_DIR/migration.log"
+  PYTHONPATH="$SCRIPT_DIR" "$SCRIPT_DIR/sentinel_login/backend/venv/bin/python3" "$SCRIPT_DIR/run_migrations.py" 2>&1 | tee "$SCRIPT_DIR/migration.log"
 else
-  python3 "$SCRIPT_DIR/run_migrations.py" 2>&1 | tee "$SCRIPT_DIR/migration.log"
+  PYTHONPATH="$SCRIPT_DIR" python3 "$SCRIPT_DIR/run_migrations.py" 2>&1 | tee "$SCRIPT_DIR/migration.log"
 fi
 echo "Migration output saved to migration.log"
 echo ""
 
-# Start Patriot Backend
-cd "$SCRIPT_DIR/patriot/backend"
-if [ -f venv/bin/activate ]; then
-  source venv/bin/activate
-fi
-nohup env PYTHONPATH="$SCRIPT_DIR" python3 app.py > "$SCRIPT_DIR/patriot_backend.log" 2>&1 &
+# Start Patriot Backend (run from workspace root with PYTHONPATH)
+echo "Starting Patriot backend..."
 cd "$SCRIPT_DIR"
+PYTHONPATH="$SCRIPT_DIR" nohup "$SCRIPT_DIR/patriot/backend/venv/bin/python3" "$SCRIPT_DIR/patriot/backend/app.py" > "$SCRIPT_DIR/patriot_backend.log" 2>&1 &
 
 # Start Patriot Frontend
 cd "$SCRIPT_DIR/patriot/frontend"
 nohup npm run dev > "$SCRIPT_DIR/patriot_frontend.log" 2>&1 &
 cd "$SCRIPT_DIR"
 
-# Start Sentinel Backend
-cd "$SCRIPT_DIR/sentinel_login/backend"
-if [ -f venv/bin/activate ]; then
-  source venv/bin/activate
-fi
-nohup env PYTHONPATH="$SCRIPT_DIR" python3 app.py > "$SCRIPT_DIR/sentinel_backend.log" 2>&1 &
+# Start Sentinel Backend (run from workspace root with PYTHONPATH)
+echo "Starting Sentinel backend..."
 cd "$SCRIPT_DIR"
+PYTHONPATH="$SCRIPT_DIR" nohup "$SCRIPT_DIR/sentinel_login/backend/venv/bin/python3" "$SCRIPT_DIR/sentinel_login/backend/app.py" > "$SCRIPT_DIR/sentinel_backend.log" 2>&1 &
 
 # Start Sentinel Frontend
 cd "$SCRIPT_DIR/sentinel_login/frontend"

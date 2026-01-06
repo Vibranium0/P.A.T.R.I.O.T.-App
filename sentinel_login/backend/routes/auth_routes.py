@@ -11,9 +11,9 @@ from flask_jwt_extended import (
 from sqlalchemy.exc import SQLAlchemyError
 from flask_bcrypt import Bcrypt
 
-from sentinel_login.backend.database import db
-from sentinel_login.backend.models.user import User
-from sentinel_login.backend.models.household import Household
+from database import db
+from models.user import User
+from models.household import Household
 
 auth_bp = Blueprint("auth", __name__)
 

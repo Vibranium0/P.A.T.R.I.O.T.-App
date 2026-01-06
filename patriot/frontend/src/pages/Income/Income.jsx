@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Income.module.css";
 import Card from "../../../../../shared/ui/components/Card/Card";
 import Button from "../../../../../shared/ui/components/Button/Button";
-import Modal from "../../../../../shared/ui/components/Modal/Modal";
+import Modal from "../../../../../shared/ui/components/Modal/modal";
 import TextBox from "../../../../../shared/ui/components/TextBox/TextBox";
 import CurrencyBox from "../../../../../shared/ui/components/TextBox/CurrencyBox";
 import StyledDatePicker from "../../../../../shared/ui/components/TextBox/StyledDatePicker";

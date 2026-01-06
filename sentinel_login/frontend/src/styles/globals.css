@@ -41,13 +41,10 @@ body {
   background-position: center;
   background-attachment: fixed;
 
-  /* GPU acceleration for smooth transitions */
-  will-change: transform;
-  transform: translateZ(0);
-
   /* Prevent overscroll bounce on iOS */
   overscroll-behavior-y: none;
-  position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 /* Layer 2 — Holographic HUD grid */
@@ -69,7 +66,8 @@ body::before {
 /* Ensure UI is above background layers */
 #root {
   position: relative;
-  z-index: 1;
+  z-index: 100;
+  isolation: isolate;
 }
 
 /* ===========================

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./RadialMenu.module.css";
-import logo from "../../assets/logo.png";
+import logo from "../../../../patriot/frontend/src/assets/logo.png";
 import {
   HomeIcon,
   CreditCardIcon,

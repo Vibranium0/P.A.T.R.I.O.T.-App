@@ -1,4 +1,4 @@
-@import "/shared/styles/effects.css";
+@import "../../../../../shared/styles/effects.css";
 
 .modalInput[type="number"]::-webkit-outer-spin-button,
 .modalInput[type="number"]::-webkit-inner-spin-button {

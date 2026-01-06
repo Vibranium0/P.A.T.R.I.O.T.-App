@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_cors import CORS
-from sentinel_login.backend.config import Config
-from sentinel_login.backend.database import db
-from sentinel_login.backend.routes.auth_routes import auth_bp
+from config import Config
+from database import db
+from routes.auth_routes import auth_bp
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
@@ -10,7 +10,12 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Configure CORS to allow credentials (for HttpOnly cookies)
-CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://127.0.0.1:5173"])
+CORS(app, supports_credentials=True, origins=[
+    "http://localhost:5173", "http://127.0.0.1:5173",
+    "http://localhost:5175", "http://127.0.0.1:5175",
+    "https://curly-chainsaw-xrw5w677gjxc65gg-5173.app.github.dev",
+    "https://curly-chainsaw-xrw5w677gjxc65gg-5175.app.github.dev"
+])
 
 # Initialize extensions
 bcrypt = Bcrypt(app)

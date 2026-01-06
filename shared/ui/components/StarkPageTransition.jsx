@@ -126,21 +126,21 @@ const StarkPageTransition = ({ active, direction = "left", destBackgroundClass =
             <div
                 ref={prevBgRef}
                 className={`${styles.transitionBg} ${prevBgClass.current}`}
-                style={{ opacity: 1, zIndex: 997 }}
+                style={{ opacity: active ? 1 : 0, zIndex: 997, pointerEvents: 'none' }}
                 aria-hidden="true"
             />
             {/* Destination background is revealed by a mask that follows the overlay */}
             <div
                 ref={bgRef}
                 className={`${styles.transitionBg} ${destBackgroundClass} ${styles.bgMasked}`}
-                style={{ zIndex: 998 }}
+                style={{ zIndex: 998, pointerEvents: 'none' }}
                 aria-hidden="true"
             />
             {/* Masked overlay for the dark .background::after effect */}
             <div
                 className={styles.bgMaskedOverlay}
                 aria-hidden="true"
-                style={{ zIndex: 999 }}
+                style={{ zIndex: 999, pointerEvents: 'none' }}
             />
             {/* The swipe overlay (above both backgrounds, below HUD) */}
             <div
@@ -151,6 +151,7 @@ const StarkPageTransition = ({ active, direction = "left", destBackgroundClass =
                         direction === "left"
                             ? "translateX(-100%)"
                             : "translateX(100%)",
+                    pointerEvents: 'none'
                 }}
                 aria-hidden="true"
             />

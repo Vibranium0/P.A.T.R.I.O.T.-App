@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const rememberMe = localStorage.getItem('remember_me') === 'true';
       
-      const response = await fetch('http://localhost:5001/auth/refresh', {
+      const response = await fetch('/auth/refresh', {
         method: 'POST',
         credentials: 'include', // Include HttpOnly cookie
         headers: {
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // Call backend to clear HttpOnly cookie
-      await fetch('http://localhost:5001/auth/logout', {
+      await fetch('/auth/logout', {
         method: 'POST',
         credentials: 'include',
       });

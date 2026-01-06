@@ -49,8 +49,8 @@ const PatriotLogin = () => {
     }
     
     // Default: redirect to P.A.T.R.I.O.T. app dashboard
-    // In development, P.A.T.R.I.O.T. frontend runs on port 5174
-    const patriotAppUrl = import.meta.env.VITE_PATRIOT_APP_URL || 'http://localhost:5174';
+    // In Codespaces, use the forwarded URL
+    const patriotAppUrl = import.meta.env.VITE_PATRIOT_APP_URL || 'https://curly-chainsaw-xrw5w677gjxc65gg-5173.app.github.dev';
     return `${patriotAppUrl}/dashboard`;
   };
 
@@ -94,7 +94,7 @@ const PatriotLogin = () => {
     
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5001/auth/login", {
+      const res = await fetch("/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // Include cookies for refresh token
@@ -124,7 +124,7 @@ const PatriotLogin = () => {
         setTimeout(() => {
           // If redirecting to P.A.T.R.I.O.T. app, pass token as query param
           // P.A.T.R.I.O.T. app will extract it and store properly
-          if (redirectUrl.includes('localhost:5174') || redirectUrl.includes('patriot')) {
+          if (redirectUrl.includes('5173') || redirectUrl.includes('patriot') || redirectUrl.includes('dashboard')) {
             const separator = redirectUrl.includes('?') ? '&' : '?';
             window.location.href = `${redirectUrl}${separator}token=${encodeURIComponent(data.access_token)}`;
           } else {
@@ -147,26 +147,44 @@ const PatriotLogin = () => {
         <title>Patriot Login</title>
         <link rel="icon" type="image/png" href="/favicon-patriot.png" />
       </Helmet>
-      <div className={patriotTheme["page-theme-patriot"]}>
-        <div className={styles.background}>
-          {/* Hide logo, form, and overlays during transition */}
-          {!transitionActive && (
-            <>
-              <div className={styles.logoLayer}>
-                <img
-                  src={logo}
-                  alt="Sentinel Logo"
-                  className={styles.logo}
-                  data-role="background-logo"
-                  draggable={false}
-                  aria-hidden="true"
-                />
-              </div>
-              <div className={styles.centerOverlay}>
-                <div className={styles.formLayer}>
-                  <div className={styles.cardWrapper}>
+      
+      <div className={styles.background}>
+        {/* Show logo and form (hide during active transitions) */}
+        <div style={{ 
+            opacity: transitionActive ? 0 : 1, 
+            transition: 'opacity 0.3s ease',
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            backgroundColor: 'transparent',
+            pointerEvents: 'auto'
+          }}>
+            <div className={styles.logoLayer}>
+              <img
+                src={logo}
+                alt="Sentinel Logo"
+                className={styles.logo}
+                data-role="background-logo"
+                draggable={false}
+                aria-hidden="true"
+              />
+            </div>
+            <div className={styles.centerOverlay}>
+              <div className={styles.formLayer}>
+                  <div className={styles.cardWrapper} style={{
+                    position: 'fixed',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 9999
+                  }}>
                     <AnimatedCard>
-                      <Card>
+                      <Card style={{ 
+                        border: '5px solid red !important',
+                        backgroundColor: 'rgba(255, 0, 0, 0.5) !important',
+                        minHeight: '400px',
+                        minWidth: '400px'
+                      }}>
                         <PageTitle>P.A.T.R.I.O.T.</PageTitle>
                         <motion.p
                           className={styles.subtitle}
@@ -320,10 +338,8 @@ const PatriotLogin = () => {
                   </div>
                 </div>
               </div>
-            </>
-          )}
-        </div>
-      </div>
+            </div>
+          </div>
     </>
   );
 };

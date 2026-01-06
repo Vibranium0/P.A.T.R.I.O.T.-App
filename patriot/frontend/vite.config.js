@@ -18,12 +18,17 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     proxy: {
-      '/api': 'http://localhost:5001',
+      '/api': 'http://localhost:5000',
+    },
+    fs: {
+      // Allow serving files from the shared directory
+      allow: ['..', '../..'],
     },
   },
 
   optimizeDeps: {
     include: ['framer-motion', 'react', 'react-icons/fi'],
+    exclude: [],
   },
 
   build: {

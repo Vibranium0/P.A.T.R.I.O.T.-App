@@ -41,7 +41,7 @@
     width: 100vw;
     position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: 2;
     overflow: hidden;
     isolation: isolate;
 }
@@ -52,7 +52,7 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 0.5;
+    z-index: -1;
     background: var(--steel-overlay-color, rgba(15, 30, 51, 0.25));
 }
 
@@ -62,7 +62,7 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 1;
+    z-index: -1;
     background:
         linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
         linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
@@ -73,20 +73,23 @@
 .centerOverlay {
     position: fixed;
     inset: 0;
-    z-index: 2;
+    z-index: 20;
     pointer-events: auto;
-    min-height: 100vh; /* Fallback */
-    min-height: 100svh; /* Mobile-safe */
+    min-height: 100vh;
+    min-height: 100svh;
     width: 100vw;
+    height: 100vh;
+    height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: auto;
 }
 
 .logoLayer {
     position: fixed;
     inset: 0;
-    z-index: 2;
+    z-index: 15;
     pointer-events: none;
     width: 100vw;
     min-height: 100vh; /* Fallback */
@@ -97,16 +100,16 @@
 }
 
 .formLayer {
-    position: absolute;
-    inset: 0;
+    position: relative;
     z-index: 100;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     pointer-events: auto;
-    padding: 2rem env(safe-area-inset-right) 2rem env(safe-area-inset-left);
-    overflow-y: auto;
+    padding: 2rem;
+    width: 100%;
+    max-width: 500px;
 }
 
 .loginStack {
