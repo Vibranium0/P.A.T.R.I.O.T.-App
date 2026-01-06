@@ -9,6 +9,7 @@ export default defineConfig({
         alias: {
             shared: resolve(__dirname, '../../shared'),
             '/shared': resolve(__dirname, '../../shared'),
+            'react-icons': resolve(__dirname, './node_modules/react-icons'),
         },
         dedupe: ['react', 'react-dom', 'classnames'],
     },
@@ -26,6 +27,6 @@ export default defineConfig({
         }
     },
     optimizeDeps: {
-        include: ['classnames'],
+        include: ['classnames', 'react-icons/fi'],
     },
 });

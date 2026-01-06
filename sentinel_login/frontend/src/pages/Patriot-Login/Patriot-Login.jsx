@@ -19,9 +19,6 @@ import { useAuth } from "../../contexts/AuthContext";
 
 import { useTransitionOverlay } from "../../TransitionOverlayContext.jsx";
 
-import HUDEffects from "shared/ui/components/HUD/HUDEffects";
-import HUDLayer from "shared/ui/components/HUD/HUDLayer";
-
 
 const PatriotLogin = () => {
   const location = useLocation();
@@ -164,11 +161,6 @@ const PatriotLogin = () => {
                   draggable={false}
                   aria-hidden="true"
                 />
-              </div>
-              {/* HUD Effects Layer (cheese) */}
-              <div className={styles.hudEffectsLayer}>
-                <HUDEffects />
-                <HUDLayer />
               </div>
               <div className={styles.centerOverlay}>
                 <div className={styles.formLayer}>

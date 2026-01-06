@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 import secrets
 import string
 
-households_bp = Blueprint("households", __name__, url_prefix="/api/households")
+households_bp = Blueprint("households", __name__)
 
 
 def generate_invite_token():

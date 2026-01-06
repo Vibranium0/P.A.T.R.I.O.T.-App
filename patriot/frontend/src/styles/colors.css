@@ -59,21 +59,17 @@
   /* ====== UI ELEMENT BASES ====== */
   --button-primary-bg: var(--accent-light);
   --button-primary-text: var(--background);
-  --button-primary-hover: var(--primary-blue);
+  --button-primary-hover: var(--primary);
 
   --button-secondary-bg: transparent;
   --button-secondary-border: var(--accent-silver);
-  --button-secondary-hover: var(--primary-blue);
+  --button-secondary-hover: var(--primary);
 
   /* ====== SPECIAL EFFECTS ====== */
   --hud-line: rgba(47, 143, 255, 0.1);
   /* For grid or circuit overlays */
   --hud-node: rgba(47, 143, 255, 0.5);
   /* Circuit glow points */
-  --highlight-gradient: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+  --highlight-gradient: linear-gradient(90deg, var(--primary), var(--secondary));
   --alert-gradient: linear-gradient(90deg, var(--trim-red), var(--danger));
-  
-  /* ====== STEEL BACKGROUND OVERLAY ====== */
-  --steel-overlay-color: rgba(15, 30, 51, 0.25);
-  /* Navy blue overlay for brushed blue steel effect */
 }

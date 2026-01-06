@@ -3,9 +3,12 @@ import Layout from "../../../shared/ui/components/Layout/Layout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import TokenHandler from "./components/TokenHandler.jsx";
 
+// HUD Components
+import HUDEffects from "../../../shared/ui/components/HUD/HUDEffects";
+import HUDLayer from "../../../shared/ui/components/HUD/HUDLayer";
+
 // Pages
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
-import PatriotLogin from "../../sentinel_login/frontend/src/pages/Patriot-Login/Patriot-Login.jsx";
 import Bills from "./pages/Bills/Bills.jsx";
 import Funds from "./pages/Funds/Funds.jsx";
 import Income from "./pages/Income/Income.jsx";
@@ -16,14 +19,16 @@ import Accounts from "./pages/Accounts/Accounts.jsx";
 
 export default function App() {
   return (
-    <TokenHandler>
-      <Routes>
+    <>
+      {/* HUD Effects Layer (static, global) */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 4, pointerEvents: 'none' }}>
+        <HUDEffects />
+        <HUDLayer />
+      </div>
+      <TokenHandler>
+        <Routes>
         <Route
-          path="/login"
-          element={<PatriotLogin />}
-        />
-      <Route
-        path="/accounts"
+          path="/accounts"
         element={
           <ProtectedRoute>
             <Layout>
@@ -106,5 +111,6 @@ export default function App() {
       <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
     </TokenHandler>
+    </>
   );
 }

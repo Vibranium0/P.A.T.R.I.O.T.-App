@@ -14,6 +14,51 @@ pkill -9 -f 'npm run dev' 2>/dev/null || true
 lsof -ti:5000,5001,5173,5174,5175 | xargs kill -9 2>/dev/null || true
 sleep 2
 
+# Setup and install Python dependencies
+echo "Setting up Python virtual environments..."
+
+# Patriot Backend
+cd "$SCRIPT_DIR/patriot/backend"
+echo "Creating Patriot backend venv..."
+rm -rf venv
+python3 -m venv venv
+source venv/bin/activate
+pip install -q -r requirements.txt
+deactivate
+
+# Sentinel Backend
+cd "$SCRIPT_DIR/sentinel_login/backend"
+echo "Creating Sentinel backend venv..."
+rm -rf venv
+python3 -m venv venv
+source venv/bin/activate
+pip install -q -r requirements.txt
+deactivate
+
+# Install Node dependencies
+echo "Installing Node dependencies..."
+cd "$SCRIPT_DIR/patriot/frontend"
+npm install --silent
+# Ensure react-icons is installed
+npm list react-icons >/dev/null 2>&1 || npm install react-icons
+
+cd "$SCRIPT_DIR/sentinel_login/frontend"
+npm install --silent
+# Ensure react-icons is installed
+npm list react-icons >/dev/null 2>&1 || npm install react-icons
+
+cd "$SCRIPT_DIR"
+
+# Clear Vite caches for fresh start
+echo "Clearing Vite caches..."
+rm -rf "$SCRIPT_DIR/patriot/frontend/node_modules/.vite"
+rm -rf "$SCRIPT_DIR/sentinel_login/frontend/node_modules/.vite"
+
+# Create instance directories for databases
+echo "Creating instance directories..."
+mkdir -p "$SCRIPT_DIR/patriot/backend/instance"
+mkdir -p "$SCRIPT_DIR/sentinel_login/backend/instance"
+
 # Run database migrations (use sentinel venv if available)
 echo "Running database migrations..."
 if [ -f "$SCRIPT_DIR/sentinel_login/backend/venv/bin/python3" ]; then

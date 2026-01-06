@@ -8,7 +8,7 @@
   --steel-overlay-color: rgba(12, 9, 9, 0.25);
   
   /* Path to shared steel texture - relative paths will be resolved per app */
-  --steel-texture-path: url("../../sentinel_login/frontend/src/assets/sentinel-login/gun_metal_texture.jpg");
+  --steel-texture-path: url("/shared/assets/gun_metal_texture.jpg");
 }
 
 /* ==========================================================================

@@ -7,11 +7,20 @@ Use @require_token decorator instead of manually checking tokens.
 from functools import wraps
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt, verify_jwt_in_request
-from flask_jwt_extended.exceptions import JWTExtended
+from flask_jwt_extended.exceptions import JWTExtendedException
 
-# Alias for backwards compatibility and clarity
-# New code should use: @jwt_required()
-require_token = jwt_required
+# Use jwt_required() with parentheses to avoid endpoint naming conflicts
+def require_token(fn=None, **jwt_kwargs):
+    """
+    Decorator to require JWT authentication.
+    Usage: @require_token or @require_token(optional=True)
+    """
+    if fn is None:
+        # Called with arguments: @require_token(optional=True)
+        return jwt_required(**jwt_kwargs)
+    else:
+        # Called without arguments: @require_token
+        return jwt_required()(fn)
 
 
 def get_current_user_id():
@@ -46,5 +55,5 @@ def verify_token():
         user_id = get_jwt_identity()
         claims = get_jwt()
         return (int(user_id) if user_id else None, claims)
-    except JWTExtended:
+    except JWTExtendedException:
         return None

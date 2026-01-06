@@ -155,10 +155,7 @@ const Register = () => {
             draggable={false}
           />
         </div>
-        <div className={styles.hudEffectsLayer}>
-          <HUDEffects />
-          <HUDLayer />
-        </div>
+
         <div className={styles.formLayer}>
           <div className={styles.cardWrapper}>
               <AnimatedCard>

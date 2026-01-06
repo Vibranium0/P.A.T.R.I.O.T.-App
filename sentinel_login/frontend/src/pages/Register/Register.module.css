@@ -257,12 +257,7 @@
 }
 
 .background {
-    /* Steel texture base layer */
-    background: url("../../assets/sentinel-login/gun_metal_texture.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
+    /* Overlay container - texture now in body (globals.css) */
     min-height: 100vh; /* Fallback */
     min-height: 100svh; /* Mobile-safe viewport height */
     width: 100vw;
@@ -270,10 +265,6 @@
     inset: 0;
     z-index: 0;
     isolation: isolate;
-    
-    /* GPU acceleration for smooth transitions */
-    will-change: transform;
-    transform: translateZ(0);
 }
 
 /* Sentinel color overlay - sits above texture, below HUD grid (ready for future use) */

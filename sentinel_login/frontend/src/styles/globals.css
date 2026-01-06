@@ -1,8 +1,6 @@
 /* ===========================================================
-   GLOBAL SYSTEM — RESET • BACKGROUND • TYPOGRAPHY • UTILITIES
+   SENTINEL GLOBAL SYSTEM — RESET • BACKGROUND • TYPOGRAPHY
    =========================================================== */
-
-@import "/shared/styles/effects.css";
 
 /* ===========================
    RESET
@@ -31,11 +29,11 @@ button {
    =========================== */
 
 body {
-  /* Shared steel texture with blue-steel overlay */
+  /* Shared steel texture with overlay */
   background: 
     linear-gradient(
-      var(--steel-overlay-color, rgba(15, 30, 51, 0.25)),
-      var(--steel-overlay-color, rgba(15, 30, 51, 0.25))
+      var(--steel-overlay-color, rgba(12, 9, 9, 0.15)),
+      var(--steel-overlay-color, rgba(12, 9, 9, 0.15))
     ),
     url("/shared/assets/gun_metal_texture.jpg");
   background-size: cover;
@@ -52,35 +50,23 @@ body {
   position: relative;
 }
 
-/* Layer 2 — Holographic grid */
+/* Layer 2 — Holographic HUD grid */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 2;
 
   background:
-    linear-gradient(90deg, var(--hud-line) 1px, transparent 1px),
-    linear-gradient(0deg, var(--hud-line) 1px, transparent 1px);
+    linear-gradient(90deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px),
+    linear-gradient(0deg, var(--hud-line, rgba(255, 255, 255, 0.08)) 1px, transparent 1px);
 
   background-size: 60px 60px;
   mix-blend-mode: overlay;
 }
 
-/* Layer 3 — Subtle blur + dark glass */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-
-  background: var(--glass-opacity);
-  backdrop-filter: var(--glass-blur);
-}
-
-/* Ensure UI is above FX layers */
+/* Ensure UI is above background layers */
 #root {
   position: relative;
   z-index: 1;
