@@ -24,6 +24,8 @@ import { useLocation } from "react-router-dom";
 function AppTransitionOverlay() {
     const { active, direction } = useTransitionOverlay();
     const location = useLocation();
+    // Debug log for transition state
+    console.log('[TransitionOverlay] active:', active, 'direction:', direction, 'pathname:', location.pathname);
     // Determine destination background class based on route
     let destBackgroundClass = "";
     if (location.pathname === "/register") {

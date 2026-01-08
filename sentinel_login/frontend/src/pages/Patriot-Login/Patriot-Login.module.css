@@ -1,3 +1,17 @@
+/* DEBUG: Force html, body, and #root to have full viewport size and visible overflow */
+html, body, #root {
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow: visible !important;
+}
+/* DEBUG: Force all ancestors of .cardWrapper to be visible */
+.cardWrapper, .cardWrapper *,
+.cardWrapper :not(svg):not(path),
+.formLayer, .centerOverlay, .background, body, html {
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+}
 /* HUD Effects Layer — between background and logo/form */
 .hudEffectsLayer {
     position: fixed;
@@ -38,6 +52,7 @@
     /* Overlay container - texture now in body (globals.css) */
     min-height: 100vh; /* Fallback */
     min-height: 100svh; /* Mobile-safe viewport height */
+    height: 100vh !important;
     width: 100vw;
     position: fixed;
     inset: 0;
@@ -143,7 +158,11 @@
 }
 
 .cardWrapper {
-    z-index: 101;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 2147483647 !important;
     width: 320px;
     max-width: 100%;
     display: flex;

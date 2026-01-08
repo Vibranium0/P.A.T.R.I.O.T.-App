@@ -8,6 +8,7 @@ import styles from './ErrorBoundary.module.css';
  * AuthErrorBoundary - Specialized error boundary for authentication-related errors
  * Provides auth-specific fallback UI and recovery options
  */
+
 const AuthErrorFallback = ({ error, resetError }) => {
   const navigate = useNavigate();
 

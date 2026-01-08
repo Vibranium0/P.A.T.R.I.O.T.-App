@@ -171,13 +171,7 @@ const PatriotLogin = () => {
             </div>
             <div className={styles.centerOverlay}>
               <div className={styles.formLayer}>
-                  <div className={styles.cardWrapper} style={{
-                    position: 'fixed',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 9999
-                  }}>
+                  <div className={styles.cardWrapper}>
                     <AnimatedCard>
                       <Card style={{ 
                         border: '5px solid red !important',
@@ -185,7 +179,9 @@ const PatriotLogin = () => {
                         minHeight: '400px',
                         minWidth: '400px'
                       }}>
-                        <PageTitle>P.A.T.R.I.O.T.</PageTitle>
+                        <PageTitle>
+                          <span style={{ display: 'block', marginBottom: 36 }}>P.A.T.R.I.O.T.</span>
+                        </PageTitle>
                         <motion.p
                           className={styles.subtitle}
                           initial={{ opacity: 0, y: 16 }}

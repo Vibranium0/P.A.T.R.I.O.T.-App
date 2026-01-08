@@ -1,16 +1,18 @@
 .pageTitle {
     font-family: 'Orbitron', 'Exo 2', sans-serif;
-    font-size: clamp(24px, 5.5vw, 36px);
+    font-size: clamp(24px, 5vw, 32px);
     font-weight: 900;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.135em;
     line-height: 1.2;
     color: var(--text-primary);
     text-align: center;
     text-shadow: 0 0 24px var(--glow-primary), 0 0 12px var(--glow-primary), 0 1px 8px rgba(0, 0, 0, 0.8);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     margin-top: 0;
     margin-left: auto;
     margin-right: auto;
+    display: block;
+    width: fit-content;
     z-index: 100;
     position: relative;
     white-space: nowrap;
@@ -79,7 +81,7 @@
 /* Mobile - Larger phones (iPhone 14 Pro Max, etc) */
 @media (max-width: 430px) {
     .pageTitle {
-        font-size: clamp(18px, 5vw, 22px);
+        font-size: clamp(20px, 7vw, 28px);
         margin-bottom: 20px;
         letter-spacing: 0.12em;
     }

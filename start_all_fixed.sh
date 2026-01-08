@@ -39,13 +39,9 @@ deactivate
 echo "Installing Node dependencies..."
 cd "$SCRIPT_DIR/patriot/frontend"
 npm install --silent
-# Ensure react-icons is installed
-npm list react-icons >/dev/null 2>&1 || npm install react-icons
 
 cd "$SCRIPT_DIR/sentinel_login/frontend"
 npm install --silent
-# Ensure react-icons is installed
-npm list react-icons >/dev/null 2>&1 || npm install react-icons
 
 cd "$SCRIPT_DIR"
 
