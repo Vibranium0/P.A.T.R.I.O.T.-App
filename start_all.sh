@@ -4,8 +4,9 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+# Ensure script always runs from workspace root
+cd "$(dirname "$0")"
+SCRIPT_DIR="$PWD"
 
 # Kill any existing processes on ports 5000, 5001, 5173, 5175
 echo "Killing existing processes on ports 5000, 5001, 5173, 5175..."
@@ -29,25 +30,31 @@ deactivate
 # Sentinel Backend
 cd "$SCRIPT_DIR/sentinel_login/backend"
 echo "Creating Sentinel backend venv..."
-rm -rf venv
+rm -rf venvit sti
 python3 -m venv venv
 source venv/bin/activate
 pip install -q -r requirements.txt
 deactivate
 
 # Install Node dependencies
-echo "Installing Node dependencies..."
+cd "$SCRIPT_DIR"
 
+# Clean node_modules and lock files for a guaranteed fresh install
+rm -rf "$SCRIPT_DIR/patriot/frontend/node_modules" "$SCRIPT_DIR/patriot/frontend/package-lock.json"
+rm -rf "$SCRIPT_DIR/sentinel_login/frontend/node_modules" "$SCRIPT_DIR/sentinel_login/frontend/package-lock.json"
+
+
+# Patriot Frontend
 cd "$SCRIPT_DIR/patriot/frontend"
-npm install --silent
-# Ensure classnames is installed
-npm install classnames --silent
+npm install --silent || exit 1
+npm install classnames --silent || exit 1
+npm install @heroicons/react --silent || exit 1
 
-
+# Sentinel Frontend
 cd "$SCRIPT_DIR/sentinel_login/frontend"
-npm install --silent
-# Ensure classnames is installed
-npm install classnames --silent
+npm install --silent || exit 1
+npm install classnames --silent || exit 1
+npm install @heroicons/react --silent || exit 1
 
 cd "$SCRIPT_DIR"
 

@@ -1,4 +1,4 @@
-from database import db
+from sentinel_login.backend.database import db
 from datetime import datetime
 
 

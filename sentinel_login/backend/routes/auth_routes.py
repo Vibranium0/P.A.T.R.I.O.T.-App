@@ -11,9 +11,9 @@ from flask_jwt_extended import (
 from sqlalchemy.exc import SQLAlchemyError
 from flask_bcrypt import Bcrypt
 
-from database import db
-from models.user import User
-from models.household import Household
+from sentinel_login.backend.database import db
+from sentinel_login.backend.models.user import User
+from sentinel_login.backend.models.household import Household
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -25,9 +25,7 @@ def password_reset_request():
     identifier = data.get("username")
     if not identifier:
         return jsonify({"error": "username required"}), 400
-    user = User.query.filter(
-        (User.username == identifier)
-    ).first()
+    user = User.query.filter((User.username == identifier)).first()
     if not user or not user.security_question:
         return jsonify({"error": "user not found or no security question set"}), 404
     return jsonify({"security_question": user.security_question}), 200
@@ -41,14 +39,10 @@ def password_reset_confirm():
     new_password = data.get("new_password")
     if not identifier or not security_answer or not new_password:
         return (
-            jsonify(
-                {"error": "username, security answer, and new password required"}
-            ),
+            jsonify({"error": "username, security answer, and new password required"}),
             400,
         )
-    user = User.query.filter(
-        (User.username == identifier)
-    ).first()
+    user = User.query.filter((User.username == identifier)).first()
     if not user or not user.security_answer:
         return jsonify({"error": "user not found or no security answer set"}), 404
     if user.security_answer.strip().lower() != security_answer.strip().lower():
@@ -97,33 +91,29 @@ def refresh():
     user = User.query.get(int(current_user_id))
     if not user:
         return jsonify({"error": "user not found"}), 404
-    
+
     # Get remember_me preference from request body if provided
     data = request.get_json() or {}
     remember_me = data.get("remember_me", False)
-    
+
     # Set token durations based on remember_me
     access_expires = timedelta(days=30) if remember_me else timedelta(days=1)
     refresh_expires = timedelta(days=90) if remember_me else timedelta(days=7)
-    
+
     additional_claims = {"household_id": user.default_household_id}
     access_token = create_access_token(
         identity=str(user.id),
         additional_claims=additional_claims,
         expires_delta=access_expires,
     )
-    
+
     # Issue new refresh token (token rotation for security)
     new_refresh_token = create_refresh_token(
-        identity=str(user.id),
-        expires_delta=refresh_expires
+        identity=str(user.id), expires_delta=refresh_expires
     )
-    
-    response = make_response(
-        jsonify({"access_token": access_token}),
-        200
-    )
-    
+
+    response = make_response(jsonify({"access_token": access_token}), 200)
+
     # Set new refresh token as HttpOnly cookie
     response.set_cookie(
         "refresh_token_cookie",  # Flask-JWT-Extended default name
@@ -134,7 +124,7 @@ def refresh():
         max_age=int(refresh_expires.total_seconds()),
         path="/",
     )
-    
+
     return response
 
 
@@ -144,11 +134,8 @@ def logout():
     Logout by clearing the refresh token cookie.
     Access token in memory will be discarded by frontend.
     """
-    response = make_response(
-        jsonify({"message": "logged out successfully"}),
-        200
-    )
-    
+    response = make_response(jsonify({"message": "logged out successfully"}), 200)
+
     # Clear the refresh token cookie
     response.set_cookie(
         "refresh_token_cookie",  # Flask-JWT-Extended default name
@@ -159,7 +146,7 @@ def logout():
         max_age=0,  # Expire immediately
         path="/",
     )
-    
+
     return response
 
 
@@ -172,17 +159,10 @@ def register():
     security_question = data.get("security_question")
     security_answer = data.get("security_answer")
 
-    if (
-        not username
-        or not password
-        or not security_question
-        or not security_answer
-    ):
+    if not username or not password or not security_question or not security_answer:
         return (
             jsonify(
-                {
-                    "error": "username, password, security question, and answer required"
-                }
+                {"error": "username, password, security question, and answer required"}
             ),
             400,
         )
@@ -191,13 +171,14 @@ def register():
     if len(username) > 80:
         return jsonify({"error": "username must be 80 characters or less"}), 400
     if len(security_question) > 255:
-        return jsonify({"error": "security question must be 255 characters or less"}), 400
+        return (
+            jsonify({"error": "security question must be 255 characters or less"}),
+            400,
+        )
     if len(security_answer) > 255:
         return jsonify({"error": "security answer must be 255 characters or less"}), 400
 
-    existing = User.query.filter(
-        (User.username == username)
-    ).first()
+    existing = User.query.filter((User.username == username)).first()
     if existing:
         return jsonify({"error": "user exists"}), 409
 
@@ -206,7 +187,7 @@ def register():
 
     # Use username as email if email not provided (for backward compatibility)
     email = data.get("email", f"{username}@sentinel.local")
-    
+
     try:
         user = User(
             username=username,
@@ -219,9 +200,7 @@ def register():
         db.session.flush()  # get user.id before creating household
 
         # Create a new household for the user with required fields
-        household = Household(
-            name=f"{username}'s Household"
-        )
+        household = Household(name=f"{username}'s Household")
         db.session.add(household)
         db.session.flush()  # get household.id before commit
 
@@ -246,9 +225,7 @@ def login():
         return jsonify({"error": "username and password required"}), 400
 
     # Try to find user by username only
-    user = User.query.filter(
-        (User.username == identifier)
-    ).first()
+    user = User.query.filter((User.username == identifier)).first()
 
     # Sentinel sync logic removed: no cross-app sync available in sentinel-login
 
@@ -261,19 +238,18 @@ def login():
 
     # Include household_id in JWT claims
     additional_claims = {"household_id": user.default_household_id}
-    
+
     # Extend token duration if remember_me is true
     access_expires = timedelta(days=30) if remember_me else timedelta(days=1)
     refresh_expires = timedelta(days=90) if remember_me else timedelta(days=7)
-    
+
     access_token = create_access_token(
         identity=str(user.id),
         additional_claims=additional_claims,
         expires_delta=access_expires,
     )
     refresh_token = create_refresh_token(
-        identity=str(user.id),
-        expires_delta=refresh_expires
+        identity=str(user.id), expires_delta=refresh_expires
     )
 
     # Create response with access token in body
@@ -289,19 +265,21 @@ def login():
         ),
         200,
     )
-    
+
     # Set refresh token as HttpOnly cookie (XSS protection)
     # Flask-JWT-Extended expects specific cookie names
     response.set_cookie(
         "refresh_token_cookie",  # Flask-JWT-Extended default name
         value=refresh_token,
         httponly=True,
-        secure=current_app.config.get("JWT_COOKIE_SECURE", False),  # True in production with HTTPS
+        secure=current_app.config.get(
+            "JWT_COOKIE_SECURE", False
+        ),  # True in production with HTTPS
         samesite="Lax",  # CSRF protection
         max_age=int(refresh_expires.total_seconds()),
         path="/",
     )
-    
+
     return response
 
 

@@ -12,6 +12,7 @@ export default defineConfig({
       'sentinel_login': path.resolve(__dirname, '../../sentinel_login'),
       'react-icons': path.resolve(__dirname, './node_modules/react-icons'),
     },
+    dedupe: ['react', 'react-dom', 'classnames'],
   },
 
   server: {
@@ -21,13 +22,24 @@ export default defineConfig({
       '/api': 'http://localhost:5000',
     },
     fs: {
-      // Allow serving files from the shared directory
-      allow: ['..', '../..'],
+      // Allow serving files from the shared directory and shared/ui/components
+      allow: [
+        '..',
+        '../..',
+        path.resolve(__dirname, '../../shared'),
+        path.resolve(__dirname, '../../shared/ui/components'),
+      ],
     },
   },
 
   optimizeDeps: {
-    include: ['framer-motion', 'react', 'react-icons/fi'],
+    include: [
+      'framer-motion',
+      'react',
+      'react-icons/fi',
+      'classnames',
+      '@heroicons/react',
+    ],
     exclude: [],
   },
 
