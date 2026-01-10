@@ -1,8 +1,21 @@
-# === Monorepo .gitignore (frontend) ===
+# Local .gitignore for patriot/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+*.pyc
+venv/
+ENV/
+env/
 
 # Node.js
 node_modules/
 dist/
+build/
 
 # Environment & config
 .env
@@ -11,9 +24,6 @@ dist/
 
 # Logs & temp
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 *.tmp
 *.swp
 *.swo

@@ -3,8 +3,350 @@
 ## Overview
 Complete CRUD API endpoints for all P.A.T.R.I.O.T. financial models. All endpoints require JWT authentication and automatically filter data by the authenticated user's household.
 
+# P.A.T.R.I.O.T. API Endpoints Documentation
+
+## Backend Endpoints - Implementation Complete ✅
+Complete CRUD API endpoints have been implemented for all P.A.T.R.I.O.T. financial models with full JWT authentication and household-based data isolation.
+
 ---
 
+## 📋 Completed Endpoints
+
+### 1. ✅ Categories (`/api/categories`)
+**File:** `patriot/backend/routes/categories_routes.py` (260+ lines)
+
+**Features:**
+- Hierarchical parent-child relationships
+- Circular reference prevention
+- Subcategory management
+- Default category system
+- Icon and color customization
+
+---
+## 1. Categories API (`/api/categories`)
+
+### List Categories
+**GET** `/api/categories`
+
+**Query Parameters:**
+- `type` (string): Filter by category type (income/expense)
+- `parent_id` (int): Filter by parent category ID
+- `include_inactive` (boolean): Include inactive categories (default: false)
+
+**Response:**
+```json
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Housing",
+      "type": "expense",
+      "parent_id": null,
+      "subcategories": [...],
+      "is_active": true,
+      "icon": "🏠",
+      "color": "#3b82f6"
+    }
+  ],
+  "count": 1
+}
+```
+
+### Get Single Category
+**GET** `/api/categories/<id>`
+
+### Create Category
+**POST** `/api/categories`
+
+**Request Body:**
+```json
+{
+  "name": "Groceries",
+  "type": "expense",
+  "parent_id": 1,
+  "icon": "🛒",
+  "color": "#10b981",
+  "description": "Food and household items"
+}
+```
+
+### Update Category
+**PUT** `/api/categories/<id>`
+
+### Delete Category (Soft Delete)
+**DELETE** `/api/categories/<id>`
+
+### Get Default Categories
+**GET** `/api/categories/defaults`
+
+### Create Default Categories
+**POST** `/api/categories/defaults/create`
+
+---
+### 2. ✅ Expenses (`/api/expenses`)
+**File:** `patriot/backend/routes/expenses_routes.py` (290+ lines)
+
+**Statistics:**
+- Total by category
+- Monthly average
+- Date range totals
+
+---
+## 2. Expenses API (`/api/expenses`)
+
+### List Expenses
+**GET** `/api/expenses`
+
+**Query Parameters:**
+- `category_id` (int): Filter by category
+- `account_id` (int): Filter by account
+- `start_date` (ISO date): Filter by start date
+- `end_date` (ISO date): Filter by end date
+- `merchant` (string): Filter by merchant name
+- `min_amount` (decimal): Minimum amount
+- `max_amount` (decimal): Maximum amount
+- `sort_by` (string): Sort field (date/amount, default: date)
+- `order` (string): Sort order (asc/desc, default: desc)
+
+**Response:**
+```json
+{
+  "expenses": [
+    {
+      "id": 1,
+      "amount": 150.00,
+      "date": "2024-01-15",
+      "merchant": "Whole Foods",
+      "category": {...},
+      "account": {...},
+      "description": "Weekly groceries"
+    }
+  ],
+  "count": 1
+}
+```
+
+### Get Single Expense
+**GET** `/api/expenses/<id>`
+
+### Create Expense
+**POST** `/api/expenses`
+
+**Request Body:**
+```json
+{
+  "amount": 150.00,
+  "date": "2024-01-15",
+  "merchant": "Whole Foods",
+  "category_id": 5,
+  "account_id": 2,
+  "description": "Weekly groceries",
+  "is_recurring": false,
+  "receipt_url": "https://...",
+  "notes": "Organic produce"
+}
+```
+
+### Update Expense
+**PUT** `/api/expenses/<id>`
+
+### Delete Expense
+**DELETE** `/api/expenses/<id>`
+
+### Get Expense Statistics
+**GET** `/api/expenses/stats`
+
+**Query Parameters:**
+- `start_date` (ISO date, required)
+- `end_date` (ISO date, required)
+
+**Response:**
+```json
+{
+  "by_category": [
+    {
+      "category_id": 5,
+      "category_name": "Groceries",
+      "total": 600.00
+    }
+  ],
+  "monthly_average": 450.00,
+  "start_date": "2024-01-01",
+  "end_date": "2024-12-31"
+}
+```
+
+---
+### 3. ✅ Goals (`/api/goals`)
+**File:** `patriot/backend/routes/goals_routes.py` (370+ lines)
+
+**Features:**
+- Progress tracking (percentage, amount remaining)
+- Priority levels (low/medium/high)
+- Category-based organization
+- Target dates with start dates
+- Account and Fund associations
+- Contribution/withdrawal management
+
+---
+## 3. Goals API (`/api/goals`)
+
+### List Goals
+**GET** `/api/goals`
+
+### Get Active Goals
+**GET** `/api/goals/active`
+
+### Get Completed Goals
+**GET** `/api/goals/completed`
+
+### Get Single Goal
+**GET** `/api/goals/<id>`
+
+### Create Goal
+**POST** `/api/goals`
+
+### Update Goal
+**PUT** `/api/goals/<id>`
+
+### Delete Goal
+**DELETE** `/api/goals/<id>`
+
+### Add Contribution
+**POST** `/api/goals/<id>/contribute`
+
+### Withdraw from Goal
+**POST** `/api/goals/<id>/withdraw`
+
+---
+### 4. ✅ Savings (`/api/savings`)
+**File:** `patriot/backend/routes/savings_routes.py` (420+ lines)
+
+**Transaction Types:**
+- deposit
+- withdrawal
+- interest
+
+**Statistics:**
+- Net savings (deposits - withdrawals + interest)
+- Totals by transaction type
+- Savings rate
+- Monthly average (6 months)
+
+---
+## 4. Savings API (`/api/savings`)
+
+### List Savings Transactions
+**GET** `/api/savings`
+
+### Get Single Transaction
+**GET** `/api/savings/<id>`
+
+### Create Savings Transaction
+**POST** `/api/savings`
+
+### Update Transaction
+**PUT** `/api/savings/<id>`
+
+### Delete Transaction
+**DELETE** `/api/savings/<id>`
+
+### Get Savings Statistics
+**GET** `/api/savings/stats`
+
+### Get Savings by Goal
+**GET** `/api/savings/by-goal/<goal_id>`
+
+### Get Savings by Fund
+**GET** `/api/savings/by-fund/<fund_id>`
+
+---
+### 5. ✅ Income (`/api/income`)
+**File:** `patriot/backend/routes/income_routes.py` (348 lines - EXISTING)
+
+---
+## 5. Income API (`/api/income`)
+
+### List Income
+**GET** `/api/income`
+
+### Get Single Income
+**GET** `/api/income/<id>`
+
+### Create Income
+**POST** `/api/income`
+
+### Update Income
+**PUT** `/api/income/<id>`
+
+### Delete Income
+**DELETE** `/api/income/<id>`
+
+---
+### 6. ✅ Accounts (`/api/financial-accounts`)
+**File:** `patriot/backend/routes/financial_accounts_routes.py` (161 lines - EXISTING)
+
+---
+## 6. Financial Accounts API (`/api/financial-accounts`)
+
+### List Accounts
+**GET** `/api/financial-accounts`
+
+### Get Single Account
+**GET** `/api/financial-accounts/<id>`
+
+### Create Account
+**POST** `/api/financial-accounts`
+
+### Update Account
+**PUT** `/api/financial-accounts/<id>`
+
+### Delete Account
+**DELETE** `/api/financial-accounts/<id>`
+
+---
+## 🔒 Security Features
+
+All endpoints implement:
+
+1. **JWT Authentication** - `@jwt_required()` decorator on all routes
+2. **Household Isolation** - `get_current_household_id()` ensures users only access their household data
+3. **Foreign Key Validation** - All references (category, account, fund, goal) validated against household
+4. **User Attribution** - `get_current_user_id()` tracks who created/modified records
+5. **Error Handling** - Try/except blocks with database rollback on failures
+
+---
+## 📊 Data Flow
+
+```
+User Request → JWT Validation → Extract household_id → Query with household filter → Return data
+```
+
+**Example:**
+```python
+@jwt_required()
+def get_expenses():
+    household_id = get_current_household_id()  # From JWT token
+    expenses = Expense.query.filter_by(household_id=household_id).all()
+    return jsonify([e.to_dict() for e in expenses])
+```
+
+---
+## 📝 Blueprint Registration
+
+All blueprints registered in `patriot/backend/app.py`:
+
+```python
+# New blueprints added
+from patriot.backend.routes.categories_routes import categories_bp
+from patriot.backend.routes.expenses_routes import expenses_bp
+from patriot.backend.routes.goals_routes import goals_bp
+from patriot.backend.routes.savings_routes import savings_bp
+from patriot.backend.routes.income_routes import income_bp
+from patriot.backend.routes.financial_accounts_routes import financial_accounts_bp
+```
+
+---
 ## Authentication
 All endpoints require a valid JWT token in the Authorization header:
 ```

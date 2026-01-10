@@ -104,6 +104,14 @@ This monorepo houses multiple applications and a shared directory for common ass
 
 > **Tip:** Always activate the correct virtual environment before running backend servers or scripts.
 
+
+## 📚 Documentation
+
+For complete setup, usage, and API details, see:
+
+- [Quick Reference & Setup Guide](docs/QUICK_REFERENCE.md)
+- [API Endpoints Documentation](docs/API_ENDPOINTS.md)
+
 ## Next Steps
 
 This README will be updated as the project evolves and more implementation details are finalized.

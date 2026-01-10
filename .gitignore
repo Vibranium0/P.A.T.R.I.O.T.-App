@@ -1,28 +1,54 @@
+
+# === Monorepo .gitignore ===
+
 # Python
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.env
-.env
-venv/
-ENV/
-env/
 *.egg-info/
 *.egg
 *.pyc
+venv/
+ENV/
+env/
+**/venv/
+**/ENV/
+**/env/
+**/__pycache__/
 
-# VS Code
-.vscode/
+# Node.js
+node_modules/
+**/node_modules/
+dist/
+build/
+**/dist/
+**/build/
+.vite/
+
+# Environment & config
+.env
+.env.*
+*.env
+
+# Logs & temp
+*.log
+logs/
+*.tmp
+*.swp
+*.swo
+*.bak
+shared_code_scan_report.txt
+.shared_names.tmp
 
 # macOS
 .DS_Store
 
-# Logs
-*.log
-logs/
+# VS Code & editors
+.vscode/
+.idea/
 
-# Database
+# Database & runtime
 *.sqlite3
 *.db
 instance/
@@ -30,24 +56,7 @@ instance/
 # Migrations
 migrations/versions/*.pyc
 
-# Node
-node_modules/
-dist/
-build/
-.vite/
-
-# All venv directories
-**/venv/
-**/ENV/
-**/env/
-**/__pycache__/
-
-# All node_modules directories
-**/node_modules/
-**/dist/
-**/build/
-
-# Frontend build artifacts
+# Frontend build artifacts (explicit, for clarity)
 frontend/node_modules/
 frontend/dist/
 patriot/frontend/node_modules/
@@ -55,7 +64,7 @@ patriot/frontend/dist/
 sentinel_login/frontend/node_modules/
 sentinel_login/frontend/dist/
 
-# Backend virtual environments
+# Backend virtual environments (explicit, for clarity)
 backend/venv/
 backend/ENV/
 backend/*.egg-info/
