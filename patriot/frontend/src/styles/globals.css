@@ -32,12 +32,10 @@ button {
 
 body {
   /* Shared steel texture with blue-steel overlay */
-  background: 
-    linear-gradient(
-      var(--steel-overlay-color, rgba(15, 30, 51, 0.25)),
-      var(--steel-overlay-color, rgba(15, 30, 51, 0.25))
-    ),
-    url("/shared/assets/gun_metal_texture.jpg");
+  background:
+    linear-gradient(var(--steel-overlay-color, rgba(15, 30, 51, 0.25)),
+      var(--steel-overlay-color, rgba(15, 30, 51, 0.25))),
+    url("/assets/gun_metal_texture.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

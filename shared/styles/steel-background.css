@@ -6,9 +6,9 @@
 :root {
   /* Default overlay for steel texture - can be overridden per theme */
   --steel-overlay-color: rgba(12, 9, 9, 0.25);
-  
+
   /* Path to shared steel texture - relative paths will be resolved per app */
-  --steel-texture-path: url("/shared/assets/gun_metal_texture.jpg");
+  --steel-texture-path: url("/assets/gun_metal_texture.jpg");
 }
 
 /* ==========================================================================
@@ -21,18 +21,16 @@
      1. Base steel texture
      2. Color overlay (controlled via --steel-overlay-color)
   */
-  background: 
-    linear-gradient(
-      var(--steel-overlay-color),
-      var(--steel-overlay-color)
-    ),
+  background:
+    linear-gradient(var(--steel-overlay-color),
+      var(--steel-overlay-color)),
     var(--steel-texture-path);
-  
+
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
-  
+
   /* GPU acceleration for smooth transitions */
   will-change: transform;
   transform: translateZ(0);

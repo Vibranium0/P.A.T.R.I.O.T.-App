@@ -79,48 +79,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Modal Demo Button */}
-        <div style={{ margin: "2rem 0", textAlign: "center" }}>
-          <button
-            style={{
-              padding: "0.7rem 1.5rem",
-              fontSize: "1.1rem",
-              borderRadius: "0.7rem",
-              background: "var(--primary-blue)",
-              color: "white",
-              border: "none",
-              boxShadow: "var(--shadow-base)",
-              cursor: "pointer"
-            }}
-            onClick={handleOpenModal}
-          >
-            Open Modal Demo
-          </button>
-        </div>
 
-        {/* Modal Demo */}
-        <Modal
-          open={modalOpen}
-          onSave={() => {/* Save logic here */ }}
-          onCancel={handleCloseModal}
-        >
-          <h2 style={{ marginBottom: "1rem" }}>Demo Modal</h2>
-          <p>This is what your new modal looks like!</p>
-          <button
-            style={{
-              marginTop: "1.5rem",
-              padding: "0.5rem 1.2rem",
-              borderRadius: "0.5rem",
-              background: "var(--primary-blue)",
-              color: "white",
-              border: "none",
-              cursor: "pointer"
-            }}
-            onClick={handleCloseModal}
-          >
-            Close
-          </button>
-        </Modal>
 
         {/* Main content grid */}
         <div className={styles.grid}>
@@ -175,13 +134,7 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Button Demo Section */}
-        <div style={{ display: 'flex', gap: '1rem', margin: '2rem 0' }}>
-          <Button variant="primary" size="md">primary</Button>
-          <Button variant="secondary" size="md">secondary</Button>
-          <Button variant="danger" size="md">danger</Button>
-          <Button variant="ghost" size="md">ghost</Button>
-        </div>
+
       </motion.div>
     </Layout>
   );

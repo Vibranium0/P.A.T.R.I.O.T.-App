@@ -8,11 +8,11 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      'shared': path.resolve(__dirname, '../../shared'),
+      '@shared': path.resolve(__dirname, '../../shared'),
       'sentinel_login': path.resolve(__dirname, '../../sentinel_login'),
       'react-icons': path.resolve(__dirname, './node_modules/react-icons'),
     },
-    dedupe: ['react', 'react-dom', 'classnames'],
+    dedupe: ['react', 'react-dom', 'classnames', '@heroicons/react'],
   },
 
   server: {
@@ -39,6 +39,7 @@ export default defineConfig({
       'react-icons/fi',
       'classnames',
       '@heroicons/react',
+      '@heroicons/react/24/outline',
     ],
     exclude: [],
   },
