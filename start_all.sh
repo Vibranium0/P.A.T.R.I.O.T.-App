@@ -1,5 +1,5 @@
 #!/bin/bash
-# Quick start script for Patriot and Sentinel apps (frontend & backend)
+# Quick start script for Patriot and Sentinel apps (frontend & backend
 # Usage: ./start_all.sh
 
 set -e

@@ -1,3 +1,8 @@
+// ...existing code...
+
+
+
+// ...rest of the file...
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Layout from "../../../../../shared/ui/components/Layout/Layout";
@@ -81,8 +86,8 @@ const Dashboard = () => {
 
 
 
-        {/* Main content grid */}
-        <div className={styles.grid}>
+        {/* Main content grid: two columns for charts, activity below */}
+        <div className={styles.mainGrid}>
           <Card title="Bills by Category" hover>
             <div className={styles.chartRow}>
               <RadarChart data={billsByCategory} size={300} />
@@ -99,7 +104,7 @@ const Dashboard = () => {
 
           <Card title="Debt Breakdown" hover>
             <div className={styles.chartRow}>
-              <RadarChart data={debtByCategory} size={300} color="rgba(185,192,201,0.25)" />
+              <RadarChart data={debtByCategory} size={300} />
               <div className={styles.legend}>
                 <p className={styles.legendIntro}>Current debt exposure</p>
                 <ul>
@@ -111,27 +116,29 @@ const Dashboard = () => {
             </div>
           </Card>
 
-          <Card title="Recent Activity" hover>
-            <div className={styles.activityList}>
-              {/* Replace with live data later */}
-              <div className={styles.activityRow}>
-                <div>Paycheck</div>
-                <div className={styles.activityAmount}>+ $1,300</div>
+          <div className={styles.activitySection}>
+            <Card title="Recent Activity" hover>
+              <div className={styles.activityList}>
+                {/* Replace with live data later */}
+                <div className={styles.activityRow}>
+                  <div>Paycheck</div>
+                  <div className={styles.activityAmount}>+ $1,300</div>
+                </div>
+                <div className={styles.activityRow}>
+                  <div>Groceries — Walmart</div>
+                  <div className={styles.activityAmount}>- $62.23</div>
+                </div>
+                <div className={styles.activityRow}>
+                  <div>Autopay — Electricity</div>
+                  <div className={styles.activityAmount}>- $72.12</div>
+                </div>
+                <div className={styles.activityRow}>
+                  <div>Transfer to Savings</div>
+                  <div className={styles.activityAmount}>- $150.00</div>
+                </div>
               </div>
-              <div className={styles.activityRow}>
-                <div>Groceries — Walmart</div>
-                <div className={styles.activityAmount}>- $62.23</div>
-              </div>
-              <div className={styles.activityRow}>
-                <div>Autopay — Electricity</div>
-                <div className={styles.activityAmount}>- $72.12</div>
-              </div>
-              <div className={styles.activityRow}>
-                <div>Transfer to Savings</div>
-                <div className={styles.activityAmount}>- $150.00</div>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </div>
         </div>
 
 

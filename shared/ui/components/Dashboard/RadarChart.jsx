@@ -25,7 +25,7 @@ function normalize(data, max = 100) {
   });
 }
 
-export default function RadarChart({ data = [], size = 220, color = "rgba(47,143,255,0.25)" }) {
+export default function RadarChart({ data = [], size = 220, color = "var(--primary), 0.25" }) {
   const margin = 12;
   const chartSize = size;
   const cx = chartSize / 2;
@@ -33,28 +33,35 @@ export default function RadarChart({ data = [], size = 220, color = "rgba(47,143
   const maxRadius = (chartSize / 2) - margin;
 
   // build points scaled to radius
+  // Place labels on the perimeter, outside the chart
+  const labelOffset = 32; // distance from center to label (beyond chart radius)
   const nodes = normalize(data, 100).map(n => ({
     ...n,
     px: cx + n.x * maxRadius,
     py: cy + n.y * maxRadius,
-    labelX: cx + n.x * (maxRadius + 18),
-    labelY: cy + n.y * (maxRadius + 18),
+    labelX: cx + n.x * (maxRadius + labelOffset),
+    labelY: cy + n.y * (maxRadius + labelOffset),
   }));
 
   // polygon points
   const polygonPoints = nodes.map(n => `${n.px},${n.py}`).join(" ");
 
+  // Use CSS variable for fill color with opacity
+  const polygonFill = color.startsWith('var(')
+    ? color.replace(')', ', 0.25)')
+    : color;
+
   return (
     <svg width={chartSize} height={chartSize} viewBox={`0 0 ${chartSize} ${chartSize}`} role="img" aria-label="radar chart">
       {/* circular grid (3 rings) */}
-      <g opacity="0.06" stroke="var(--text-secondary)" strokeWidth="1" fill="none">
+      <g opacity="0.06" stroke="var(--accent-light)" strokeWidth="1" fill="none">
         <circle cx={cx} cy={cy} r={maxRadius * 0.33} />
         <circle cx={cx} cy={cy} r={maxRadius * 0.66} />
         <circle cx={cx} cy={cy} r={maxRadius} />
       </g>
 
       {/* radial lines */}
-      <g opacity="0.06" stroke="var(--text-secondary)" strokeWidth="1">
+      <g opacity="0.06" stroke="var(--accent-light)" strokeWidth="1">
         {nodes.map((n, i) => (
           <line key={i} x1={cx} y1={cy} x2={n.px} y2={n.py} />
         ))}
@@ -63,8 +70,8 @@ export default function RadarChart({ data = [], size = 220, color = "rgba(47,143
       {/* filled polygon */}
       <polygon
         points={polygonPoints}
-        fill={color}
-        stroke="var(--primary-blue)"
+        fill={polygonFill}
+        stroke="var(--primary)"
         strokeWidth="1.5"
         fillOpacity="0.35"
       />
@@ -72,14 +79,14 @@ export default function RadarChart({ data = [], size = 220, color = "rgba(47,143
       {/* nodes */}
       <g>
         {nodes.map((n, i) => (
-          <circle key={i} cx={n.px} cy={n.py} r={4} fill="var(--primary-blue)" stroke="transparent" />
+          <circle key={i} cx={n.px} cy={n.py} r={4} fill="var(--primary)" stroke="transparent" />
         ))}
       </g>
 
       {/* labels */}
-      <g fontSize="10" fill="var(--text-secondary)" fontFamily="'Exo 2', sans-serif">
+      <g fontSize="16" fill="var(--text-secondary)" fontFamily="'Orbitron', 'Exo 2', sans-serif">
         {nodes.map((n, i) => (
-          <text key={i} x={n.labelX} y={n.labelY} textAnchor={n.x < 0 ? "end" : "start"} dominantBaseline="middle">
+          <text key={i} x={n.labelX} y={n.labelY} textAnchor={n.x < -0.01 ? "end" : n.x > 0.01 ? "start" : "middle"} dominantBaseline="middle">
             {n.name}
           </text>
         ))}

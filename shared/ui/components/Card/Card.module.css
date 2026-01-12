@@ -24,7 +24,7 @@
 
   position: relative;
   overflow: visible;
-  
+
   width: 100%;
   box-sizing: border-box;
 }
@@ -79,6 +79,7 @@
   flex: 1;
   color: var(--text-primary);
   font-size: 1rem;
+  font-family: 'Orbitron', sans-serif;
 }
 
 /* ============================================

@@ -12,11 +12,14 @@
   min-height: 64px;
 }
 
+
 .label {
-  font-size: 0.78rem;
+  font-size: 1.05rem;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
+  font-family: 'Orbitron', sans-serif;
 }
+
 
 .value {
   display: flex;
@@ -24,11 +27,13 @@
   gap: 0.35rem;
   color: var(--text-primary);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 2rem;
+  font-family: 'Orbitron', sans-serif;
 }
+
 
 .prefix {
   font-family: "Share Tech Mono", monospace;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   color: var(--text-secondary);
 }

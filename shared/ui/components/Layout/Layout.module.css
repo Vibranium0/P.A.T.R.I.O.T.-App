@@ -7,8 +7,10 @@
     position: relative;
     width: 100%;
     /* Use svh for mobile-safe viewport height with fallback */
-    min-height: 100vh; /* Fallback for older browsers */
-    min-height: 100svh; /* Small viewport height - mobile Safari compatible */
+    min-height: 100vh;
+    /* Fallback for older browsers */
+    min-height: 100svh;
+    /* Small viewport height - mobile Safari compatible */
     display: flex;
     flex-direction: column;
 
@@ -18,7 +20,7 @@
     /* Ensures content is never flush to edges */
     padding-bottom: 5rem;
     /* space so radial menu never overlaps content */
-    
+
     /* Respect safe areas on notched devices */
     padding-top: env(safe-area-inset-top, 0);
     padding-right: env(safe-area-inset-right, 0);
@@ -32,15 +34,15 @@
     position: relative;
     z-index: 3;
     /* HUDLayer is z = 2, so this stays above it */
-
     width: 100%;
     padding: 2rem;
     max-width: 1400px;
     margin: 0 auto;
-
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    overflow-y: auto;
+    flex: 1 1 auto;
 }
 
 /* Mobile adjustments */
