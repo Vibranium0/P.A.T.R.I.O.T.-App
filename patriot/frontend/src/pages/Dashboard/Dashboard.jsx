@@ -9,6 +9,16 @@ import Layout from "../../../../../shared/ui/components/Layout/Layout";
 import Card from "../../../../../shared/ui/components/Card/Card";
 import SummaryCard from "../../../../../shared/ui/components/Dashboard/SummaryCard";
 import RadarChart from "../../../../../shared/ui/components/Dashboard/RadarChart";
+import {
+  HomeIcon,
+  BoltIcon,
+  CalendarIcon,
+  DocumentCurrencyDollarIcon,
+  BanknotesIcon,
+  CreditCardIcon,
+  AcademicCapIcon,
+  TruckIcon
+} from "@heroicons/react/24/outline";
 import Modal from "../../../../../shared/ui/components/Modal/modal";
 import Button from "../../../../../shared/ui/components/Button/Button";
 import styles from "./Dashboard.module.css";
@@ -90,7 +100,19 @@ const Dashboard = () => {
         <div className={styles.mainGrid}>
           <Card title="Bills by Category" hover>
             <div className={styles.chartRow}>
-              <RadarChart data={billsByCategory} size={300} />
+              <div className={styles.chartSvgWrap}>
+                <RadarChart
+                  data={billsByCategory}
+                  size={190}
+                  icons={[
+                    <HomeIcon />, // Rent/Mortgage
+                    <BoltIcon />, // Utilities
+                    <CalendarIcon />, // Subscriptions
+                    <DocumentCurrencyDollarIcon />, // Insurance
+                    <BanknotesIcon /> // Other
+                  ]}
+                />
+              </div>
               <div className={styles.legend}>
                 <p className={styles.legendIntro}>Projected distribution of bills</p>
                 <ul>
@@ -104,7 +126,17 @@ const Dashboard = () => {
 
           <Card title="Debt Breakdown" hover>
             <div className={styles.chartRow}>
-              <RadarChart data={debtByCategory} size={300} />
+              <div className={styles.chartSvgWrap}>
+                <RadarChart
+                  data={debtByCategory}
+                  size={190}
+                  icons={[
+                    <CreditCardIcon />, // Credit Card
+                    <AcademicCapIcon />, // Student Loan
+                    <TruckIcon /> // Auto Loan
+                  ]}
+                />
+              </div>
               <div className={styles.legend}>
                 <p className={styles.legendIntro}>Current debt exposure</p>
                 <ul>
