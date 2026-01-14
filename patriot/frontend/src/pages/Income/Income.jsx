@@ -129,9 +129,7 @@ export default function Income() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className={styles.headerRow}>
-        {/* <h1 className={styles.title}>Income</h1> */}
-      </div>
+      {/* Page title is now standardized in TopSecretHeader via Layout */}
 
       {/* SUMMARY */}
       <div className={styles.summaryGrid}>

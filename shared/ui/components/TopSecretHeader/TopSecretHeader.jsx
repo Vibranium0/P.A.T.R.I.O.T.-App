@@ -6,7 +6,7 @@ export default function TopSecretHeader({ pageTitle }) {
         <header className={styles.header}>
             <span className={styles.title}>P.A.T.R.I.O.T.</span>
             {pageTitle && (
-                <span className={styles.pageTitle}>{pageTitle}</span>
+                <span className={styles.pageTitleRight}>{pageTitle}</span>
             )}
         </header>
     );

@@ -103,7 +103,7 @@ const Dashboard = () => {
               <div className={styles.chartSvgWrap}>
                 <RadarChart
                   data={billsByCategory}
-                  size={190}
+                  size={209}
                   icons={[
                     <HomeIcon />, // Rent/Mortgage
                     <BoltIcon />, // Utilities
@@ -129,7 +129,7 @@ const Dashboard = () => {
               <div className={styles.chartSvgWrap}>
                 <RadarChart
                   data={debtByCategory}
-                  size={190}
+                  size={209}
                   icons={[
                     <CreditCardIcon />, // Credit Card
                     <AcademicCapIcon />, // Student Loan
