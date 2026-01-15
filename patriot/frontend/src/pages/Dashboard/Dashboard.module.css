@@ -5,6 +5,7 @@
   margin-left: 1.5rem;
   margin-bottom: 1.5rem;
 }
+
 @import "../../../../../shared/styles/effects.css";
 
 .mainGrid {
@@ -40,6 +41,7 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
   margin-top: 2rem;
+  padding: 1rem;
 }
 
 /* responsive */
@@ -104,7 +106,8 @@
 /* chart + legend row inside card */
 .chartRow {
   display: flex;
-  gap: 1.5rem; /* more space between chart and legend */
+  gap: 1.5rem;
+  /* more space between chart and legend */
   align-items: center;
   justify-content: center;
   padding-top: 0.12rem;
@@ -135,8 +138,8 @@
 .activityRow {
   display: flex;
   justify-content: space-between;
-  padding: 0.65rem 0;
-  border-bottom: 1px dashed rgba(156, 163, 175, 0.04);
+  padding: 0.65rem 1rem;
+  margin-bottom: 0.5rem;
   color: var(--text-secondary);
 }
 

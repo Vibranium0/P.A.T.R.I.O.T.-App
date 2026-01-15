@@ -103,18 +103,7 @@
    OPTIONAL: CONTENT SHADOW EDGE (subtle HUD look)
    =========================================================== */
 
-.main::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
 
-    background: radial-gradient(circle at 50% 10%,
-            rgba(47, 143, 255, 0.12),
-            transparent 70%);
-    opacity: 0.4;
-}
 
 /* ===========================================================
    SAFETY: PREVENT TEXT SELECTION ON UI BUTTONS

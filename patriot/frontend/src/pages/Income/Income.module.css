@@ -54,10 +54,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--glass-opacity);
+    /* Card handles background, border, and radius */
     padding: 1rem;
-    border-radius: 0.75rem;
-    border: 1px solid var(--accent-silver);
 }
 
 .source {
@@ -120,7 +118,7 @@
     .wrapper {
         gap: 1.5rem;
     }
-    
+
     .headerRow {
         flex-direction: column;
         align-items: flex-start;
@@ -138,17 +136,17 @@
     .title {
         font-size: 1.6rem;
     }
-    
+
     .summaryGrid {
         grid-template-columns: 1fr;
         gap: 1rem;
         margin-top: 1rem;
     }
-    
+
     .summaryValue {
         font-size: 1.6rem;
     }
-    
+
     .row {
         flex-direction: column;
         align-items: flex-start;
@@ -166,7 +164,7 @@
     .title {
         font-size: 1.4rem;
     }
-    
+
     .summaryValue {
         font-size: 1.4rem;
     }
