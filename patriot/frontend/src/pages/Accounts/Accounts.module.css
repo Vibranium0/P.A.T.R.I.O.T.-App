@@ -9,9 +9,6 @@
 .modalInput {
     font-size: 1.15rem;
     padding: 0.85rem 1.1rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.03);
 }
 
 .modalCreateButtons {
@@ -47,10 +44,9 @@
     font-size: 1.5rem;
     font-family: 'Orbitron', 'Share Tech Mono', monospace;
     color: var(--text-secondary);
-    text-shadow: 0 0 8px var(--text-accent), 0 0 2px #000;
+    /* text-shadow removed, handled by shared components */
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    opacity: 0.85;
 }
 
 .accountList {
@@ -67,7 +63,6 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 0.5rem;
-    border-bottom: 1px solid var(--border);
 }
 
 .accountName {
@@ -86,9 +81,8 @@
     font-size: 1.1rem;
 }
 
-.addAccountButton {
-    margin-left: auto;
-}
+.addAccountButton {}
+
 /* ============================================
    RESPONSIVE BREAKPOINTS
    ============================================ */
@@ -103,14 +97,14 @@
     .page {
         padding: 0.75rem;
     }
-    
+
     .headerRow {
         flex-direction: column;
         align-items: flex-start;
         gap: 0.75rem;
         margin-top: 1rem;
     }
-    
+
     .pageTitle {
         font-size: 1.3rem;
     }
@@ -126,15 +120,15 @@
     .page {
         gap: 0.75rem;
     }
-    
+
     .pageTitle {
         font-size: 1.2rem;
     }
-    
+
     .modalTitle {
         font-size: 1.25rem;
     }
-    
+
     .modalInput {
         font-size: 1rem;
         padding: 0.75rem 0.9rem;
@@ -151,7 +145,7 @@
     .pageTitle {
         font-size: 1.1rem;
     }
-    
+
     .accountBalance {
         font-size: 1rem;
     }

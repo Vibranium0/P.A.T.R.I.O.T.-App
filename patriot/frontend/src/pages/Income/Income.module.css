@@ -84,88 +84,85 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-}
 
-.form input[type="text"],
-.form input[type="number"],
-.form input[type="date"] {
-    background: var(--card);
-    border: 1px solid var(--accent-silver);
-    color: var(--text-primary);
-    padding: 0.6rem;
-    border-radius: 0.5rem;
-}
+    .form input[type="text"],
+    .form input[type="number"],
+    .form input[type="date"] {
+        color: var(--text-primary);
+        padding: 0.6rem;
+        /* border-radius removed, handled by shared components */
+    }
 
-.toggleRow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-secondary);
-    margin-top: 0.5rem;
-}
+    .toggleRow {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+    }
 
-/* ============================================
+    /* ============================================
    RESPONSIVE BREAKPOINTS
    ============================================ */
 
-@media (max-width: 1200px) {
-    .summaryGrid {
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-}
-
-@media (max-width: 900px) {
-    .wrapper {
-        gap: 1.5rem;
+    @media (max-width: 1200px) {
+        .summaryGrid {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
     }
 
-    .headerRow {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-    }
-}
+    @media (max-width: 900px) {
+        .wrapper {
+            gap: 1.5rem;
+        }
 
-@media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
-    .summaryGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 430px) {
-    .title {
-        font-size: 1.6rem;
+        .headerRow {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
     }
 
-    .summaryGrid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        margin-top: 1rem;
+    @media (min-width: 744px) and (max-width: 900px) and (orientation: portrait) {
+        .summaryGrid {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 
-    .summaryValue {
-        font-size: 1.6rem;
+    @media (max-width: 430px) {
+        .title {
+            font-size: 1.6rem;
+        }
+
+        .summaryGrid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .summaryValue {
+            font-size: 1.6rem;
+        }
+
+        .row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
     }
 
-    .row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-}
-
-@media (max-width: 390px) {
-    .wrapper {
-        gap: 1rem;
-    }
-}
-
-@media (max-width: 375px) {
-    .title {
-        font-size: 1.4rem;
+    @media (max-width: 390px) {
+        .wrapper {
+            gap: 1rem;
+        }
     }
 
-    .summaryValue {
-        font-size: 1.4rem;
+    @media (max-width: 375px) {
+        .title {
+            font-size: 1.4rem;
+        }
+
+        .summaryValue {
+            font-size: 1.4rem;
+        }
     }
-}
