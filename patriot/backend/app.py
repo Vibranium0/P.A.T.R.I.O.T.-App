@@ -58,7 +58,8 @@ def create_app():
         static_url_path="/static",
     )
     app.config.from_object(Config)
-    CORS(app)
+    # Allow CORS from any origin and support credentials for local network/mobile testing
+    CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
     # Configure logging
     if not app.config.get("TESTING"):

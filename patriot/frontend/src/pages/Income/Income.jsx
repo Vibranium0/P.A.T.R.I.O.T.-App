@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import styles from "./Income.module.css";
 import Card from "../../../../../shared/ui/components/Card/Card";
@@ -8,6 +9,7 @@ import CurrencyBox from "../../../../../shared/ui/components/TextBox/CurrencyBox
 import StyledDatePicker from "../../../../../shared/ui/components/TextBox/StyledDatePicker";
 import { motion } from "framer-motion";
 import Dropdown from "../../../../../shared/ui/components/Dropdown/dropdown";
+import apiClient from "../../api/client";
 
 export default function Income() {
   const [funds, setFunds] = useState([]);
@@ -32,13 +34,11 @@ export default function Income() {
   // Load income records + summary from backend
   const loadIncome = async () => {
     try {
-      const res = await fetch("/api/income/income");
-      const data = await res.json();
-      setIncomeList(data.data || []);
+      const res = await apiClient.get("/income/income");
+      setIncomeList(res.data.data || []);
 
-      const summaryRes = await fetch("/api/income/income/summary");
-      const summaryData = await summaryRes.json();
-      setSummary(summaryData.data || { total: 0, bySource: {} });
+      const summaryRes = await apiClient.get("/income/income/summary");
+      setSummary(summaryRes.data.data || { total: 0, bySource: {} });
     } catch (err) {
       console.error("Failed to load income", err);
     }
@@ -47,21 +47,19 @@ export default function Income() {
   useEffect(() => {
     loadIncome();
     // Load funds for Deposit To dropdown
-    fetch("/api/funds/")
-      .then((r) => r.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setFunds(data);
+    apiClient.get("/funds/")
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          setFunds(res.data);
         }
       })
       .catch((err) => console.error("Failed to load funds", err));
 
     // Load accounts for Deposit To dropdown
-    fetch("/api/accounts/list")
-      .then((r) => r.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setAccounts(data);
+    apiClient.get("/accounts/list")
+      .then((res) => {
+        if (Array.isArray(res.data)) {
+          setAccounts(res.data);
         }
       })
       .catch((err) => console.error("Failed to load accounts", err));
@@ -69,12 +67,7 @@ export default function Income() {
 
   const submitIncome = async () => {
     try {
-      await fetch("/api/income/income", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
+      await apiClient.post("/income/income", form);
       setForm({ source: "", amount: "", date: "", supportIncluded: false });
       loadIncome();
     } catch (err) {
@@ -84,9 +77,7 @@ export default function Income() {
 
   const deleteIncome = async (id) => {
     try {
-      await fetch(`/api/income/income/${id}`, {
-        method: "DELETE",
-      });
+      await apiClient.delete(`/income/income/${id}`);
       loadIncome();
     } catch (err) {
       console.error("Failed to delete income", err);

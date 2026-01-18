@@ -10,7 +10,7 @@
 .modalInput {
   font-size: 1.15rem;
   padding: 0.85rem 1.1rem;
-  /* border-radius removed, handled by shared components */
+
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-primary);
@@ -65,7 +65,7 @@
 
 .tabButton {
   padding: 0.6rem 1rem;
-  /* border-radius removed, handled by shared components */
+
   border: 1px solid var(--accent-silver);
   background: rgba(255, 255, 255, 0.02);
   color: var(--text-secondary);
@@ -73,20 +73,23 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   backdrop-filter: blur(6px);
+
+
+  .tabButton:hover {
+    color: var(--text-primary);
+
+  }
+
+  .tabActive {
+    color: var(--text-primary);
+
+  }
+
+  color: var(--text-primary);
+
 }
 
-color: var(--text-primary);
-/* border-color removed, handled by shared components */
-/* box-shadow removed, handled by shared components */
-}
-
-color: var(--text-primary);
-/* border-color removed, handled by shared components */
-/* background removed, handled by shared components */
-/* box-shadow removed, handled by shared components */
-}
-
-/* Layout, spacing, and typography only. All visual styles are handled by shared components and CSS variables. */
+/* Layout, spacing, and typography only. */
 
 .modalFormButtons {
   display: flex;
@@ -132,7 +135,7 @@ color: var(--text-primary);
   align-items: center;
   gap: 1rem;
   padding: 0.7rem;
-  /* border-radius removed, handled by shared components */
+
   justify-content: space-between;
 }
 
@@ -167,7 +170,7 @@ color: var(--text-primary);
 
 .input {
   padding: 0.6rem 0.75rem;
-  /* border-radius removed, handled by shared components */
+
 }
 
 .settingsRow {
@@ -179,7 +182,7 @@ color: var(--text-primary);
 
 .smallInput {
   padding: 0.45rem 0.65rem;
-  /* border-radius removed, handled by shared components */
+
 }
 
 .muted {
@@ -193,7 +196,7 @@ color: var(--text-primary);
 
 .dangerButton {
   color: #fff;
-  /* border-radius removed, handled by shared components */
+
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;

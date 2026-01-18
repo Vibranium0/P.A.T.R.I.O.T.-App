@@ -44,7 +44,7 @@
     font-size: 1.5rem;
     font-family: 'Orbitron', 'Share Tech Mono', monospace;
     color: var(--text-secondary);
-    /* text-shadow removed, handled by shared components */
+
     letter-spacing: 0.18em;
     text-transform: uppercase;
 }

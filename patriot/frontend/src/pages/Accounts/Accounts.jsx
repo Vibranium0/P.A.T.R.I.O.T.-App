@@ -1,8 +1,10 @@
 
+
 import React, { useState, useEffect } from "react";
 import styles from "./Accounts.module.css";
 import Card from "../../../../../shared/ui/components/Card/Card";
 import Button from "../../../../../shared/ui/components/Button/Button";
+import apiClient from "../../api/client";
 
 export default function Accounts() {
     const [accounts, setAccounts] = useState([]);
@@ -14,9 +16,8 @@ export default function Accounts() {
         async function fetchAccounts() {
             setLoading(true);
             try {
-                const res = await fetch("/api/financial-accounts/");
-                const data = await res.json();
-                setAccounts(data.accounts || []);
+                const res = await apiClient.get("/financial-accounts/");
+                setAccounts(res.data.accounts || []);
             } catch (err) {
                 console.error("Failed to load accounts", err);
             }
