@@ -11,30 +11,29 @@ const TokenHandler = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Always check for token in URL on mount and on location changes
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const token = searchParams.get('token');
-
-    if (token) {
-      // Store the token from Sentinel login
-      localStorage.setItem('token', token);
-
-      // Remove token from URL for security (don't keep it in browser history)
-      searchParams.delete('token');
-      
-      // Construct clean URL without token parameter
-      const newSearch = searchParams.toString();
-      const newPath = location.pathname + (newSearch ? `?${newSearch}` : '');
-      
-      // Replace current URL to remove token from history
-      window.history.replaceState({}, '', newPath);
-
-      // Optional: Show success message
-      console.log('✅ Authenticated successfully via Sentinel Login');
-
-      // Force reload so ProtectedRoute sees the token
-      window.location.reload();
-    }
+    const handleToken = () => {
+      const rawQuery = window.location.search;
+      const searchParams = new URLSearchParams(rawQuery);
+      const token = searchParams.get('token') || searchParams.get('jwt') || searchParams.get('access_token');
+      console.log('[TokenHandler] window.location.search:', rawQuery);
+      console.log('[TokenHandler] Extracted token:', token);
+      if (token) {
+        localStorage.setItem('token', token);
+        searchParams.delete('token');
+        searchParams.delete('jwt');
+        searchParams.delete('access_token');
+        const newSearch = searchParams.toString();
+        const newPath = window.location.pathname + (newSearch ? `?${newSearch}` : '');
+        window.history.replaceState({}, '', newPath);
+        console.log('[TokenHandler] Token set in localStorage, reloading...');
+        setTimeout(() => {
+          window.location.reload();
+        }, 250);
+      }
+    };
+    handleToken();
   }, [location, navigate]);
 
   return children;

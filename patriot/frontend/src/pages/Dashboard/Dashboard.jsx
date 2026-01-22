@@ -54,6 +54,14 @@ const debtByCategory = [
 ];
 
 const Dashboard = () => {
+  // DEBUG: Show JWT token from localStorage and extracted token from URL
+  const jwtToken = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
+  const rawQuery = typeof window !== 'undefined' ? window.location.search : '';
+  let extractedToken = '';
+  if (typeof window !== 'undefined') {
+    const searchParams = new URLSearchParams(window.location.search);
+    extractedToken = searchParams.get('token') || searchParams.get('jwt') || searchParams.get('access_token') || '';
+  }
   // derive formatted summary array for rendering
   const summaryItems = useMemo(() => ([
     // ...existing code...
@@ -76,6 +84,28 @@ const Dashboard = () => {
 
   return (
     <Layout>
+      {/* DEBUG UI: JWT Token and Query Display */}
+      <div style={{
+        position: 'fixed',
+        top: 8,
+        right: 8,
+        zIndex: 9999,
+        background: 'rgba(0,0,0,0.85)',
+        color: '#fff',
+        padding: '12px 16px',
+        borderRadius: '8px',
+        fontSize: '13px',
+        maxWidth: '90vw',
+        wordBreak: 'break-all',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+      }}>
+        <strong>window.location.search:</strong>
+        <div>{rawQuery || 'No query string'}</div>
+        <strong>Extracted Token from URL:</strong>
+        <div>{extractedToken || 'No token in query'}</div>
+        <strong>JWT Token in localStorage:</strong>
+        <div>{jwtToken || 'No token found'}</div>
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}

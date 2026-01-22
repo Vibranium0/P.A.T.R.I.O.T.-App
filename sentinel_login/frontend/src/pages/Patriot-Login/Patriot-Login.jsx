@@ -21,6 +21,14 @@ import { useTransitionOverlay } from "../../TransitionOverlayContext.jsx";
 
 
 const PatriotLogin = () => {
+  // DEBUG: Show JWT token from localStorage and extracted token from URL
+  const jwtToken = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
+  const rawQuery = typeof window !== 'undefined' ? window.location.search : '';
+  let extractedToken = '';
+  if (typeof window !== 'undefined') {
+    const searchParams = new URLSearchParams(window.location.search);
+    extractedToken = searchParams.get('token') || searchParams.get('jwt') || searchParams.get('access_token') || '';
+  }
   const location = useLocation();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -45,8 +53,8 @@ const PatriotLogin = () => {
     if (location.state && location.state.from) {
       return location.state.from;
     }
-    // Default: always redirect to local Patriot dashboard
-    return "http://localhost:5173/dashboard";
+    // Default: always redirect to Patriot dashboard on LAN IP for iPhone compatibility
+    return "http://192.168.4.44:5173/dashboard";
   };
 
   // Initialize background logo recalibration on mount
@@ -111,18 +119,35 @@ const PatriotLogin = () => {
         // Only store remember_me preference (not sensitive)
         localStorage.setItem("remember_me", rememberMe ? "true" : "false");
         // Get the redirect URL
-        const redirectUrl = getRedirectUrl();
+        let redirectUrl = getRedirectUrl();
         console.log('About to redirect, redirectUrl:', redirectUrl);
         setTimeout(() => {
-          // If redirecting to P.A.T.R.I.O.T. app, pass token as query param
-          // P.A.T.R.I.O.T. app will extract it and store properly
-          console.log('Redirecting to:', redirectUrl, 'with token:', data.access_token);
-          if (redirectUrl.includes('5173') || redirectUrl.includes('patriot') || redirectUrl.includes('dashboard')) {
-            const separator = redirectUrl.includes('?') ? '&' : '?';
-            window.location.href = `${redirectUrl}${separator}token=${encodeURIComponent(data.access_token)}`;
+          // If redirectUrl is a Patriot app URL, always append token as top-level param
+          let decodedUrl = redirectUrl;
+          // If redirectUrl came from ?redirect=, decode it first
+          if (redirectUrl.startsWith('http')) {
+            // Already decoded
+            decodedUrl = redirectUrl;
+          } else {
+            // If it's a ?redirect= param, decode it
+            try {
+              decodedUrl = decodeURIComponent(redirectUrl);
+            } catch (e) {
+              decodedUrl = redirectUrl;
+            }
+          }
+          // Now append token to decodedUrl
+          const urlObj = new URL(decodedUrl, window.location.origin);
+          if (!urlObj.searchParams.get('token') && !urlObj.searchParams.get('jwt') && !urlObj.searchParams.get('access_token')) {
+            urlObj.searchParams.set('token', data.access_token);
+            decodedUrl = urlObj.toString();
+          }
+          // If redirecting to Patriot app (external), use window.location.href
+          if (decodedUrl.includes('5173') || decodedUrl.includes('patriot') || decodedUrl.includes('dashboard')) {
+            window.location.href = decodedUrl;
           } else {
             // Internal navigation within Sentinel app
-            window.location.href = redirectUrl;
+            window.location.href = decodedUrl;
           }
         }, 1200);
       } else {
@@ -142,6 +167,28 @@ const PatriotLogin = () => {
       </Helmet>
 
       <div className={styles.background}>
+        {/* DEBUG UI: JWT Token and Query Display */}
+        <div style={{
+          position: 'fixed',
+          top: 8,
+          right: 8,
+          zIndex: 9999,
+          background: 'rgba(0,0,0,0.85)',
+          color: '#fff',
+          padding: '12px 16px',
+          borderRadius: '8px',
+          fontSize: '13px',
+          maxWidth: '90vw',
+          wordBreak: 'break-all',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+        }}>
+          <strong>window.location.search:</strong>
+          <div>{rawQuery || 'No query string'}</div>
+          <strong>Extracted Token from URL:</strong>
+          <div>{extractedToken || 'No token in query'}</div>
+          <strong>JWT Token in localStorage:</strong>
+          <div>{jwtToken || 'No token found'}</div>
+        </div>
         {/* Show logo and form (hide during active transitions) */}
         <div style={{
           opacity: transitionActive ? 0 : 1,
