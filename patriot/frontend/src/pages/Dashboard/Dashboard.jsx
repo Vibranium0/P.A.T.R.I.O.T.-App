@@ -55,7 +55,7 @@ const debtByCategory = [
 
 const Dashboard = () => {
   // DEBUG: Show JWT token from localStorage and extracted token from URL
-  const jwtToken = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
+  const jwtToken = typeof window !== 'undefined' ? localStorage.getItem('sentinel_token') : '';
   const rawQuery = typeof window !== 'undefined' ? window.location.search : '';
   let extractedToken = '';
   if (typeof window !== 'undefined') {

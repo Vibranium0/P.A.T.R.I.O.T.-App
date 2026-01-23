@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const apiClient = axios.create({
   baseURL: '/api',
-  withCredentials: true,
+  // withCredentials: true, // Not needed, no cookies for auth
   headers: {
     'Content-Type': 'application/json',
   },
@@ -11,7 +11,7 @@ const apiClient = axios.create({
 
 // Attach JWT token from localStorage to every request
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('sentinel_token');
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }

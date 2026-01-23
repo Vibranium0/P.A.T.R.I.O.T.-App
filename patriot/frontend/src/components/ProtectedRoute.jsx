@@ -13,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("sentinel_token");
       console.log("[ProtectedRoute] Token:", token);
 
       if (!token) {
@@ -54,7 +54,7 @@ const ProtectedRoute = ({ children }) => {
           setIsAuthenticated(true);
         } else {
           // Token is invalid or expired
-          localStorage.removeItem("token");
+          localStorage.removeItem("sentinel_token");
           localStorage.removeItem("user_id");
           localStorage.removeItem("username");
           localStorage.removeItem("household_id");
@@ -62,7 +62,7 @@ const ProtectedRoute = ({ children }) => {
         }
       } catch (error) {
         console.error("Auth validation error:", error);
-        localStorage.removeItem("token");
+        localStorage.removeItem("sentinel_token");
         localStorage.removeItem("user_id");
         localStorage.removeItem("username");
         localStorage.removeItem("household_id");
@@ -100,11 +100,11 @@ const ProtectedRoute = ({ children }) => {
     // Get Sentinel Login URL from env or use default
     const sentinelLoginUrl = import.meta.env.VITE_SENTINEL_LOGIN_URL || 'https://curly-chainsaw-xrw5w677gjxc65gg-5175.app.github.dev';
     const currentUrl = window.location.origin + location.pathname;
-    
+
     // Redirect to Sentinel Login with return URL
     const redirectUrl = `${sentinelLoginUrl}/patriot-login?redirect=${encodeURIComponent(currentUrl)}`;
     window.location.href = redirectUrl;
-    
+
     // Return loading state while redirecting
     return (
       <div

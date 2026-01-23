@@ -17,16 +17,17 @@ export const useAuth = () => {
     return localStorage.getItem('household_id');
   }, []);
 
+
   const getToken = useCallback(() => {
-    return localStorage.getItem('token');
+    return localStorage.getItem('sentinel_token');
   }, []);
 
   const isAuthenticated = useCallback(() => {
-    return !!localStorage.getItem('token');
+    return !!localStorage.getItem('sentinel_token');
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('sentinel_token');
     localStorage.removeItem('user_id');
     localStorage.removeItem('username');
     localStorage.removeItem('household_id');

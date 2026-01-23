@@ -21,6 +21,7 @@ import { useTransitionOverlay } from "../../TransitionOverlayContext.jsx";
 
 
 const PatriotLogin = () => {
+  const [lastRedirectUrl, setLastRedirectUrl] = useState("");
   // DEBUG: Show JWT token from localStorage and extracted token from URL
   const jwtToken = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
   const rawQuery = typeof window !== 'undefined' ? window.location.search : '';
@@ -124,12 +125,9 @@ const PatriotLogin = () => {
         setTimeout(() => {
           // If redirectUrl is a Patriot app URL, always append token as top-level param
           let decodedUrl = redirectUrl;
-          // If redirectUrl came from ?redirect=, decode it first
           if (redirectUrl.startsWith('http')) {
-            // Already decoded
             decodedUrl = redirectUrl;
           } else {
-            // If it's a ?redirect= param, decode it
             try {
               decodedUrl = decodeURIComponent(redirectUrl);
             } catch (e) {
@@ -142,11 +140,11 @@ const PatriotLogin = () => {
             urlObj.searchParams.set('token', data.access_token);
             decodedUrl = urlObj.toString();
           }
+          setLastRedirectUrl(decodedUrl); // Show on UI for debugging
           // If redirecting to Patriot app (external), use window.location.href
           if (decodedUrl.includes('5173') || decodedUrl.includes('patriot') || decodedUrl.includes('dashboard')) {
             window.location.href = decodedUrl;
           } else {
-            // Internal navigation within Sentinel app
             window.location.href = decodedUrl;
           }
         }, 1200);
@@ -190,6 +188,26 @@ const PatriotLogin = () => {
           <div>{jwtToken || 'No token found'}</div>
         </div>
         {/* Show logo and form (hide during active transitions) */}
+        {/* DEBUG: Show last redirect URL visually for mobile troubleshooting */}
+        {lastRedirectUrl && (
+          <div style={{
+            position: 'fixed',
+            bottom: 8,
+            left: 8,
+            zIndex: 9999,
+            background: 'rgba(0,0,0,0.85)',
+            color: '#fff',
+            padding: '12px 16px',
+            borderRadius: '8px',
+            fontSize: '13px',
+            maxWidth: '90vw',
+            wordBreak: 'break-all',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+          }}>
+            <strong>Last Redirect URL:</strong>
+            <div>{lastRedirectUrl}</div>
+          </div>
+        )}
         <div style={{
           opacity: transitionActive ? 0 : 1,
           transition: 'opacity 0.3s ease',
