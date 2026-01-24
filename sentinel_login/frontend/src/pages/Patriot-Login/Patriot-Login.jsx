@@ -22,19 +22,13 @@ import { useTransitionOverlay } from "../../TransitionOverlayContext.jsx";
 
 const PatriotLogin = () => {
   const [lastRedirectUrl, setLastRedirectUrl] = useState("");
-  // DEBUG: Show JWT token from localStorage and extracted token from URL
-  const jwtToken = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
-  const rawQuery = typeof window !== 'undefined' ? window.location.search : '';
-  let extractedToken = '';
-  if (typeof window !== 'undefined') {
-    const searchParams = new URLSearchParams(window.location.search);
-    extractedToken = searchParams.get('token') || searchParams.get('jwt') || searchParams.get('access_token') || '';
-  }
+  // ...existing code...
   const location = useLocation();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [loginToken, setLoginToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   // Use app-level transition overlay
@@ -54,8 +48,8 @@ const PatriotLogin = () => {
     if (location.state && location.state.from) {
       return location.state.from;
     }
-    // Default: always redirect to Patriot dashboard on LAN IP for iPhone compatibility
-    return "http://192.168.4.44:5173/dashboard";
+    // Default: always redirect to Patriot auth callback on LAN IP for iPhone compatibility
+    return "http://192.168.4.44:5173/auth/callback";
   };
 
   // Initialize background logo recalibration on mount
@@ -101,7 +95,7 @@ const PatriotLogin = () => {
       const res = await fetch("/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // Include cookies for refresh token
+        credentials: "include",
         body: JSON.stringify({
           username: identifier.trim(),
           password,
@@ -110,44 +104,33 @@ const PatriotLogin = () => {
       });
       const data = await res.json();
       if (res.ok && data.access_token) {
-        console.log('Login successful, access_token:', data.access_token);
-        // Store access token in memory via AuthContext (not localStorage)
         login(data.access_token, {
           username: data.username,
           email: data.email,
           household_id: data.household_id
         });
-        // Only store remember_me preference (not sensitive)
         localStorage.setItem("remember_me", rememberMe ? "true" : "false");
-        // Get the redirect URL
+        // Prepare redirect URL with token for confirmation page
         let redirectUrl = getRedirectUrl();
-        console.log('About to redirect, redirectUrl:', redirectUrl);
-        setTimeout(() => {
-          // If redirectUrl is a Patriot app URL, always append token as top-level param
-          let decodedUrl = redirectUrl;
-          if (redirectUrl.startsWith('http')) {
-            decodedUrl = redirectUrl;
+        let finalUrl = redirectUrl;
+        // If not absolute, resolve relative to current origin
+        try {
+          const isAbsolute = /^(http|https):\/\//i.test(redirectUrl);
+          let urlObj = isAbsolute ? new URL(redirectUrl) : new URL(redirectUrl, window.location.origin);
+          // Always set token param (replace if present)
+          urlObj.searchParams.set('token', data.access_token);
+          finalUrl = urlObj.toString();
+        } catch (e) {
+          // fallback: just append token param if possible
+          if (redirectUrl.indexOf('?') === -1) {
+            finalUrl = redirectUrl + '?token=' + encodeURIComponent(data.access_token);
           } else {
-            try {
-              decodedUrl = decodeURIComponent(redirectUrl);
-            } catch (e) {
-              decodedUrl = redirectUrl;
-            }
+            finalUrl = redirectUrl + '&token=' + encodeURIComponent(data.access_token);
           }
-          // Now append token to decodedUrl
-          const urlObj = new URL(decodedUrl, window.location.origin);
-          if (!urlObj.searchParams.get('token') && !urlObj.searchParams.get('jwt') && !urlObj.searchParams.get('access_token')) {
-            urlObj.searchParams.set('token', data.access_token);
-            decodedUrl = urlObj.toString();
-          }
-          setLastRedirectUrl(decodedUrl); // Show on UI for debugging
-          // If redirecting to Patriot app (external), use window.location.href
-          if (decodedUrl.includes('5173') || decodedUrl.includes('patriot') || decodedUrl.includes('dashboard')) {
-            window.location.href = decodedUrl;
-          } else {
-            window.location.href = decodedUrl;
-          }
-        }, 1200);
+        }
+        setLastRedirectUrl(finalUrl);
+        setLoginToken(data.access_token);
+        setSuccess(true);
       } else {
         setError(data.error || "Login failed. Check credentials.");
       }
@@ -165,49 +148,8 @@ const PatriotLogin = () => {
       </Helmet>
 
       <div className={styles.background}>
-        {/* DEBUG UI: JWT Token and Query Display */}
-        <div style={{
-          position: 'fixed',
-          top: 8,
-          right: 8,
-          zIndex: 9999,
-          background: 'rgba(0,0,0,0.85)',
-          color: '#fff',
-          padding: '12px 16px',
-          borderRadius: '8px',
-          fontSize: '13px',
-          maxWidth: '90vw',
-          wordBreak: 'break-all',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-        }}>
-          <strong>window.location.search:</strong>
-          <div>{rawQuery || 'No query string'}</div>
-          <strong>Extracted Token from URL:</strong>
-          <div>{extractedToken || 'No token in query'}</div>
-          <strong>JWT Token in localStorage:</strong>
-          <div>{jwtToken || 'No token found'}</div>
-        </div>
-        {/* Show logo and form (hide during active transitions) */}
-        {/* DEBUG: Show last redirect URL visually for mobile troubleshooting */}
-        {lastRedirectUrl && (
-          <div style={{
-            position: 'fixed',
-            bottom: 8,
-            left: 8,
-            zIndex: 9999,
-            background: 'rgba(0,0,0,0.85)',
-            color: '#fff',
-            padding: '12px 16px',
-            borderRadius: '8px',
-            fontSize: '13px',
-            maxWidth: '90vw',
-            wordBreak: 'break-all',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-          }}>
-            <strong>Last Redirect URL:</strong>
-            <div>{lastRedirectUrl}</div>
-          </div>
-        )}
+        {/* ...existing code... */}
+        {/* ...existing code... */}
         <div style={{
           opacity: transitionActive ? 0 : 1,
           transition: 'opacity 0.3s ease',
@@ -248,62 +190,9 @@ const PatriotLogin = () => {
                     >
                       Personalized Accounting & Tactical Resource Intelligence for Organized Tracking
                     </motion.p>
-                    <form
-                      className={styles.loginForm}
-                      onSubmit={handleSubmit}
-                      noValidate
-                      aria-describedby={error ? "login-error" : undefined}
-                      style={{
-                        opacity: loading ? 0.6 : 1,
-                        pointerEvents: loading ? 'none' : 'auto',
-                        transition: 'opacity 0.3s ease'
-                      }}
-                    >
-                      <TextBox
-                        id="login-username"
-                        value={identifier}
-                        onChange={setIdentifier}
-                        placeholder="Username"
-                        type="text"
-                        autoComplete="username"
-                        autoFocus
-                        maxLength={80}
-                        aria-required="true"
-                        aria-invalid={!!error && error.toLowerCase().includes('username')}
-                      />
-                      <PasswordTextBox
-                        id="login-password"
-                        value={password}
-                        onChange={setPassword}
-                        placeholder="Password"
-                        autoComplete="current-password"
-                        aria-required="true"
-                        aria-invalid={!!error && error.toLowerCase().includes('password')}
-                        aria-describedby={error ? "login-error" : undefined}
-                      />
-                      {error && (
-                        <ShakeOnError trigger={error}>
-                          <div
-                            id="login-error"
-                            role="alert"
-                            aria-live="assertive"
-                            style={{
-                              color: "var(--danger)",
-                              fontWeight: 700,
-                              fontFamily: "'Share Tech Mono', 'Exo 2', monospace",
-                              fontSize: 22,
-                              letterSpacing: 2,
-                              textShadow: "0 0 8px var(--danger), 0 0 22px var(--glow-danger)",
-                              marginBottom: 8,
-                              textAlign: "center",
-                              filter: "drop-shadow(0 0 8px var(--glow-danger))"
-                            }}
-                          >
-                            {error.toUpperCase()}
-                          </div>
-                        </ShakeOnError>
-                      )}
-                      {success && (
+                    {/* Always show confirmation page after login for all platforms */}
+                    {success && loginToken && lastRedirectUrl ? (
+                      <div style={{ textAlign: 'center', marginTop: 40 }}>
                         <div
                           role="status"
                           aria-live="polite"
@@ -314,79 +203,185 @@ const PatriotLogin = () => {
                             fontSize: 22,
                             letterSpacing: 2,
                             textShadow: "0 0 8px var(--success), 0 0 22px var(--glow-success)",
-                            marginBottom: 8,
+                            marginBottom: 18,
                             textAlign: "center",
                             filter: "drop-shadow(0 0 8px var(--glow-success))"
                           }}
                         >
-                          ACCESS GRANTED
+                          IDENTITY CONFIRMED
                         </div>
-                      )}
-
-                      {/* Remember Me Checkbox */}
-                      <Checkbox
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                        label="Remember Me"
-                        variant="success"
-                        icon="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                      />
-
-                      <Button
-                        type="submit"
-                        disabled={loading || success}
-                        aria-busy={loading}
-                        style={{
-                          cursor: (loading || success) ? 'not-allowed' : 'pointer',
-                          marginTop: '6px'
-                        }}
-                      >
-                        {loading ? "Logging in..." : "Login"}
-                      </Button>
-                    </form>
-                    <div style={{ marginTop: 18, textAlign: "center", fontFamily: "'Exo 2', 'Exo2', sans-serif" }}>
-                      <a
-                        href="#"
-                        style={{
-                          color: "var(--primary)",
-                          textDecoration: "underline",
-                          fontSize: 15,
-                          cursor: "pointer",
-                          marginBottom: 8,
-                          display: "inline-block",
-                          fontFamily: "inherit"
-                        }}
-                        onClick={e => {
-                          e.preventDefault();
-                          triggerTransition(() => navigate("/reset-password"), "right");
-                        }}
-                      >
-                        Forgot password?
-                      </a>
-                      <br />
-                      <span style={{
-                        color: "var(--text-secondary)",
-                        fontSize: 15,
-                        fontFamily: "inherit"
-                      }}>
-                        Don&apos;t have an account?{' '}
+                        <div style={{ marginBottom: 16, wordBreak: 'break-all', fontSize: 14, color: '#888' }}>
+                          <strong>Debug: Redirect URL</strong><br />
+                          {lastRedirectUrl}
+                        </div>
                         <a
-                          href="#"
+                          href={lastRedirectUrl}
                           style={{
-                            color: "var(--primary)",
-                            textDecoration: "underline",
-                            cursor: "pointer",
-                            fontFamily: "inherit"
+                            display: 'inline-block',
+                            marginTop: 24,
+                            textDecoration: 'none'
                           }}
-                          onClick={e => {
-                            e.preventDefault();
-                            triggerTransition(() => navigate("/register", { state: { from: "/patriot-login" } }), "right");
+                          rel="noopener noreferrer"
+                        >
+                          <Button
+                            as="span"
+                            type="button"
+                            style={{
+                              padding: '16px 32px',
+                              fontWeight: 700,
+                              fontSize: 20,
+                              borderRadius: 8,
+                              marginTop: 0
+                            }}
+                          >
+                            ACCESS P.A.T.R.I.O.T.
+                          </Button>
+                        </a>
+                      </div>
+                    ) : (
+                      // ...existing code for login form...
+                      <>
+                        <form
+                          className={styles.loginForm}
+                          onSubmit={handleSubmit}
+                          noValidate
+                          aria-describedby={error ? "login-error" : undefined}
+                          style={{
+                            opacity: loading ? 0.6 : 1,
+                            pointerEvents: loading ? 'none' : 'auto',
+                            transition: 'opacity 0.3s ease'
                           }}
                         >
-                          Register
-                        </a>
-                      </span>
-                    </div>
+                          <TextBox
+                            id="login-username"
+                            value={identifier}
+                            onChange={setIdentifier}
+                            placeholder="Username"
+                            type="text"
+                            autoComplete="username"
+                            autoFocus
+                            maxLength={80}
+                            aria-required="true"
+                            aria-invalid={!!error && error.toLowerCase().includes('username')}
+                          />
+                          <PasswordTextBox
+                            id="login-password"
+                            value={password}
+                            onChange={setPassword}
+                            placeholder="Password"
+                            autoComplete="current-password"
+                            aria-required="true"
+                            aria-invalid={!!error && error.toLowerCase().includes('password')}
+                            aria-describedby={error ? "login-error" : undefined}
+                          />
+                          {error && (
+                            <ShakeOnError trigger={error}>
+                              <div
+                                id="login-error"
+                                role="alert"
+                                aria-live="assertive"
+                                style={{
+                                  color: "var(--danger)",
+                                  fontWeight: 700,
+                                  fontFamily: "'Share Tech Mono', 'Exo 2', monospace",
+                                  fontSize: 22,
+                                  letterSpacing: 2,
+                                  textShadow: "0 0 8px var(--danger), 0 0 22px var(--glow-danger)",
+                                  marginBottom: 8,
+                                  textAlign: "center",
+                                  filter: "drop-shadow(0 0 8px var(--glow-danger))"
+                                }}
+                              >
+                                {error.toUpperCase()}
+                              </div>
+                            </ShakeOnError>
+                          )}
+                          {success && (
+                            <div
+                              role="status"
+                              aria-live="polite"
+                              style={{
+                                color: "var(--success)",
+                                fontWeight: 700,
+                                fontFamily: "'Share Tech Mono', 'Exo 2', monospace",
+                                fontSize: 22,
+                                letterSpacing: 2,
+                                textShadow: "0 0 8px var(--success), 0 0 22px var(--glow-success)",
+                                marginBottom: 8,
+                                textAlign: "center",
+                                filter: "drop-shadow(0 0 8px var(--glow-success))"
+                              }}
+                            >
+                              ACCESS GRANTED
+                            </div>
+                          )}
+
+                          {/* Remember Me Checkbox */}
+                          <Checkbox
+                            checked={rememberMe}
+                            onChange={(e) => setRememberMe(e.target.checked)}
+                            label="Remember Me"
+                            variant="success"
+                            icon="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                          />
+
+                          <Button
+                            type="submit"
+                            disabled={loading || success}
+                            aria-busy={loading}
+                            style={{
+                              cursor: (loading || success) ? 'not-allowed' : 'pointer',
+                              marginTop: '6px'
+                            }}
+                          >
+                            {loading ? "Logging in..." : "Login"}
+                          </Button>
+                        </form>
+                        <div style={{ marginTop: 18, textAlign: "center", fontFamily: "'Exo 2', 'Exo2', sans-serif" }}>
+                          <a
+                            href="#"
+                            style={{
+                              color: "var(--primary)",
+                              textDecoration: "underline",
+                              fontSize: 15,
+                              cursor: "pointer",
+                              marginBottom: 8,
+                              display: "inline-block",
+                              fontFamily: "inherit"
+                            }}
+                            onClick={e => {
+                              e.preventDefault();
+                              triggerTransition(() => navigate("/reset-password"), "right");
+                            }}
+                          >
+                            Forgot password?
+                          </a>
+                          <br />
+                          <span style={{
+                            color: "var(--text-secondary)",
+                            fontSize: 15,
+                            fontFamily: "inherit"
+                          }}>
+                            Don&apos;t have an account?{' '}
+                            <a
+                              href="#"
+                              style={{
+                                color: "var(--primary)",
+                                textDecoration: "underline",
+                                cursor: "pointer",
+                                fontFamily: "inherit"
+                              }}
+                              onClick={e => {
+                                e.preventDefault();
+                                triggerTransition(() => navigate("/register", { state: { from: "/patriot-login" } }), "right");
+                              }}
+                            >
+                              Register
+                            </a>
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </Card>
                 </AnimatedCard>
               </div>
